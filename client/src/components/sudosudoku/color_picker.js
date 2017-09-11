@@ -5,34 +5,50 @@ class ColorPicker extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            color : {
-                red : 0,
-                green : 0,
-                blue : 0
-            }
+            hex: '000000'
         }
         this.updateColor = this.updateColor.bind(this);
+        this.chooseRandomColor = this.chooseRandomColor.bind(this);
+        this.passUpColor = this.passUpColor.bind(this)
+    }
+    componentDidMount() {
+        this.passUpColor(this.state.hex);
+    }
+    passUpColor(hexColor) {
+        this.props.colorCallbackFromParent(hexColor);
     }
     updateColor(event) {
-        const {name, value} = event.target;
-        const {color} = this.state;
-        color[name] = value;
-        console.log('Name:', name);
-        console.log('Value:', value);
-        console.log('Color Object', color);
+        const {value} = event.target;
         this.setState({
-            color : {...color}
+            hex : value
         })
-
+        this.passUpColor(newColorStr);
+    }
+    chooseRandomColor() {
+        const hexArray = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
+        const newColorArr = [];
+        for (let i = 0; i < 6; i++) {
+            let newChar = hexArray[Math.floor(Math.random() * 16)];
+            newColorArr.push(newChar);
+        }
+        const newColorStr = newColorArr.join('');
+        this.setState({
+            hex : newColorStr
+        })
+        this.passUpColor(newColorStr);
     }
     render() {
-        const {red, green, blue} = this.state.color;
+        const {hex} = this.state;
         return (
             <div>
-                <ColorSwatch red={red} green={green} blue={blue}/>
-                <input onChange={this.updateColor} type="range" name="red" min="0" max="255" value={red}/>
-                <input onChange={this.updateColor} type="range" name="green" min="0" max="255" value={green}/>
-                <input onChange={this.updateColor} type="range" name="blue" min="0" max="255" value={blue}/>
+                <ColorSwatch hex={hex} selectedCallbackFromParent={this.props.selectedCallbackFromParent} name={this.props.name}/>
+                <div className="input-group input-group-sm">
+                    <label className="input-group-addon p-1">#</label>
+                    <input onChange={this.updateColor} className="form-control p-1" maxLength="6" type="text" name="hex" value={hex}/>
+                    <button onClick={this.chooseRandomColor} className="input-group-addon p-1 btn btn-outline-primary">?</button>
+                </div>
+                {/* <input onChange={this.updateColor} style={this.sliderStyle} type="range" name="green" min="0" max="255" value={green}/>
+                <input onChange={this.updateColor} style={this.sliderStyle} type="range" name="blue" min="0" max="255" value={blue}/> */}
             </div>
         )
     }
