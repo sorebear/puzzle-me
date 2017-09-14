@@ -8,7 +8,7 @@ class ColorSwatch extends Component {
                 width: '100%',
                 height: '12vw',
                 borderRadius: '100%',
-                backgroundColor: `#${props.hex}`
+                backgroundColor: `rgb(${this.props.red}, ${this.props.green}, ${this.props.blue})`
             }
         }
         this.passUpSelectedColor = this.passUpSelectedColor.bind(this)
@@ -19,7 +19,7 @@ class ColorSwatch extends Component {
                 width: '100%',
                 paddingTop: '100%',
                 borderRadius: '100%',
-                backgroundColor: `#${nextProps.hex}`
+                backgroundColor: `rgb(${nextProps.red},${nextProps.green},${nextProps.blue})`
             }
         });
     }

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ColorPicker from './color_picker';
 import GameGrid from './game_grid';
 import './sudoku_style.css';
+import CheckValidity from './check_validity.js';
 
 class SudoSudokuApp extends Component {
     constructor(props) {
@@ -10,7 +11,8 @@ class SudoSudokuApp extends Component {
             color1 : null,
             color2 : null,
             color3 : null,
-            currentlySelected : null
+            currentlySelected : null,
+            gridSize : 5
         }
         this.gutterStyle = {
             display: "flex",
@@ -28,6 +30,13 @@ class SudoSudokuApp extends Component {
             width: '70vw',
             overflow: 'hidden'
         }
+        this.new5x5Game = this.new5x5Game.bind(this);
+    }
+    new5x5Game() {
+        console.log('buttonClicked');
+        this.setState({
+            gridSize : 5
+        })
     }
     colorCallback1 = (colorFromChild) => {
         console.log("I'm Color 1 in the App componenet, I got the following from my child", colorFromChild);
@@ -54,7 +63,7 @@ class SudoSudokuApp extends Component {
         })
     }
     render() {
-        const {color1, color2, color3, currentlySelected} = this.state
+        const {color1, color2, color3, currentlySelected, gridSize} = this.state
         return (
             <div className="pageContainer">
                 <div className="gutter">
@@ -63,9 +72,12 @@ class SudoSudokuApp extends Component {
                     <ColorPicker name="color3" colorCallbackFromParent={this.colorCallback3} selectedCallbackFromParent={this.selectedColorCallback}/>
                 </div>
                 <div className="mainDisplay">
-                    <GameGrid gridSize={4} color1={color1} color2={color2} color3={color3} currentlySelected={currentlySelected}/>
+                    <GameGrid innerGridSize={gridSize} outerGridSize={gridSize + 2} color1={color1} color2={color2} color3={color3} currentlySelected={currentlySelected}/>
+                    <CheckValidity color1={color1} color2={color2} color3={color3} gridSize={gridSize}/>
                 </div>
-                <div style={this.gutterStyle}></div>
+                <div style={this.gutterStyle}>
+                    <button onClick={this.new5x5Game}>New 5x5 Game</button>
+                </div>
             </div>
         )
     }

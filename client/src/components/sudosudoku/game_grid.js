@@ -7,38 +7,37 @@ class GameGrid extends Component {
         this.innerGridSize = props.gridSize;
         this.outerGridSize = props.gridSize + 2;
         this.squareStyle = {
-            width : `${Math.floor(100 / this.outerGridSize)}%`,
-            backgroundColor : '#FFFFFF',
-            boxSizing: 'border-box',
-            display: 'inline-block'
+            width : null,
+            backgroundColor : 'rgb(255, 255, 255)',
         }
         this.clueStyle = {
-            width : `${Math.floor(100 / this.outerGridSize)}%`,
-            backgroundColor : '#FFFFFF',
-            border: '1px dotted grey',
+            width : null,
+            backgroundColor : 'rgb(255, 255, 255)',
+            opacity: '0'
+        }
+        this.cornerStyle = {
+            width : null,
+            backgroundColor : 'transparent',
             boxSizing: 'border-box',
-            borderRadius: '100%',
             display: 'inline-block'
         }
-        this.gridStyle = {
-            width : "65vmax",
-            height : "65vmax",
-            maxHeight: "95vmin",
-            maxWidth: "95vmin",
-            display : "flex",
-            flexFlow : "wrap"
-        }
         this.state = {
-            color0 : 'FFFFFF',
+            color0 : 'rgb(255, 255, 255)',
             color1 : props.color1,
             color2 : props.color2,
             color3 : props.color3,
-            currentlySelected : props.currentlySelected
+            currentlySelected : props.currentlySelected,
+            augmentGuide : [
+                {position: 17, newColorNum: 'color2'}, 
+                {position: 15, newColorNum: 'color1'} ]
         }
     }
     componentWillReceiveProps(nextProps) {
+        if (this.props.gridSize !== nextProps.gridSize) {
+            this.createGrid();
+        }
         this.setState({
-            color0 : 'FFFFFF',
+            color0 : 'rgb(255, 255, 255)',
             color1 : nextProps.color1,
             color2 : nextProps.color2,
             color3 : nextProps.color3,
@@ -46,26 +45,40 @@ class GameGrid extends Component {
         })
     }
     createGrid() {
-        const border = this.innerGridSize + 1;
+        const {innerGridSize, outerGridSize} = this.props
+        const border = innerGridSize + 1;
+        this.squareStyle.width = `${Math.floor(100 / outerGridSize)}%`;
+        this.clueStyle.width = `${Math.floor(100 / outerGridSize)}%`;
+        this.cornerStyle.width = `${Math.floor(100 / outerGridSize)}%`;
         let gridArray = [];
-        for (let rowCounter = 0; rowCounter < this.outerGridSize; rowCounter++) {
-            for (let columnCounter = 0; columnCounter < this.outerGridSize; columnCounter++) {
+        for (let rowCounter = 0; rowCounter < outerGridSize; rowCounter++) {
+            for (let columnCounter = 0; columnCounter < outerGridSize; columnCounter++) {
                 let newObj = {};
                 if (rowCounter === 0 || columnCounter === 0 || rowCounter === border || columnCounter === border) {
-                    newObj = {
-                        name : 'clue',
-                        className :  `${rowCounter}x${columnCounter}`,
-                        style : this.clueStyle,
-                        createOnClick : this.sqaureClickHandlerCreate,
-                        playOnClick : this.sqaureClickHandlerPlay
+                    if (rowCounter === columnCounter || (rowCounter === 0 && columnCounter === border) || (rowCounter === border && columnCounter === 0)) {
+                        newObj = {
+                            name : 'corner',
+                            className : `row${rowCounter} column${columnCounter}`,
+                            style : this.cornerStyle,
+                        }
+                    } else {
+                        newObj = {
+                            name : 'clue',
+                            className : `row${rowCounter} column${columnCounter}`,
+                            style : this.clueStyle,
+                            createOnClick : this.sqaureClickHandlerCreate,
+                            playOnClick : this.sqaureClickHandlerPlay,
+                            colorNum : 'color0'
+                        }
                     }
                 } else {
                     newObj = {
                         name : 'square',
-                        className : `${rowCounter}x${columnCounter}`, 
+                        className : `row${rowCounter} column${columnCounter}`, 
                         style : this.squareStyle,
                         createOnClick : null,
-                        playOnClick : null
+                        playOnClick : null,
+                        colorNum : 'color0'
                     }
                 }
                 gridArray.push(newObj);
@@ -73,9 +86,19 @@ class GameGrid extends Component {
         }
         return gridArray;
     }
+    augmentGrid(gridArray) {
+        const { augmentGuide } = this.state
+        for (let i = 0; i < augmentGuide.length; i++) {
+            console.log(augmentGuide);
+            console.log(gridArray);
+            gridArray[augmentGuide[i].position].colorNum = augmentGuide[i].newColorNum;
+        }
+        return gridArray;
+    }
     render() {
         const {color0, color1, color2, color3, currentlySelected} = this.state;
-        const gridArray = this.createGrid();
+        let gridArray = this.createGrid();
+        gridArray = this.augmentGrid(gridArray);
         const grid = gridArray.map((item, index) => {
             return ( 
                 <GridSquare 
@@ -88,13 +111,14 @@ class GameGrid extends Component {
                     color1={color1}
                     color2={color2}
                     color3={color3}
+                    colorNum={item.colorNum}
                     currentlySelected={currentlySelected}
-                    endingEdge={this.innerGridSize + 1}
+                    endingEdge={this.props.innerGridSize + 1}
                 />
             )
         })
         return (
-            <div style={this.gridStyle} className={this.props.className}>{grid}</div>
+            <div className="grid-style">{grid}</div>
         )
     }
 }

@@ -17,6 +17,7 @@
 
 .mainDisplay {
     display: flex;
+    flex-flow: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -26,8 +27,27 @@
 
 div[name=square] {
     border: 1px solid black;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+div[name=clue] {
+    border: 1px dotted grey;
+    box-sizing: border-box;
+    border-radius: 100%;
+    display: inline-block;
+    transition: .5s;
 }
 
 div[name=square]:hover {
     border: 1px solid lightgrey;
+}
+
+.grid-style {
+    width : 65vmax;
+    height : 65vmax;
+    max-height: 95vmin;
+    max-width: 95vmin;
+    display : flex;
+    flex-flow : wrap;
 }

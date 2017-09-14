@@ -5,50 +5,79 @@ class ColorPicker extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            hex: '000000'
+            color : {
+                red: 0,
+                green: 0,
+                blue: 0
+            }
         }
         this.updateColor = this.updateColor.bind(this);
-        this.chooseRandomColor = this.chooseRandomColor.bind(this);
+        this.chooseRandomRgbColor = this.chooseRandomRgbColor.bind(this);
         this.passUpColor = this.passUpColor.bind(this)
+        this.inputStyle = {
+            width : '35px'
+        }
     }
     componentDidMount() {
-        this.passUpColor(this.state.hex);
+        const {red, green, blue} = this.state.color
+        this.passUpColor(`rgb(${red}, ${green}, ${blue})`);
     }
-    passUpColor(hexColor) {
-        this.props.colorCallbackFromParent(hexColor);
+    passUpColor(color) {
+        this.props.colorCallbackFromParent(color);
     }
     updateColor(event) {
-        const {value} = event.target;
+        const {value, name} = event.target;
+        const {color} = this.state;
+        color[name] = value;
         this.setState({
-            hex : value
+             color : {...color}
         })
-        this.passUpColor(newColorStr);
+        this.passUpColor(`rgb(${color.red}, ${color.green}, ${color.blue})`);
     }
-    chooseRandomColor() {
-        const hexArray = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
-        const newColorArr = [];
-        for (let i = 0; i < 6; i++) {
-            let newChar = hexArray[Math.floor(Math.random() * 16)];
-            newColorArr.push(newChar);
-        }
-        const newColorStr = newColorArr.join('');
+
+    chooseRandomRgbColor() {
+        console.log('Button Clicked');
+        const red = Math.floor(Math.random() * 256);
+        const green = Math.floor(Math.random() * 256);
+        const blue = Math.floor(Math.random() * 256);
+        const newColorObj = {
+            red: red,
+            green: green,
+            blue: blue
+        };
         this.setState({
-            hex : newColorStr
+            color : newColorObj
         })
-        this.passUpColor(newColorStr);
+        this.passUpColor(`rgb(${newColorObj.red}, ${newColorObj.green}, ${newColorObj.blue})`)
     }
+    // chooseRandomColor() {
+    //     console.log('Button Clicked');
+    //     const hexArray = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
+    //     const newColorArr = [];
+    //     for (let i = 0; i < 6; i++) {
+    //         let newChar = hexArray[Math.floor(Math.random() * 16)];
+    //         newColorArr.push(newChar);
+    //     }
+    //     const newColorStr = newColorArr.join('');
+    //     this.setState({
+    //         hex : newColorStr
+    //     })
+    //     this.passUpColor(newColorStr);
+    // }
     render() {
-        const {hex} = this.state;
+        const {red, green, blue} = this.state.color;
         return (
             <div>
-                <ColorSwatch hex={hex} selectedCallbackFromParent={this.props.selectedCallbackFromParent} name={this.props.name}/>
+                <ColorSwatch red={red} green={green} blue={blue} selectedCallbackFromParent={this.props.selectedCallbackFromParent} name={this.props.name}/>
                 <div className="input-group input-group-sm">
                     <label className="input-group-addon p-1">#</label>
-                    <input onChange={this.updateColor} className="form-control p-1" maxLength="6" type="text" name="hex" value={hex}/>
-                    <button onClick={this.chooseRandomColor} className="input-group-addon p-1 btn btn-outline-primary">?</button>
+                    <input style={this.inputStyle} onChange={this.updateColor} type="value" name="red" min="0" max="255" value={red}/>
+                    <input style={this.inputStyle} onChange={this.updateColor} type="value" name="green" min="0" max="255" value={green}/>
+                    <input style={this.inputStyle} onChange={this.updateColor} type="value" name="blue" min="0" max="255" value={blue}/>
+                    {/* <input onChange={this.updateColor} className="form-control p-1" maxLength="6" type="text" name="hex" value={hex}/> */}
+                    <button onClick={this.chooseRandomRgbColor} className="input-group-addon p-1 btn btn-outline-primary">?</button>
                 </div>
-                {/* <input onChange={this.updateColor} style={this.sliderStyle} type="range" name="green" min="0" max="255" value={green}/>
-                <input onChange={this.updateColor} style={this.sliderStyle} type="range" name="blue" min="0" max="255" value={blue}/> */}
+                
             </div>
         )
     }
