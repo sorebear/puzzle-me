@@ -17,9 +17,6 @@ class GameGrid extends Component {
         }
         this.cornerStyle = {
             width : null,
-            backgroundColor : 'transparent',
-            boxSizing: 'border-box',
-            display: 'inline-block'
         }
         this.state = {
             color0 : 'rgb(255, 255, 255)',

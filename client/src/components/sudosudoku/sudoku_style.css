@@ -25,8 +25,8 @@
     overflow: hidden;
 }
 
-div[name=square] {
-    border: 1px solid black;
+div[name=corner] {
+    background-color : transparent;
     box-sizing: border-box;
     display: inline-block;
 }
@@ -37,6 +37,12 @@ div[name=clue] {
     border-radius: 100%;
     display: inline-block;
     transition: .5s;
+}
+
+div[name=square] {
+    border: 1px solid black;
+    box-sizing: border-box;
+    display: inline-block;
 }
 
 div[name=square]:hover {
