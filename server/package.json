@@ -1,0 +1,24 @@
+{
+  "name": "puzzle_me",
+  "version": "1.0.0",
+  "description": "Puzzle Me Web Server",
+  "main": "webserver.js",
+  "scripts": {
+    "start": "node webserver.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "keywords": [
+    "none"
+  ],
+  "author": "Grayson Hughes",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.1",
+    "express": "^4.15.4",
+    "mysql": "^2.14.1"
+  }
+}

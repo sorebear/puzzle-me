@@ -1,0 +1,23 @@
+.icon-style {
+    font-size: 20px;
+    color: grey;
+}
+
+.footer, .header {
+    background-color: #222;
+    width: 100%;
+}
+
+.header {
+    top: 0;
+}
+
+.footer {
+    bottom: 0;
+    position: fixed;
+}
+
+.card {
+    margin: 2%;
+    padding: 2%;
+}
