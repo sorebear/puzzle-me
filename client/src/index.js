@@ -4,7 +4,9 @@ import SudoSudokuApp from './components/sudosudoku/sudo_sudoku_app';
 import WordGuessingApp from './components/word_guessing/word_guessing_app';
 import Footer from './footer';
 import Header from './header';
-import Home from './components/home'
+import Home from './components/home';
+import Create from './components/create';
+import Play from './components/play';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import App from './components/app';
@@ -14,9 +16,9 @@ ReactDOM.render(
         <div>
             <Header />
             <Route exact path="/" component={Home} />
-            <Route path="/play" component={WordGuessingApp} />
-            <Route path="/create" component={Home} />
-            <Route path="/rankings" component={Home} />
+            <Route path="/play" component={Play} />
+            <Route path="/create" component={Create} />
+            <Route path="/rankings" component={WordGuessingApp} />
             <Route path="/profile" component={Home} />
             <Footer />
         </div>
