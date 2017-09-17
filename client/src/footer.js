@@ -16,7 +16,7 @@ export default () => {
                 </NavLink>
             </li>
             <li className="nav-item">
-                <NavLink to="/rankings" className="nav-link">
+                <NavLink to="/word_guessing" className="nav-link">
                     <i className="icon-style fa fa-signal"></i>
                 </NavLink>
             </li>

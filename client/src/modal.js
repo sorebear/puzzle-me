@@ -29,14 +29,18 @@ class Modal extends Component {
             <div className={this.state.showModal}>
                 <div onClick={() => this.removeModal()}>
                 </div>
-                <div className="card">
+                <div className="card p-5">
                     <div className="card-body">
                         <h4 className="card-title">{name}</h4>
                         <p className="card-text">  
                             Type: {type}<br/>
                             Creator: {author}<br/>
-                            Created: {dateCreated}</p>
-                        <a href="#" className="btn btn-outline-primary">Play</a>
+                            Created: {dateCreated}<br/>
+                            Avg. Seconds : {averageTime}<br/>
+                            Avg. Time: {Math.floor(averageTime / 60)}:{Math.floor(averageTime % 60)}
+                        </p>
+                        <a href="#" className="m-1 btn btn-outline-success">Play</a>
+                        <button type="button" onClick={() => this.removeModal()} className="m-1 btn btn-outline-danger">Cancel</button>
                     </div>
                 </div>
             </div>

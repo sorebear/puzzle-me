@@ -11,7 +11,7 @@ export default () => {
             </li>
             <li className="nav-item">
                 <NavLink to="/home"  className="nav-link">
-                    <h3>PuzzleMe</h3>
+                    <h2><span className="title" style={{color: "rgb(217,83,79)"}}>puzzle</span>ME</h2>
                 </NavLink>
             </li>
             <li className="nav-item">

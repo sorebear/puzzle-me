@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import DummyData from './puzzle_dummy_data';
 import PlayModal from '../modal';
+import PageTitle from './page_title';
 
 class Play extends Component {
     constructor(props) {
@@ -45,6 +46,7 @@ class Play extends Component {
         })
         return (
             <div>
+                <PageTitle bgColor="rgb(217,83,79)" color="#222" text="PLAY" subText="choose a game below"/>
                 <PlayModal showModal={this.state.showModal} info={this.state.modalInfo}/>
                 <table className="table table-inverse table-striped table-hover">
                     <thead>

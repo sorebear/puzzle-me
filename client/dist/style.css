@@ -43,3 +43,33 @@
 .noModal {
     display: none;
 }
+
+h2, button, a, .title {
+    font-family: 'Metamorphous', sans-serif;
+}
+
+h2 {
+    color: white;
+}
+
+.page-title {
+    height: 25vh;
+    font-family: 'Metamorphous', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.play-test {
+    width: 100%;
+    position: fixed;
+    bottom: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.play-test * {
+    margin: 2px;
+}
