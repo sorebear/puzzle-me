@@ -14,11 +14,15 @@ class Login extends Component{
             <div>
                 <h1>Login</h1>
                 <form>
-                    <label>Username</label>
-                    <input type="text" placeholder="username or email"/>
-                    <label>Password</label>
-                    <input type="text" placeholder="password"/>
-                    <button type="button">Login</button>
+                    <div className="form-group">
+                        <label>Username</label>
+                        <input type="text" className="form-control"/>
+                    </div>
+                    <div className="form-group">
+                        <label>Password</label>
+                        <input type="text" className="form-control"/>
+                    </div>
+                    <button type="button" className="btn btn-default">Login</button>
                 </form>
             </div>
         );
