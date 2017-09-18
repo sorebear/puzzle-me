@@ -2,25 +2,40 @@ import React, { Component } from 'react';
 import DummyData from './puzzle_dummy_data';
 import PlayModal from '../modal';
 import PageTitle from './page_title';
+import Axios from 'axios';
 
 class Play extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             modalInfo : null,
-            showModal : "noModal"
+            showModal : "noModal",
+            data: null
         }
+        this.BASE_URL = 'http://localhost:3000/puzzles';
+        this.QUERY_KEY = 'retrieve';
+        this.QUERY_VAL = 'recent10';
+        this.getData();
+
     }
     callModal(info) {
         this.setState({
             modalInfo : info,
             showModal : "showModal"
-        })
+        })  
     }
     close() {
         this.setState({
             showModal: "noModal"
         })
+    }
+    getData(){
+        Axios.get(this.BASE_URL + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
+            console.log("Error getting 10 most recent puzzles: ", err);
+        });
+    }
+    updateData(response){
+        console.log("Successfully received puzzle data: ", response);
     }
     render() {
         console.log(this.state);
