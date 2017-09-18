@@ -7,6 +7,8 @@ import Header from './header';
 import Home from './components/home';
 import Create from './components/create';
 import Play from './components/play';
+import Login from './components/login';
+
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import App from './components/app';
@@ -20,6 +22,7 @@ ReactDOM.render(
             <Route path="/create" component={Create} />
             <Route path="/rankings" component={WordGuessingApp} />
             <Route path="/profile" component={Home} />
+            <Route path="/login" component={Login}/>
             <Footer />
         </div>
     </Router>,
