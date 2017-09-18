@@ -22,6 +22,7 @@ ReactDOM.render(
             <Route path="/create" component={Create} />
             <Route path="/rankings" component={WordGuessingApp} />
             <Route path="/profile" component={Home} />
+            <Route path="/login" component={Login}/>
             <Footer />
         </div>
     </Router>,
