@@ -45,7 +45,7 @@ class WordGuessingApp extends Component {
         this.setState({
             gameInfo: {
                 hiddenWord : gameInfoFromChild.hiddenWord,
-                startingWords : gameInfoFromChild.startingWords
+                startingWords : [...gameInfoFromChild.startingWords]
             },
         })
     }

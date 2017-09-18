@@ -10,16 +10,16 @@ class WordGuessingApp extends Component {
             guessHistory : null
         }
         this.hiddenWord = props.gameInfo.hiddenWord;
-        this.numOfStartingWords = props.gameInfo.startingWords.length;
+        this.numOfStartingWords = props.gameInfo.startingWords.length - 1;
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentWillMount() {
-        let { startingWords } = this.props.gameInfo;
+        let startingWords = [...this.props.gameInfo.startingWords];
         startingWords.shift()
         this.setState({
-            guessHistory : [...startingWords]
+            guessHistory : startingWords
         })
     }
 
@@ -84,20 +84,33 @@ class WordGuessingApp extends Component {
             correctLetter : correctLetter,
             correctPosition : correctPosition
         })
-        this.setState({
-            guess : "",
-            guessHistory : guessHistory
-        })
         if (correctPosition === this.hiddenWord.length) {
             this.handleWin(guessHistory.length);
         }
+        this.setState({
+            guess : "",
+            guessHistory : [...guessHistory]
+        })
     }
 
     render() {
-        console.log("Current State", this.state)
+        console.log(this.numOfStartingWords);
         const { guessHistory } = this.state;
+        const switchPoint = guessHistory.length - this.numOfStartingWords;
         const guessHistoryList = guessHistory.map((item, index) => {
-            return <li key={index} className="list-group-item text-center">{item.guess} : {item.correctLetter} - {item.correctPosition}</li>
+            console.log("My map", index, item)
+            console.log("My Switch Point", switchPoint);
+            if (index < switchPoint) {
+                return <li key={index} className="list-group-item justify-content-between">
+                    {item.guess} : {item.correctLetter} - {item.correctPosition}
+                    <span style={{color : "lightgrey"}}>{switchPoint - index}</span>
+                </li>
+            } else {
+                return <li key={index} className="list-group-item list-group-item-info">{
+                    item.guess} : {item.correctLetter} - {item.correctPosition}
+                    
+                </li>
+            }
         })
         return (
             <div className="container">

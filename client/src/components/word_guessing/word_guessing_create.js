@@ -5,7 +5,7 @@ class WordGuessingCreate extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            hiddenWord : "",
+            hiddenWord : props.gameInfo.hiddenWord,
             startingWords : props.gameInfo.startingWords
         }
         this.hiddenWord = props.gameInfo.hiddenWord;
@@ -28,14 +28,14 @@ class WordGuessingCreate extends Component {
         const { startingWords } = this.state;
         startingWords[0] = event.target.value.toUpperCase();
         this.setState({
-            startingWords : startingWords
+            startingWords : [...startingWords]
         })
     }
 
     addClue(event) {
         event.preventDefault();
         const { startingWords, hiddenWord } = this.state;
-        if (startingWords[0].length !== hiddenWord.length) {return}
+        if (startingWords[0].length !== hiddenWord.length || startingWords[0].length === 0) {return}
         startingWords[0] = {
             guess : startingWords[0],
             correctLetter : null,
@@ -45,18 +45,22 @@ class WordGuessingCreate extends Component {
         this.evaluateClues(startingWords)
     }
 
+    removeClue(index) {
+        const { startingWords } = this.state;
+        startingWords.splice(index, 1);
+        this.setState({
+            startingWords : [...startingWords]
+        })
+    }
+
     // wrongLength() {
     //     console.log(`${this.state.guess} Is Not ${this.hiddenWord.length}-Letters Long`);
     // }
 
-    // handleSubmit(event) {
-    //     event.preventDefault();
-    //     if (this.state.guess.length !== this.hiddenWord.length) {
-    //         this.wrongLength();
-    //     } else {
-    //         this.evaluateClues();
-    //     }
-    // }
+    handleClueSubmit(event) {
+        event.preventDefault();
+        this.evaluateClues([...this.state.startingWords]);
+    }
 
     evaluateClues(startingWords) {
         const updatedStartingWords = startingWords.map((word, index) => {
@@ -88,26 +92,10 @@ class WordGuessingCreate extends Component {
             })
         })
         this.setState({
-            startingWords : updatedStartingWords
+            startingWords : [...updatedStartingWords]
         })
         this.passUpGameInfo();
     }
-
-    // displayResult(correctLetter, correctPosition) {
-    //     let { guessHistory } = this.state;
-    //     guessHistory.unshift({
-    //         guess : this.state.guess,
-    //         correctLetter : correctLetter,
-    //         correctPosition : correctPosition
-    //     })
-    //     this.setState({
-    //         guess : "",
-    //         guessHistory : guessHistory
-    //     })
-    //     if (correctPosition === this.hiddenWord.length) {
-    //         this.handleWin(guessHistory.length);
-    //     }
-    // }
 
     render() {
         console.log(this.state)
@@ -115,34 +103,38 @@ class WordGuessingCreate extends Component {
         const startingWordsList = startingWords.map((item, index) => {
             if (index === 0) {return} 
             return (
-                <li key={index} className="list-group-item list-group-item-info">
+                <li key={index} className="list-group-item list-group-item-info justify-content-between">
                     {item.guess} : {item.correctLetter} - {item.correctPosition}
+                    <i className="fa fa-times-circle" onClick={() => this.removeClue(index)} ></i>
                 </li>
             )
         })
         return (
             <div className="container">
                 <h3 className="text-center p-2">Pick a 4-6-Letter Word</h3>
-                <input 
-                    onChange={this.hiddenWordChangeHandler}
-                    onBlur={this.addClue}
-                    maxLength={6}
-                    value={this.state.hiddenWord} 
-                    className="form-control" 
-                    placeholder="...Pick Your Hidden Number"
-                />
+                <form onSubmit={(event) => this.handleClueSubmit(event)}>
+                    <input 
+                        onChange={this.hiddenWordChangeHandler}
+                        onBlur={() => this.evaluateClues([...this.state.startingWords])}
+                        maxLength={6}
+                        value={this.state.hiddenWord} 
+                        className="form-control" 
+                        placeholder="...Pick Your Hidden Number"
+                    />
+                </form>
                 <br/>
                 <form onSubmit={this.addClue}>
                     <div className="text-center">
-                    <ul className="list-group">
+                        <ul className="list-group">
                             <input
                                 onChange={this.clueChangeHandler}
-                                onBlur={this.addClue}
+                                onBlur={() => this.evaluateClues([...this.state.startingWords])}
                                 className="form-control"
                                 value={startingWords[0]} 
                                 placeholder="...Give A Clue">
                             </input>
                         </ul>
+                        <button className="btn btn-outline-danger m-2 justify-content-center" onClick={this.addClue}>Add Clue</button>
                         <ul className="list-group">{startingWordsList}</ul>
                     </div>
                 </form>
