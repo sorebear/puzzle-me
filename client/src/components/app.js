@@ -1,14 +1,38 @@
 import React from 'react';
-import './app.css';
-import logo from './imgs/logo.svg';
+import SpeckleSpackleApp from './speckle_spackle/speckle_spackle_app';
+import WordGuessingApp from './word_guessing/word_guessing_app'
+import WordGuessPlay from './word_guessing/word_guessing_play'
+import Footer from '../footer';
+import Header from '../header';
+import Home from './home';
+import Create from './create';
+import PlayMenu from './play_menu';
+import Login from './login';
+
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 const App = () => (
-    <div>
-        <div className="app">
-            <img src={logo} className="rotate"/>
-            <h1>Welcome to React!</h1>
+    <Router>
+        <div>
+            <Header />
+            <Route exact path="/" component={Home} />
+
+            <Route exact path="/play" component={PlayMenu} />
+            <Route path="/play/word_guessing" render={() => <WordGuessPlay gameInfo={null} />} />
+
+            <Route exact path="/create" component={Create} />
+            <Route path="/create/word_guessing" component={WordGuessingApp} />
+            <Route path="/create/speckle_spackle" component={SpeckleSpackleApp} />
+
+            <Route exact path="/rankings" component={Home} />
+
+            <Route exact path="/gladiator" component={Home} />
+
+            <Route path="/login" component={Login} />
+            <Route path="/profile" component={Login} />
+            <Footer />
         </div>
-    </div>
+    </Router>
 );
 
 export default App;

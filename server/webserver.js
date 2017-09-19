@@ -3,7 +3,12 @@ var credentials = require('./mysqlCredentials');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const path = require('path');
+const cors = require('cors');
 const webserver = express();
+
+// Andy put this here for dev purposes, will allow Cross-Origin requests, but will most likely need to remove for production
+webserver.use(cors());
+
 
 webserver.use(bodyParser.urlencoded({ extended: false }))
 webserver.use(bodyParser.json());
@@ -92,7 +97,7 @@ function getMostRecent10Puzzles(res){
 //         //incomplete, didn't capture all of Dan's coding
 //     });
 // })
-webserver.listen(3000, function(){
-    console.log('Webserver listening on port 3000');
+webserver.listen(4000, function(){
+    console.log('Webserver listening on port 4000');
 });
 

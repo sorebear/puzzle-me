@@ -29,7 +29,11 @@ const puzzle_data = [
         dateCreated : '09/01/17',
         ratingPos : 6,
         ratingNeg : 20,
-        averageTime : 240
+        averageTime : 240,
+        gameInfo : {
+            hiddenWord : 'BOOKS',
+            startingWords : ['OLDEN', 'CLOCK']
+        }
     },
     {
         name : 'Puzz Puzz',
@@ -39,7 +43,11 @@ const puzzle_data = [
         dateCreated : '08/11/17',
         ratingPos : 56,
         ratingNeg : 14,
-        averageTime : 150
+        averageTime : 154,
+        gameInfo : {
+            hiddenWord : 'DOWN',
+            startingWords : ['NUDE', 'WINS']
+        }
     }
 ]
 

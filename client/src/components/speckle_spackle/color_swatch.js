@@ -5,9 +5,6 @@ class ColorSwatch extends Component {
         super(props)
         this.state = {
             swatchStyle : {
-                width: '100%',
-                height: '12vw',
-                borderRadius: '100%',
                 backgroundColor: `rgb(${this.props.red}, ${this.props.green}, ${this.props.blue})`
             }
         }
@@ -16,9 +13,6 @@ class ColorSwatch extends Component {
     componentWillReceiveProps(nextProps) {
         this.setState({
             swatchStyle : {
-                width: '100%',
-                paddingTop: '100%',
-                borderRadius: '100%',
                 backgroundColor: `rgb(${nextProps.red},${nextProps.green},${nextProps.blue})`
             }
         });
@@ -29,7 +23,7 @@ class ColorSwatch extends Component {
     render() {
         const {swatchStyle} = this.state
         return (
-            <div style={swatchStyle} onClick={this.passUpSelectedColor}></div>
+            <div className="swatch" style={swatchStyle} onClick={this.passUpSelectedColor}></div>
         )   
     }
 }

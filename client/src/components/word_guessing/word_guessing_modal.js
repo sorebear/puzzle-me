@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Modal extends Component {
+class OneButtonModal extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -24,19 +24,18 @@ class Modal extends Component {
         if (this.state.info === null) {
             return <div></div>
         } else {
-            const { author, averageTime, dateCreated, name, ratingNeg, ratingPos, size, type } = this.state.info
+            const { title, body, buttonText} = this.state.info
             return (
             <div className={this.state.showModal}>
                 <div onClick={() => this.removeModal()}>
                 </div>
-                <div className="card">
+                <div className="card p-5">
                     <div className="card-body">
-                        <h4 className="card-title">{name}</h4>
+                        <h4 className="card-title">{title}</h4>
                         <p className="card-text">  
-                            Type: {type}<br/>
-                            Creator: {author}<br/>
-                            Created: {dateCreated}</p>
-                        <a href="#" className="btn btn-outline-primary">Play</a>
+                            {body}
+                        </p>
+                        <button type="button" onClick={() => this.removeModal()} className="m-1 btn btn-outline-danger">{buttonText}</button>
                     </div>
                 </div>
             </div>
@@ -45,4 +44,4 @@ class Modal extends Component {
     }
 }
 
-export default Modal;
+export default OneButtonModal;
