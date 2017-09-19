@@ -10,11 +10,13 @@
 
 .header {
     top: 0;
+    height: 55px;
 }
 
 .footer {
     bottom: 0;
     position: fixed;
+    height: 45px;
 }
 
 .card {

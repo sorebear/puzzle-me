@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 export default () => {
 
     return (
-        <ul className="nav justify-content-around footer">
+        <ul className="nav justify-content-around align-items-center footer">
             <li className="nav-item">
                 <NavLink to="/play" className="nav-link">
                     <i className="icon-style fa fa-play"></i>
@@ -21,7 +21,7 @@ export default () => {
                 </NavLink>
             </li>
             <li className="nav-item">
-                <NavLink to="/challenges" className="nav-link">
+                <NavLink to="/login" className="nav-link">
                     <i className="icon-style fa fa-bolt"></i>
                 </NavLink>
             </li>

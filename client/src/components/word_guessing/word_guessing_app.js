@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import WordGuessingCreate from './word_guessing_create';
 import WordGuessingPlay from './word_guessing_play';
 
+
 class WordGuessingApp extends Component {
     constructor (props) {
         super(props);
@@ -51,7 +52,7 @@ class WordGuessingApp extends Component {
     }
     render() {
         console.log("App State", this.state)
-        const { testStyle, createStyle, gameInfo, gameInfoRequested } = this.state
+        const { testStyle, createStyle, gameInfo } = this.state
         if (this.state.createStyle.display === "none") {
             return (
                 <div>

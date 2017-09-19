@@ -12,7 +12,7 @@ class Play extends Component {
             showModal : "noModal",
             data: null
         }
-        this.BASE_URL = 'http://localhost:3000/puzzles';
+        this.BASE_URL = 'http://localhost:4000/puzzles';
         this.QUERY_KEY = 'retrieve';
         this.QUERY_VAL = 'recent10';
         this.getData();
@@ -37,6 +37,7 @@ class Play extends Component {
     updateData(response){
         console.log("Successfully received puzzle data: ", response);
     }
+
     render() {
         console.log(this.state);
         const list = DummyData.map((item, index) => {

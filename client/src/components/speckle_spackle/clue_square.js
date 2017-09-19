@@ -103,7 +103,7 @@ class ClueSquare extends Component {
     render() {
         const {clueStyle} = this.state
         return (
-            <div name={this.props.name} className={this.props.className} style={{...clueStyle}} onClick={this.clueClickHandler}/>
+            <div name={this.props.name} id={this.props.index} className={this.props.className} style={{...clueStyle}} onClick={this.clueClickHandler}/>
         )
     }
 }

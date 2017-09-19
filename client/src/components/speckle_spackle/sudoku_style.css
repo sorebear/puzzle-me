@@ -10,7 +10,7 @@
     display: flex;
     flex-flow: column;
     justify-content: space-around;
-    height: 100vh;
+    height: 85vh;
     width: 15vw;
     overflow: hidden;
 }
@@ -20,7 +20,7 @@
     flex-flow: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 85vh;
     width: 70vw;
     overflow: hidden;
 }
@@ -52,8 +52,8 @@ div[name=square]:hover {
 .grid-style {
     width : 65vmax;
     height : 65vmax;
-    max-height: 95vmin;
-    max-width: 95vmin;
+    max-height: 85vmin;
+    max-width: 85vmin;
     display : flex;
     flex-flow : wrap;
 }
