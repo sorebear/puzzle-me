@@ -75,3 +75,7 @@ h2 {
 .play-test * {
     margin: 2px;
 }
+
+a {
+    text-decoration: none;
+}

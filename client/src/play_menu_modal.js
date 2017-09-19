@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Modal extends Component {
+class PlayMenuModal extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -24,20 +24,20 @@ class Modal extends Component {
         if (this.state.info === null) {
             return <div></div>
         } else {
-            const { author, averageTime, dateCreated, name, ratingNeg, ratingPos, size, type } = this.state.info
+            const { creator, date_created, puzzle_name, likes, dislikes, size, type } = this.state.info
             return (
             <div className={this.state.showModal}>
                 <div onClick={() => this.removeModal()}>
                 </div>
                 <div className="card p-5">
                     <div className="card-body">
-                        <h4 className="card-title">{name}</h4>
+                        <h4 className="card-title">{puzzle_name}</h4>
                         <p className="card-text">  
                             Type: {type}<br/>
-                            Creator: {author}<br/>
-                            Created: {dateCreated}<br/>
-                            Avg. Seconds : {averageTime}<br/>
-                            Avg. Time: {Math.floor(averageTime / 60)}:{Math.floor(averageTime % 60)}
+                            Size: {size}<br/>
+                            Rating: 
+                            Creator: {creator}<br/>
+                            Created: {date_created.substr(0,10)}<br/>
                         </p>
                         <a href="#" className="m-1 btn btn-outline-success">Play</a>
                         <button type="button" onClick={() => this.removeModal()} className="m-1 btn btn-outline-danger">Cancel</button>
@@ -49,4 +49,4 @@ class Modal extends Component {
     }
 }
 
-export default Modal;
+export default PlayMenuModal;

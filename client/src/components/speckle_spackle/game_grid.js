@@ -29,11 +29,15 @@ class GameGrid extends Component {
         }
     }
 
-
-
     componentDidMount() {
+        console.log("Game Grid at mount", this.state.gameGrid);
         if (this.props.gameGrid === undefined) {
             const newGrid = this.createGrid();
+            this.setState({
+                gameGrid : [...newGrid]
+            })
+        } else {
+            const newGrid = this.props.gameInfo.gameGrid;
             this.setState({
                 gameGrid : [...newGrid]
             })
@@ -41,15 +45,19 @@ class GameGrid extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.gridSize !== nextProps.gridSize) {
-            this.createGrid();
-        }
+        // let newGrid = null;
+        // if (this.props.gridSize !== nextProps.gameInfo.gridSize) {
+        //     newGrid = this.createGrid();
+        // } else {
+        //     newGrid = this.nextProps.gameInfo.gameGrid
+        // }
         this.setState({
             color0 : [255, 255, 255],
             color1 : nextProps.gameInfo.color1,
             color2 : nextProps.gameInfo.color2,
             color3 : nextProps.gameInfo.color3,
-            currentlySelected : nextProps.gameInfo.currentlySelected
+            currentlySelected : nextProps.gameInfo.currentlySelected,
+            // gameGrid : [...newGrid]
         })
     }
     createGrid() {
@@ -66,6 +74,7 @@ class GameGrid extends Component {
                 if (rowCounter === 0 || columnCounter === 0 || rowCounter === border || columnCounter === border) {
                     if (rowCounter === columnCounter || (rowCounter === 0 && columnCounter === border) || (rowCounter === border && columnCounter === 0)) {
                         newObj = {
+                            index : (rowCounter * outerGridSize) + columnCounter,
                             name : 'corner',
                             className : `row${rowCounter} column${columnCounter}`,
                             style : this.cornerStyle,
@@ -100,6 +109,7 @@ class GameGrid extends Component {
     }
 
     render() {
+        console.log("State at Game Grid Render", this.state)
         const {color0, color1, color2, color3, currentlySelected, gameGrid} = this.state;
         const grid = gameGrid.map((item, index) => {
             return ( 

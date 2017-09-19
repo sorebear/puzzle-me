@@ -6,7 +6,7 @@ import Footer from '../footer';
 import Header from '../header';
 import Home from './home';
 import Create from './create';
-import Play from './play';
+import PlayMenu from './play_menu';
 import Login from './login';
 
 import {BrowserRouter as Router, Route} from 'react-router-dom';
@@ -17,8 +17,8 @@ const App = () => (
             <Header />
             <Route exact path="/" component={Home} />
 
-            <Route exact path="/play" component={Play} />
-            <Route path="/play/word_guess" render={() => <WordGuessPlay gameInfo={null} />} />
+            <Route exact path="/play" component={PlayMenu} />
+            <Route path="/play/word_guessing" render={() => <WordGuessPlay gameInfo={null} />} />
 
             <Route exact path="/create" component={Create} />
             <Route path="/create/word_guessing" component={WordGuessingApp} />

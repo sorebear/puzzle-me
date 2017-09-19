@@ -18,11 +18,10 @@ class GridSquare extends Component {
     }
 
     componentDidMount() {
-        const {squareStyle, colorNum} = this.state;
+        const {squareStyle, colorNum} = this.props;
         const currentColor = this.state[colorNum]
         squareStyle['backgroundColor'] = `rgb(${currentColor[0]},${currentColor[1]},${currentColor[2]})`;
         this.setState({
-            colorNum : 'color0',
             squareStyle : {...squareStyle}
         })
     }
@@ -47,7 +46,7 @@ class GridSquare extends Component {
 
     passUpGridLocation(square, newColor) {
         const { gameGrid } = this.state;
-        this.props.gameGridCallback({...gameGrid}, square, newColor);
+        this.props.gameGridCallback([...gameGrid], square, newColor);
     }
 
     squareClickHandler(event) {
@@ -57,6 +56,7 @@ class GridSquare extends Component {
         console.log("Logging Current color", currentColor)
         if (colorNum === "color0") {
             squareStyle['backgroundColor'] = `rgb(${currentColor[0]},${currentColor[1]},${currentColor[2]})`;
+            console.log("Passing Up", event.target.id, this.state.currentlySelected)
             this.setState({
                 colorNum : currentlySelected,
                 squareStyle : {...squareStyle}
@@ -64,6 +64,7 @@ class GridSquare extends Component {
             this.passUpGridLocation(event.target.id, this.state.currentlySelected)
         } else {
             squareStyle['backgroundColor'] = `rgb(${color0[0]},${color0[1]},${color0[2]})`;
+            console.log("Passing Up", event.target.id, "color0")
             this.setState({
                 colorNum : "color0",
                 squareStyle : {...squareStyle}

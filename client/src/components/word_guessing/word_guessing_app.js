@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import WordGuessingCreate from './word_guessing_create';
-import WordGuessingPlay from './word_guessing_play';
+import WordGuessingTestPlay from './word_guessing_testplay';
 
 
 class WordGuessingApp extends Component {
@@ -58,17 +58,17 @@ class WordGuessingApp extends Component {
                 <div>
                     <WordGuessingCreate gameInfo={gameInfo} gameInfoCallback={this.gameInfoCallback} />    
                     <div className="play-test">
-                        <button className="btn btn-outline-primary" onClick={this.changeVisibility} style={testStyle}>Test Play</button>
+                        <button className="btn btn-outline-primary m-2" onClick={this.changeVisibility} style={testStyle}>Test Play</button>
                     </div>
                 </div>
             )
         } else {
             return (
                 <div>
-                    <WordGuessingPlay gameInfo={gameInfo}/>    
+                    <WordGuessingTestPlay gameInfo={gameInfo}/>    
                     <div className="play-test">
-                        <button className="btn btn-outline-primary" onClick={this.changeVisibility} style={createStyle}>Back To Edit</button>
-                        <button className="btn btn-outline-danger" style={createStyle}>Submit</button>
+                        <button className="btn btn-outline-primary m-2" onClick={this.changeVisibility} style={createStyle}>Back To Edit</button>
+                        <button className="btn btn-outline-danger m-2" style={createStyle}>Submit</button>
                     </div>
                 </div>
             )

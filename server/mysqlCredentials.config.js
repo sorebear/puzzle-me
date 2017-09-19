@@ -1,9 +1,9 @@
 var credentials = {
-    username: 'username',
+    user: 'username',
     password: 'password',
     host: 'localhost',
     port: 0000,
-    db: 'database'
+    database: 'database'
 };
 
 module.exports = credentials;

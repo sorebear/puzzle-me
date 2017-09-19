@@ -2,17 +2,17 @@ import React, {Component} from 'react';
 import ColorPicker from './color_picker';
 import GameGrid from './game_grid';
 import './sudoku_style.css';
-import CheckValidity from './check_validity.js';
 
 class SudoSudokuApp extends Component {
     constructor(props) {
         super(props);
         this.state = {
             gameInfo : {
+                color0 : [255, 255, 255],
                 color1 : props.gameInfo.color1,
                 color2 : props.gameInfo.color2,
                 color3 : props.gameInfo.color3,
-                currentlySelected : null,
+                currentlySelected : "color1",
                 gridSize : props.gameInfo.gridSize,
                 gameGrid : props.gameInfo.gameGrid
             }
@@ -88,8 +88,10 @@ class SudoSudokuApp extends Component {
         })
     }
     gameGridCallback = (newGameGrid, gridLocation, newColor) => {
+        console.log("Incoming Info", newGameGrid, gridLocation, newColor);
         const rgbValues = this.state.gameInfo[newColor];
         newGameGrid[gridLocation].colorNum = newColor;
+        newGameGrid[gridLocation].style.backgroundColor = `rgb(${rgbValues[0]},${rgbValues[1]},${rgbValues[2]})`
         const { gameInfo } = this.state
         gameInfo['gameGrid'] = newGameGrid
         this.setState({
@@ -98,6 +100,7 @@ class SudoSudokuApp extends Component {
         this.passUpGameInfo();
     }
     render() {
+        console.log("Current Game Grid State", this.state.gameInfo.gameGrid)
         const {color1, color2, color3, currentlySelected, gridSize, gameGrid} = this.state.gameInfo
         const { gameInfo } = this.state;
         return (
@@ -109,9 +112,8 @@ class SudoSudokuApp extends Component {
                 </div>
                 <div className="mainDisplay">
                     <GameGrid gameInfo={{...gameInfo}} gameGridCallback={this.gameGridCallback}/>
-                    <CheckValidity color1={color1} color2={color2} color3={color3} gridSize={gridSize}/>
                 </div>
-                <div style={this.gutterStyle}>
+                <div className="gutter">
                     {/* <button onClick={this.new5x5Game}>New 5x5 Game</button> */}
                 </div>
             </div>
