@@ -36,7 +36,7 @@ webserver.get('/puzzles', function(req, res){
 });
 
 function getMostRecent10Puzzles(res){
-    var query = "SELECT p.puzzle_name, u.username AS creator, p.type, p.size, p.url_ext, p.likes, p.dislikes, p.date_created " +
+    var query = "SELECT p.puzzle_name, u.username AS creator, p.type, p.size, p.url_ext, p.likes, p.dislikes, p.date_created, p.puzzle_object, p.avg_time_to_complete " +
                 "FROM `puzzles` AS `p` " +
                 "JOIN `users` AS `u`" +
                 "ON p.creator_id = u.u_id";

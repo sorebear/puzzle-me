@@ -48,7 +48,6 @@ class SudoSudokuApp extends Component {
     }
 
     new5x5Game() {
-        console.log('buttonClicked');
         const { gameInfo } = this.state;
         gameInfo['gridSize'] = 5
         this.setState({
@@ -56,7 +55,6 @@ class SudoSudokuApp extends Component {
         })
     }
     colorCallback1 = (colorFromChild) => {
-        console.log("I'm Color 1 in the App componenet, I got the following from my child", colorFromChild);
         const { gameInfo } = this.state;
         gameInfo['color1'] = colorFromChild;
         this.setState({
@@ -64,7 +62,6 @@ class SudoSudokuApp extends Component {
         })
     }
     colorCallback2 = (colorFromChild) => {
-        console.log("I'm Color 2 in the App componenet, I got the following from my child", colorFromChild);
         const { gameInfo } = this.state;
         gameInfo['color2'] = colorFromChild;
         this.setState({
@@ -72,7 +69,6 @@ class SudoSudokuApp extends Component {
         })
     }
     colorCallback3 = (colorFromChild) => {
-        console.log("I'm Color 3 in the App componenet, I got the following from my child", colorFromChild);
         const { gameInfo } = this.state;
         gameInfo['color3'] = colorFromChild;
         this.setState({
@@ -80,7 +76,6 @@ class SudoSudokuApp extends Component {
         })
     }
     selectedColorCallback = (selectedColor) => {
-        console.log(selectedColor + " has been selected")
         const { gameInfo } = this.state;
         gameInfo['currentlySelected'] = selectedColor;
         this.setState({
@@ -88,7 +83,6 @@ class SudoSudokuApp extends Component {
         })
     }
     gameGridCallback = (newGameGrid, gridLocation, newColor) => {
-        console.log("Incoming Info", newGameGrid, gridLocation, newColor);
         const rgbValues = this.state.gameInfo[newColor];
         newGameGrid[gridLocation].colorNum = newColor;
         newGameGrid[gridLocation].style.backgroundColor = `rgb(${rgbValues[0]},${rgbValues[1]},${rgbValues[2]})`
@@ -100,7 +94,6 @@ class SudoSudokuApp extends Component {
         this.passUpGameInfo();
     }
     render() {
-        console.log("Current Game Grid State", this.state.gameInfo.gameGrid)
         const {color1, color2, color3, currentlySelected, gridSize, gameGrid} = this.state.gameInfo
         const { gameInfo } = this.state;
         return (

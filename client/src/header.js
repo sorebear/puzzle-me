@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-export default () => {
+export default (props) => {
+    console.log(props);
     return (
         <ul className="nav justify-content-between header">
             <li className="nav-item">
@@ -15,9 +16,7 @@ export default () => {
                 </NavLink>
             </li>
             <li className="nav-item">
-                <NavLink to="/info" className="nav-link">
-                    <i className="icon-style fa fa-info"></i>
-                </NavLink>
+                <i className="icon-style fa fa-info nav-link" onClick={props.callModal}></i>
             </li>
         </ul>
     )

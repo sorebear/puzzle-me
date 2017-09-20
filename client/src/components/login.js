@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 
-
 class Login extends Component{
     constructor(props){
         super(props);
@@ -11,7 +10,7 @@ class Login extends Component{
     }
     render(){
         return (
-            <div>
+            <div className="container">
                 <h1>Login</h1>
                 <form>
                     <div className="form-group">

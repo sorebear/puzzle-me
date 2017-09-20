@@ -16,6 +16,7 @@ class GameGrid extends Component {
             opacity: '0'
         }
         this.cornerStyle = {
+            backgroundColor : 'rgb(255, 255, 255)',
             width : null,
         }
 
@@ -30,7 +31,6 @@ class GameGrid extends Component {
     }
 
     componentDidMount() {
-        console.log("Game Grid at mount", this.state.gameGrid);
         if (this.props.gameGrid === undefined) {
             const newGrid = this.createGrid();
             this.setState({
@@ -45,12 +45,15 @@ class GameGrid extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // let newGrid = null;
-        // if (this.props.gridSize !== nextProps.gameInfo.gridSize) {
-        //     newGrid = this.createGrid();
-        // } else {
-        //     newGrid = this.nextProps.gameInfo.gameGrid
-        // }
+        console.log("Game Grid is Receiving New Props", nextProps)
+        let newGrid = null;
+        if (this.innerGridSize !== nextProps.gameInfo.gridSize) {
+            console.log("I'm making a new grid");
+            newGrid = this.createGrid();
+        } else {
+            console.log("I'm sticking with my currentGrid")
+            newGrid = nextProps.gameInfo.gameGrid
+        }
         this.setState({
             color0 : [255, 255, 255],
             color1 : nextProps.gameInfo.color1,
@@ -109,7 +112,6 @@ class GameGrid extends Component {
     }
 
     render() {
-        console.log("State at Game Grid Render", this.state)
         const {color0, color1, color2, color3, currentlySelected, gameGrid} = this.state;
         const grid = gameGrid.map((item, index) => {
             return ( 

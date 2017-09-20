@@ -12,31 +12,35 @@ class GridSquare extends Component {
             color3 : props.color3,
             colorNum : props.colorNum,
             currentlySelected : props.currentlySelected,
-            squareStyle : props.style,
+            style : props.style,
             gameGrid : props.gameGrid
         }
     }
 
     componentDidMount() {
-        const {squareStyle, colorNum} = this.props;
+        console.log("My Props at Mount", this.props)
+        const {colorNum, index, gameGrid, style} = this.props;
         const currentColor = this.state[colorNum]
-        squareStyle['backgroundColor'] = `rgb(${currentColor[0]},${currentColor[1]},${currentColor[2]})`;
+        style["backgroundColor"] = `rgb(${currentColor[0]},${currentColor[1]},${currentColor[2]})`;
+        console.log("Component Mounting", gameGrid[index]["style"].backgroundColor)
+        gameGrid[index]["style"].backgroundColor = `rgb(${currentColor[0]},${currentColor[1]},${currentColor[2]})`;
         this.setState({
-            squareStyle : {...squareStyle}
+            style : {...style},
+            gameGrid : {...gameGrid}
         })
     }
 
     componentWillReceiveProps(nextProps) {
-        const {squareStyle} = this.state;
+        const {style} = this.state;
         const {colorNum} = nextProps;
-        squareStyle['backgroundColor'] = `rgb(${nextProps[colorNum][0]},${nextProps[colorNum][1]},${nextProps[colorNum][2]})`;
+        style['backgroundColor'] = `rgb(${nextProps[colorNum][0]},${nextProps[colorNum][1]},${nextProps[colorNum][2]})`;
         this.setState({
             color0 : nextProps.color0,
             color1 : nextProps.color1,
             color2 : nextProps.color2,
             color3 : nextProps.color3,
             currentlySelected : nextProps.currentlySelected,
-            squareStyle : {...squareStyle}
+            style : {...style}
         })
     }
     
@@ -50,24 +54,20 @@ class GridSquare extends Component {
     }
 
     squareClickHandler(event) {
-        console.log("Current ColorNum", this.state.colorNum)
-        const { squareStyle, currentlySelected, colorNum, color0 } = this.state;
+        const { style, currentlySelected, colorNum, color0 } = this.state;
         const currentColor = this.state[colorNum]
-        console.log("Logging Current color", currentColor)
         if (colorNum === "color0") {
-            squareStyle['backgroundColor'] = `rgb(${currentColor[0]},${currentColor[1]},${currentColor[2]})`;
-            console.log("Passing Up", event.target.id, this.state.currentlySelected)
+            style['backgroundColor'] = `rgb(${currentColor[0]},${currentColor[1]},${currentColor[2]})`;
             this.setState({
                 colorNum : currentlySelected,
-                squareStyle : {...squareStyle}
+                style : {...style}
             })
             this.passUpGridLocation(event.target.id, this.state.currentlySelected)
         } else {
-            squareStyle['backgroundColor'] = `rgb(${color0[0]},${color0[1]},${color0[2]})`;
-            console.log("Passing Up", event.target.id, "color0")
+            style['backgroundColor'] = `rgb(${color0[0]},${color0[1]},${color0[2]})`;
             this.setState({
                 colorNum : "color0",
-                squareStyle : {...squareStyle}
+                style : {...style}
             })
             this.passUpGridLocation(event.target.id, "color0")
         }
@@ -76,15 +76,15 @@ class GridSquare extends Component {
     render() {
         if (this.props.name === "square") {
             return (
-                <div name={this.props.name} id={this.props.index} className={this.props.className} style={{...this.state.squareStyle}} onClick={(e) => this.squareClickHandler(e)}/>
+                <div name={this.props.name} id={this.props.index} className={this.props.className} style={{...this.state.style}} onClick={(e) => this.squareClickHandler(e)}/>
             )
         } else if (this.props.name === "clue") {
             return (
-                <ClueSquare name={this.props.name} index={this.props.index} endingEdge={this.props.endingEdge} colorNum={this.state.colorNum} className={this.props.className} style={{...this.state.squareStyle}} onClick={this.clueClickHandlerCreate}/>
+                <ClueSquare name={this.props.name} index={this.props.index} endingEdge={this.props.endingEdge} colorNum={this.state.colorNum} className={this.props.className} style={{...this.state.style}} onClick={this.clueClickHandlerCreate}/>
             )
         } else {
             return (
-                <div name={this.props.name} id={this.props.index} className={this.props.className} style={{...this.state.squareStyle}}/>
+                <div name={this.props.name} id={this.props.index} className={this.props.className} style={{...this.state.style}}/>
             )
         }
     }

@@ -29,13 +29,12 @@ class SpeckleSpackleApp extends Component {
     }
 
     testPlay() {
-        console.log(this.state.gameInfo)
+        console.log("State at Test Play", this.state.gameInfo)
         this.changeVisibility();
         this.checkPuzzleValidty();
     }
     
     changeVisibility() {
-        console.log(this.state.testStyle)
         if (this.state.testStyle.display === "block") {
             this.setState({
                 createStyle : {
@@ -123,7 +122,6 @@ class SpeckleSpackleApp extends Component {
     // }
 
     gameInfoCallback = (gameInfoFromChild) => {
-        console.log("I received the following Game Info from my child", gameInfoFromChild);
         this.setState({
             gameInfo : {...gameInfoFromChild}
         })
@@ -131,7 +129,6 @@ class SpeckleSpackleApp extends Component {
 
 
     render() {
-        console.log("App State at Render", this.state)
         const { testStyle, createStyle, gameInfo } = this.state;
         if (createStyle['display'] === "none") {
             return (

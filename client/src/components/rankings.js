@@ -3,8 +3,9 @@ import DummyData from './puzzle_dummy_data';
 import PlayMenuModal from '../play_menu_modal';
 import PageTitle from './page_title';
 import Axios from 'axios';
+import cityscape from './imgs/cityscape.jpg'
 
-class PlayMenu extends Component {
+class Rankings extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -12,7 +13,7 @@ class PlayMenu extends Component {
             showModal : "noModal",
             data: null
         }
-        this.BASE_URL = 'http://localhost:4000/puzzles';
+        this.BASE_URL = 'http://localhost:4000/users';
         this.QUERY_KEY = 'retrieve';
         this.QUERY_VAL = 'recent10';
         this.updateData = this.updateData.bind(this);
@@ -58,35 +59,24 @@ class PlayMenu extends Component {
                 return (
                     <tr key={index} onClick={() => {this.callModal(item)}}>
                         <td>{index}</td>
-                        <td>{item.puzzle_name}</td>
-                        <td>{item.type}</td>
-                        <td>{item.size}</td>
-                        <td>
-                            <span style={{color: "rgb(92,184,92)"}}>
-                                {item.likes} <i className="fa fa-thumbs-o-up"></i> 
-                            </span> 
-                            &nbsp;
-                            <span style={{color: "rgb(217,83,79)"}}>
-                                {item.dislikes} <i className="fa fa-thumbs-o-down"></i>
-                            </span>
-                        </td>
-                        <td>{item.date_created.substr(0, 10)}</td>
+                        <td>{item.username}</td>
+                        <td>{item.solver_ranking}</td>
+                        <td>{item.creator_ranking}</td>
+                        <td>{item.gladiator_ranking}</td>
                     </tr>
                 )
             })
             return (
                 <div>
-                    <PageTitle backgroundImg="watchtower" color="white" text="PLAY" subText="choose a game below"/>
-                    <PlayMenuModal showModal={this.state.showModal} info={this.state.modalInfo}/>
+                    <PageTitle img={cityscape} color="white" text="RANKINGS" subText="choose a game below"/>
                     <table className="table table-inverse table-striped table-hover">
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Size</th>
-                                <th>Rating</th>
-                                <th>Created</th>
+                                <th>User</th>
+                                <th>Solver Ranking</th>
+                                <th>Creator Ranking</th>
+                                <th>Gladiator Ranking</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -99,4 +89,4 @@ class PlayMenu extends Component {
     }
 }
 
-export default PlayMenu;
+export default Rankings

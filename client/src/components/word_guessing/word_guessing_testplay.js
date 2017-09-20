@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import dummyData from './word_guessing_dummy_data';
 
 class WordGuessingTestPlay extends Component {
     constructor(props) {
