@@ -6,6 +6,9 @@ const path = require('path');
 const cors = require('cors');
 const webserver = express();
 
+
+webserver.use(express.cookieParser('testsecret'));
+webserver.use(express.cookieSession());
 // Andy put this here for dev purposes, will allow Cross-Origin requests, but will most likely need to remove for production
 webserver.use(cors());
 
