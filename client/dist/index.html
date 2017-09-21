@@ -31,14 +31,14 @@
                 console.log("Login prompt displayed");
 //                document.getElementById('facebook_login_status').innerHTML = 'Please log ' +
 //                    'into this app.';
-//                FB.login(function(response){
-//                    if(response.status === 'connected'){
-//                        //proceed to original page of link, otherwise proceed to login page
-//                    }
-//                    else{
-//                        console.log
-//                    }
-//                }, {scope: 'user_friends,public_profile,email'});
+                FB.login(function(response){
+                    if(response.status === 'connected'){
+                        testAPI();
+                    }
+                    else{
+                        console.log("Failed to log in via Facebook");
+                    }
+                }, {scope: 'user_friends,public_profile,email'});
             }
         }
 
@@ -72,9 +72,9 @@
             //
             // These three cases are handled in the callback function.
             FB.AppEvents.logPageView();
-//            FB.getLoginStatus(function(response) {
-//                statusChangeCallback(response);
-//            });
+            FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+            });
         };
 
         // Load the SDK asynchronously
@@ -92,6 +92,7 @@
             console.log('Welcome!  Fetching your information.... ');
             FB.api('/me', function(response) {
                 console.log('Successful login for: ' + response.name);
+                console.log('The response object is: ', response.name);
                 //document.getElementById('facebook_login_status').innerHTML =
                     //'Thanks for logging in, ' + response.name + '!';
             });
