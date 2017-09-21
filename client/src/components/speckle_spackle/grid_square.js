@@ -18,15 +18,13 @@ class GridSquare extends Component {
     }
 
     componentDidMount() {
-        console.log("My Props at Mount", this.props)
         const {colorNum, index, gameGrid, style} = this.props;
         const currentColor = this.state[colorNum]
         style["backgroundColor"] = `rgb(${currentColor[0]},${currentColor[1]},${currentColor[2]})`;
-        console.log("Component Mounting", gameGrid[index]["style"].backgroundColor)
         gameGrid[index]["style"].backgroundColor = `rgb(${currentColor[0]},${currentColor[1]},${currentColor[2]})`;
         this.setState({
             style : {...style},
-            gameGrid : {...gameGrid}
+            gameGrid : [...gameGrid]
         })
     }
 

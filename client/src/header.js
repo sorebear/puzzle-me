@@ -5,18 +5,13 @@ export default (props) => {
     console.log(props);
     return (
         <ul className="nav justify-content-between header">
-            <li className="nav-item">
+            <li className="nav-item align-self-center">
                 <NavLink to="/" className="nav-link">
-                    <i className="icon-style fa fa-bars"></i>
+                    <div style={{color: "white"}}><span style={{color: "rgb(217,83,79)"}}>puzzle</span>me</div>
                 </NavLink>
             </li>
-            <li className="nav-item">
-                <NavLink to="/home"  className="nav-link">
-                    <h2><span className="title" style={{color: "rgb(217,83,79)"}}>puzzle</span>ME</h2>
-                </NavLink>
-            </li>
-            <li className="nav-item">
-                <i className="icon-style fa fa-info nav-link" onClick={props.callModal}></i>
+            <li className="nav-item align-self-center">
+                <i className="icon-style fa fa-info nav-link align-items-center" onClick={props.callModal}></i>
             </li>
         </ul>
     )
