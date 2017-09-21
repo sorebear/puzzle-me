@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { withRouter } from 'react-router';
+import './login_style.css';
+import Axios from 'axios';
 
 class Login extends Component{
     constructor(props){
@@ -8,11 +9,10 @@ class Login extends Component{
             username: '',
             password: ''
         };
-        this.checkLoginAndRedirect = this.checkLoginAndRedirect.bind(this);
+        this.facebookLogin = this.facebookLogin.bind(this);
     }
-    checkLoginAndRedirect(){
-        console.log('checkLoginAndRedirect called');
-        this.props.router.push('/create');
+    facebookLogin(){
+        console.log("Facebooklogin called");
     }
     render(){
         return (
@@ -30,11 +30,9 @@ class Login extends Component{
                     <button type="button" className="btn btn-default">Login</button>
                 </form>
                 <h1>Login with Facebook</h1>
-                <div className="fb-login-button" data-width="200" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
-                <div id="facebook_login_status"></div>
-                <button type="button" onClick={this.checkLoginAndRedirect} >Create</button>
+                <button className="loginBtn loginBtn--facebook" onClick={this.facebookLogin}>Login with Facebook</button>
             </div>
         );
     }
 }
-export default withRouter(Login);
+export default Login;
