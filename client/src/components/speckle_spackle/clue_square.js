@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 
 class ClueSquare extends Component {
     constructor(props) {
+        console.log("Here are the Clue's Props", props)
         super(props)
-        this.row = null;
-        this.column = null;
         this.startingEdge = props.startingEdge;
         this.endingEdge = props.endingEdge;
         this.state = {
@@ -12,21 +11,31 @@ class ClueSquare extends Component {
         }
         this.clueClickHandler = this.clueClickHandler.bind(this);
     }
-    componentDidMount() {
-        this.row = this.props.className.substr(this.props.className.indexOf("row"), 4);
-        this.column = this.props.className.substr(this.props.className.indexOf("column"), 7);
-    }
-    componentWillReceiveProps(nextProps) {
-        if (this.row === `row0`) {
-            this.checkFromTop();
-        } else if (this.row === `row${this.endingEdge}`) {
-            this.checkFromBottom();
-        } else if (this.column === `column${this.endingEdge}`) {
-            this.checkFromRight();
+
+    componentWillMount() {
+        const rowWidth = this.props.gridSize + 2;
+        if (props.id < rowWidth) {
+            //check from top
+        } else if (this.props.id > (props.gameGrid.length - rowWidth)) {
+            //check from bottom
+        } else if (this.props.id % rowWidth === 0) {
+            //check from left
         } else {
-            this.checkFromLeft();
+            //check from right
         }
     }
+
+    // componentWillReceiveProps(nextProps) {
+    //     if (this.row === `row0`) {
+    //         this.checkFromTop();
+    //     } else if (this.row === `row${this.endingEdge}`) {
+    //         this.checkFromBottom();
+    //     } else if (this.column === `column${this.endingEdge}`) {
+    //         this.checkFromRight();
+    //     } else {
+    //         this.checkFromLeft();
+    //     }
+    // }
     checkFromTop() {
         const {clueStyle} = this.state;
         const columnArray = Array.from(document.getElementsByClassName(this.column));
@@ -43,6 +52,7 @@ class ClueSquare extends Component {
         })
     }
     checkFromBottom() {
+        console.log("Check From Bottom");
         const {clueStyle} = this.state;
         const columnArray = Array.from(document.getElementsByClassName(this.column));
         let newColor = "rgb(255, 255, 255)";
@@ -58,6 +68,7 @@ class ClueSquare extends Component {
         })
     }
     checkFromRight() {
+        console.log("Check From Right");
         const {clueStyle} = this.state;
         const rowArray = Array.from(document.getElementsByClassName(this.row));
         let newColor = "rgb(255, 255, 255)";
@@ -73,6 +84,7 @@ class ClueSquare extends Component {
         })
     }
     checkFromLeft() {
+        console.log("Check From Left");
         const {clueStyle} = this.state;
         const rowArray = Array.from(document.getElementsByClassName(this.row));
         let newColor = "rgb(255, 255, 255)";

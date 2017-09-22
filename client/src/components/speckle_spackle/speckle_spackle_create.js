@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
 import ColorPicker from './color_picker';
+import ColorSwatchNew from './color_swatch_new';
 import GameGrid from './game_grid';
 import './sudoku_style.css';
 
-class SudoSudokuApp extends Component {
+class SpeckleSpackleCreate extends Component {
     constructor(props) {
         super(props);
+        this.innerGridSize = props.gameInfo.gridSize;
+        this.outerGridSize = props.gameInfo.gridSize + 2;
         this.state = {
             gameInfo : {
                 color0 : [255, 255, 255],
@@ -17,6 +20,8 @@ class SudoSudokuApp extends Component {
                 gameGrid : props.gameInfo.gameGrid
             }
         }
+        this.gridIndexCallback = this.gridIndexCallback.bind(this);
+        this.chooseRandomColor = this.chooseRandomColor.bind(this);
         this.gutterStyle = {
             display: "flex",
             flexFlow: "column",
@@ -33,6 +38,55 @@ class SudoSudokuApp extends Component {
             width: '70vw',
             overflow: 'hidden'
         }
+    }
+
+    componentDidMount() {
+        const { gameInfo } = this.state
+        if (gameInfo.gameGrid.length === 0) {
+            const newGrid = this.createGrid();
+            gameInfo["gameGrid"] = newGrid
+            this.setState({
+                gameInfo : {...gameInfo}
+            })
+        } 
+    }
+
+    createGrid() {
+        const innerGridSize = this.innerGridSize;
+        const outerGridSize = this.outerGridSize;
+        const border = innerGridSize + 1;
+        let gridArray = [];
+        for (let rowCounter = 0; rowCounter < outerGridSize; rowCounter++) {
+            for (let columnCounter = 0; columnCounter < outerGridSize; columnCounter++) {
+                let newObj = {};
+                if (rowCounter === 0 || columnCounter === 0 || rowCounter === border || columnCounter === border) {
+                    if (rowCounter === columnCounter || (rowCounter === 0 && columnCounter === border) || (rowCounter === border && columnCounter === 0)) {
+                        newObj = {
+                            index : (rowCounter * outerGridSize) + columnCounter,
+                            name : 'corner',
+                            className : `row${rowCounter} column${columnCounter}`,
+                            colorNum : 'color0'
+                        }
+                    } else {
+                        newObj = {
+                            index : (rowCounter * outerGridSize) + columnCounter,
+                            name : 'clue',
+                            className : `row${rowCounter} column${columnCounter}`,
+                            colorNum : 'color0'
+                        }
+                    }
+                } else {
+                    newObj = {
+                        index : (rowCounter * outerGridSize) + columnCounter,
+                        name : 'square',
+                        className : `row${rowCounter} column${columnCounter}`, 
+                        colorNum : 'color0'
+                    }
+                }
+                gridArray.push(newObj);
+            }
+        }
+        return gridArray;
     }
 
     passUpGameInfo() {
@@ -54,64 +108,84 @@ class SudoSudokuApp extends Component {
             gameInfo : {...gameInfo}
         })
     }
-    colorCallback1 = (colorFromChild) => {
-        const { gameInfo } = this.state;
-        gameInfo['color1'] = colorFromChild;
+
+    chooseRandomColor(colorNum) {
+        console.log('Button Clicked');
+        const { gameInfo } = this.state
+        const red = Math.floor(Math.random() * 256);
+        const green = Math.floor(Math.random() * 256);
+        const blue = Math.floor(Math.random() * 256);
+        gameInfo[colorNum] = [red, green, blue];
         this.setState({
             gameInfo : {...gameInfo}
         })
     }
-    colorCallback2 = (colorFromChild) => {
-        const { gameInfo } = this.state;
-        gameInfo['color2'] = colorFromChild;
-        this.setState({
-            gameInfo : {...gameInfo}
-        })
-    }
-    colorCallback3 = (colorFromChild) => {
-        const { gameInfo } = this.state;
-        gameInfo['color3'] = colorFromChild;
-        this.setState({
-            gameInfo : {...gameInfo}
-        })
-    }
+
+    // colorCallback1 = (colorFromChild, colorNum) => {
+    //     const { gameInfo } = this.state;
+    //     gameInfo['color1'] = colorFromChild;
+    //     this.setState({
+    //         gameInfo : {...gameInfo}
+    //     })
+    // }
+    // colorCallback2 = (colorFromChild) => {
+    //     const { gameInfo } = this.state;
+    //     gameInfo['color2'] = colorFromChild;
+    //     this.setState({
+    //         gameInfo : {...gameInfo}
+    //     })
+    // }
+    // colorCallback3 = (colorFromChild) => {
+    //     const { gameInfo } = this.state;
+    //     gameInfo['color3'] = colorFromChild;
+    //     this.setState({
+    //         gameInfo : {...gameInfo}
+    //     })
+    // }
+
     selectedColorCallback = (selectedColor) => {
+        console.log("I've received the following value: ", selectedColor)
         const { gameInfo } = this.state;
         gameInfo['currentlySelected'] = selectedColor;
         this.setState({
             gameInfo : {...gameInfo}
         })
     }
-    gameGridCallback = (newGameGrid, gridLocation, newColor) => {
-        const rgbValues = this.state.gameInfo[newColor];
-        newGameGrid[gridLocation].colorNum = newColor;
-        newGameGrid[gridLocation].style.backgroundColor = `rgb(${rgbValues[0]},${rgbValues[1]},${rgbValues[2]})`
+
+    gridIndexCallback(index) {
         const { gameInfo } = this.state
-        gameInfo['gameGrid'] = newGameGrid
+        if (gameInfo.gameGrid[index].colorNum === "color0") {
+            gameInfo.gameGrid[index].colorNum = gameInfo.currentlySelected
+        } else {
+            gameInfo.gameGrid[index].colorNum = "color0"
+        }
         this.setState({
             gameInfo : {...gameInfo}
         })
-        this.passUpGameInfo();
     }
+
     render() {
         const {color1, color2, color3, currentlySelected, gridSize, gameGrid} = this.state.gameInfo
         const { gameInfo } = this.state;
         return (
             <div className="pageContainer">
                 <div className="gutter">
-                    <ColorPicker name="color1" color={color1} colorCallbackFromParent={this.colorCallback1} selectedCallbackFromParent={this.selectedColorCallback}/>
-                    <ColorPicker name="color2" color={color2} colorCallbackFromParent={this.colorCallback2} selectedCallbackFromParent={this.selectedColorCallback}/>
-                    <ColorPicker name="color3" color={color3} colorCallbackFromParent={this.colorCallback3} selectedCallbackFromParent={this.selectedColorCallback}/>
+                    <ColorSwatchNew name="color1" currentlySelected={currentlySelected} color={color1} randomColorCallback={this.chooseRandomColor} selectedCallback={this.selectedColorCallback} />
+                    <ColorSwatchNew name="color2" currentlySelected={currentlySelected} color={color2} randomColorCallback={this.chooseRandomColor} selectedCallback={this.selectedColorCallback} />
+                    <ColorSwatchNew name="color3" currentlySelected={currentlySelected} color={color3} randomColorCallback={this.chooseRandomColor} selectedCallback={this.selectedColorCallback} />
+                    {/* <ColorPicker name="color1" currentlySelected={currentlySelected} color={color1} colorCallbackFromParent={this.colorCallback1} selectedCallbackFromParent={this.selectedColorCallback}/> */}
+                    {/* <ColorPicker name="color2" currentlySelected={currentlySelected} color={color2} colorCallbackFromParent={this.colorCallback2} selectedCallbackFromParent={this.selectedColorCallback}/> */}
+                    {/* <ColorPicker name="color3" currentlySelected={currentlySelected} color={color3} colorCallbackFromParent={this.colorCallback3} selectedCallbackFromParent={this.selectedColorCallback}/> */}
                 </div>
                 <div className="mainDisplay">
-                    <GameGrid gameInfo={{...gameInfo}} gameGridCallback={this.gameGridCallback}/>
+                    <GameGrid gameInfo={{...gameInfo}} gridIndexCallback={this.gridIndexCallback}/>
                 </div>
                 <div className="gutter">
-                    {/* <button onClick={this.new5x5Game}>New 5x5 Game</button> */}
+
                 </div>
             </div>
         )
     }
 }
 
-export default SudoSudokuApp;
+export default SpeckleSpackleCreate;

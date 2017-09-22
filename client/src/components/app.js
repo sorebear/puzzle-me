@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SpeckleSpackleApp from './speckle_spackle/speckle_spackle_app';
+import SpeckleSpacklePlay from './speckle_spackle/speckle_spackle_play'
 import WordGuessingApp from './word_guessing/word_guessing_app'
 import WordGuessPlay from './word_guessing/word_guessing_play'
 import Footer from '../footer';
@@ -49,6 +50,7 @@ class App extends Component {
         
                     <Route exact path="/play" component={PlayMenu} />
                     <Route path="/play/word_guessing" render={() => <WordGuessPlay gameInfo={null} />} />
+                    <Route path="/play/speckle_spackle" component={SpeckleSpacklePlay} />
         
                     <Route exact path="/create" component={CreateMenu} />
                     <Route path="/create/word_guessing" component={WordGuessingApp} />
