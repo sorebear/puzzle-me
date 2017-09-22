@@ -10,11 +10,13 @@
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">    
     <link rel="stylesheet" href="/style.css" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
 </head>
 <body>
     <div id="root"></div>
     <div id="fb-root"></div>
     <script>
+        const SERVER_BASE_ADDRESS = 'http://localhost:4000';
         // This is called with the results from from FB.getLoginStatus().
         function statusChangeCallback(response) {
             console.log('statusChangeCallback');
@@ -27,18 +29,23 @@
                 // Logged into your app and Facebook.
                 testAPI();
             } else {
-                // The person is not logged into your app or we are unable to tell.
-                console.log("Login prompt displayed");
-//                document.getElementById('facebook_login_status').innerHTML = 'Please log ' +
-//                    'into this app.';
                 FB.login(function(response){
-                    if(response.status === 'connected'){
-                        testAPI();
-                    }
-                    else{
-                        console.log("Failed to log in via Facebook");
-                    }
-                }, {scope: 'user_friends,public_profile,email'});
+                    console.log("FB.login was called and the response is: ", response);
+                }, {scope: 'user_friends,public_profile,email'})
+                // The person is not logged into your app or we are unable to tell.
+//                document.getElementById('facebook_login_status').innerHTML = 'Please log ' + 'into this app.';
+
+//                console.log("Login prompt displayed");
+//                FB.login(function(response){
+//                    if(response.status === 'connected'){
+//                        testAPI();
+//                    }
+//                    else{
+//                        console.log("Failed to log in via Facebook");
+//                        document.getElementById('facebook_login_status').innerHTML = 'Please log ' +
+//                        'into this app.';
+//                    }
+//                }, {scope: 'user_friends,public_profile,email'});
             }
         }
 
@@ -46,11 +53,23 @@
         // Button.  See the onlogin handler attached to it in the sample
         // code below.
         function checkLoginState() {
+            console.log("checkLoginState was called");
             FB.getLoginStatus(function(response) {
                 statusChangeCallback(response);
             });
         }
-
+//        function facebookLogin(){
+//            FB.login(function(response){
+//                if(response.status === 'connected'){
+//                    testAPI();
+//                }
+//                else{
+//                    console.log("Failed to log in via Facebook");
+//                    document.getElementById('facebook_login_status').innerHTML = 'Please log ' +
+//                        'into this app.';
+//                }
+//            }, {scope: 'user_friends,public_profile,email'});
+//        }
         window.fbAsyncInit = function() {
             FB.init({
                 appId      : '283817422120269',
@@ -72,9 +91,10 @@
             //
             // These three cases are handled in the callback function.
             FB.AppEvents.logPageView();
-            FB.getLoginStatus(function(response) {
-                statusChangeCallback(response);
-            });
+//            FB.getLoginStatus(function(response) {
+//                statusChangeCallback(response);
+//            });
+
         };
 
         // Load the SDK asynchronously
@@ -90,11 +110,12 @@
         // successful.  See statusChangeCallback() for when this call is made.
         function testAPI() {
             console.log('Welcome!  Fetching your information.... ');
+
             FB.api('/me', function(response) {
                 console.log('Successful login for: ' + response.name);
-                console.log('The response object is: ', response.name);
-                //document.getElementById('facebook_login_status').innerHTML =
-                    //'Thanks for logging in, ' + response.name + '!';
+                console.log('The response object is: ', response);
+//                document.getElementById('facebook_login_status').innerHTML =
+//                    'Thanks for logging in, ' + response.name + '!';
             });
         }
     </script>
