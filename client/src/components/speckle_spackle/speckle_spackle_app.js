@@ -4,7 +4,7 @@ import GameGrid from './game_grid';
 import './sudoku_style.css';
 import CheckValidity from './check_validity.js';
 import SpeckleSpackleCreate from './speckle_spackle_create';
-import SpeckleSpacklePlay from './speckle_spackle_play';
+import SpeckleSpackleTestPlay from './speckle_spackle_testplay';
 
 class SpeckleSpackleApp extends Component {
     constructor(props) {
@@ -20,7 +20,7 @@ class SpeckleSpackleApp extends Component {
                 color1 : [132,0,0],
                 color2 : [0,105,113],
                 color3 : [130,137,72],
-                gridSize : 5,
+                gridSize : 4,
                 gameGrid : []
             }
         }
@@ -29,13 +29,12 @@ class SpeckleSpackleApp extends Component {
     }
 
     testPlay() {
-        console.log(this.state.gameInfo)
+        console.log("State at Test Play", this.state.gameInfo)
         this.changeVisibility();
         this.checkPuzzleValidty();
     }
     
     changeVisibility() {
-        console.log(this.state.testStyle)
         if (this.state.testStyle.display === "block") {
             this.setState({
                 createStyle : {
@@ -123,7 +122,6 @@ class SpeckleSpackleApp extends Component {
     // }
 
     gameInfoCallback = (gameInfoFromChild) => {
-        console.log("I received the following Game Info from my child", gameInfoFromChild);
         this.setState({
             gameInfo : {...gameInfoFromChild}
         })
@@ -131,7 +129,6 @@ class SpeckleSpackleApp extends Component {
 
 
     render() {
-        console.log("App State at Render", this.state)
         const { testStyle, createStyle, gameInfo } = this.state;
         if (createStyle['display'] === "none") {
             return (

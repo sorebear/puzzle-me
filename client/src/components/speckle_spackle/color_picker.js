@@ -55,7 +55,7 @@ class ColorPicker extends Component {
         const {red, green, blue} = this.state.color;
         return (
             <div>
-                <ColorSwatch red={red} green={green} blue={blue} selectedCallbackFromParent={this.props.selectedCallbackFromParent} name={this.props.name}/>
+                <ColorSwatch red={red} green={green} blue={blue} currentlySelected={this.props.currentlySelected} selectedCallbackFromParent={this.props.selectedCallbackFromParent} name={this.props.name}/>
                 <div className="input-group input-group-sm">
                     <button onClick={this.chooseRandomRgbColor} className="input-group-addon p-1 btn btn-outline-primary">#</button>
                     <input style={this.inputStyle} onChange={this.updateColor} type="value" name="red" min="0" max="255" value={red}/>

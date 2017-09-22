@@ -46,7 +46,7 @@ const puzzle_data = [
         averageTime : 154,
         gameInfo : {
             hiddenWord : 'DOWN',
-            startingWords : ['NUDE', 'WINS']
+            startingWords : ['NERD', 'WINS']
         }
     }
 ]

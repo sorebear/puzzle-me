@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import DummyData from './puzzle_dummy_data';
 import PlayMenuModal from '../play_menu_modal';
 import PageTitle from './page_title';
+import speckle_spackle from './imgs/speckle_spackle.png';
+import word_guess from './imgs/word_guess.png';
+import unblock_me from './imgs/unblock_me.png';
 import Axios from 'axios';
 
 class PlayMenu extends Component {
@@ -11,6 +14,11 @@ class PlayMenu extends Component {
             modalInfo : null,
             showModal : "noModal",
             data: null
+        }
+        this.gameTypes = {
+            "Word Guess" : word_guess,
+            "Unblock Me" : unblock_me,
+            "Speckle Spackle" : speckle_spackle
         }
         this.URL_EXT = '/puzzles';
         this.QUERY_KEY = 'retrieve';
@@ -57,11 +65,11 @@ class PlayMenu extends Component {
             const list = data.map((item, index) => {
                 return (
                     <tr key={index} onClick={() => {this.callModal(item)}}>
-                        <td>{index}</td>
-                        <td>{item.puzzle_name}</td>
-                        <td>{item.type}</td>
-                        <td>{item.size}</td>
-                        <td>
+                        <td className="align-middle">{index}</td>
+                        <td className="align-middle">{item.puzzle_name}</td>
+                        <td><img src={this.gameTypes[item.type]} style={{height: "48px"}} /></td>
+                        <td className="align-middle">{item.size}</td>
+                        <td className="align-middle">
                             <span style={{color: "rgb(92,184,92)"}}>
                                 {item.likes} <i className="fa fa-thumbs-o-up"></i> 
                             </span> 
@@ -70,14 +78,14 @@ class PlayMenu extends Component {
                                 {item.dislikes} <i className="fa fa-thumbs-o-down"></i>
                             </span>
                         </td>
-                        <td>{item.date_created.substr(0, 10)}</td>
+                        <td className="align-middle">{item.date_created.substr(0, 10)}</td>
                     </tr>
                 )
             })
             return (
                 <div>
-                    <PageTitle bgColor="rgb(217,83,79)" color="#222" text="PLAY" subText="choose a game below"/>
-                    <PlayMenuModal showModal={this.state.showModal} info={this.state.modalInfo}/>
+                    <PageTitle backgroundImg="watchtower" color="white" text="PLAY" subText="choose a game below"/>
+                    <PlayMenuModal info={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => {this.close()}} />
                     <table className="table table-inverse table-striped table-hover">
                         <thead>
                             <tr>

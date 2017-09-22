@@ -16,7 +16,9 @@ class WordGuessingApp extends Component {
             },
             gameInfo : {
                 hiddenWord : "",
-                startingWords : [""]
+                startingWords : [""],
+                size : null,
+                title : "Test Title"
             }
         }
         this.BASE_URL = 'http://localhost:4000/puzzles';
@@ -49,7 +51,9 @@ class WordGuessingApp extends Component {
         this.setState({
             gameInfo: {
                 hiddenWord : gameInfoFromChild.hiddenWord,
-                startingWords : [...gameInfoFromChild.startingWords]
+                startingWords : [...gameInfoFromChild.startingWords],
+                size : `${gameInfoFromChild.hiddenWord.length}-Letter Word`,
+                title : this.state.title
             },
         })
     }

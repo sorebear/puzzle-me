@@ -1,26 +1,25 @@
 import React, {Component} from 'react';
 import ColorPicker from './color_picker';
-import GameGrid from './game_grid';
+import GameGridPlay from './game_grid_play';
 import './sudoku_style.css';
 import CheckValidity from './check_validity.js';
+import dummy_grid from './dummy_grid'
 
-class SudoSudokuApp extends Component {
+class SpeckleSpackleTestPlay extends Component {
     constructor(props) {
         super(props);
+        console.log("Here is Dummy Grid", dummy_grid)
         this.state = {
-            color1 : props.gameInfo.color1,
-            color2 : props.gameInfo.color2,
-            color3 : props.gameInfo.color3,
-            currentlySelected : null,
-            gridSize : props.gameInfo.gridSize
-        }
-        this.gutterStyle = {
-            display: "flex",
-            flexFlow: "column",
-            justifyContent: "space-around",
-            height: '100vh',
-            width: '15vw',
-            overflow: 'hidden'
+            gameInfo : {
+                color0 : dummy_grid.color0,
+                color1 : dummy_grid.color1,
+                color2 : dummy_grid.color2,
+                color3 : dummy_grid.color3,
+                currentlySelected : dummy_grid.currentlySelected,
+                numOfColors : 3,
+                gridSize : dummy_grid.gridSize,
+                gameGrid : dummy_grid.gameGrid
+            }
         }
         this.mainDisplayStyle = {
             display: "flex",
@@ -30,57 +29,49 @@ class SudoSudokuApp extends Component {
             width: '70vw',
             overflow: 'hidden'
         }
-        this.new5x5Game = this.new5x5Game.bind(this);
+        this.gridIndexCallback = this.gridIndexCallback.bind(this);
     }
-    new5x5Game() {
-        console.log('buttonClicked');
+
+    componentWillMount() {
+        this.resetSquares()
+    }
+
+    resetSquares() {
+        const { gameInfo } = this.state
+        const newGrid = gameInfo.gameGrid.slice();
+        for (let i = 0; i < newGrid.length; i++) {
+            if (newGrid[i].name === "square") {
+                newGrid[i].colorNum = "color0";
+            }
+        }
+        gameInfo["gameGrid"] = newGrid;
         this.setState({
-            gridSize : 5
+            gameInfo :  {...gameInfo}
         })
     }
-    colorCallback1 = (colorFromChild) => {
-        console.log("I'm Color 1 in the App componenet, I got the following from my child", colorFromChild);
+
+    gridIndexCallback(index) {
+        const { gameInfo } = this.state
+        let newNum = parseInt(gameInfo.gameGrid[index].colorNum.substr(5)) + 1;
+        if (newNum > gameInfo.numOfColors) {
+            newNum = 0;
+        }
+        gameInfo.gameGrid[index].colorNum = `color${newNum}`;
         this.setState({
-            color1 : colorFromChild
-        })
-    }
-    colorCallback2 = (colorFromChild) => {
-        console.log("I'm Color 2 in the App componenet, I got the following from my child", colorFromChild);
-        this.setState({
-            color2 : colorFromChild
-        })
-    }
-    colorCallback3 = (colorFromChild) => {
-        console.log("I'm Color 3 in the App componenet, I got the following from my child", colorFromChild);
-        this.setState({
-            color3 : colorFromChild
-        })
-    }
-    selectedColorCallback = (selectedColor) => {
-        console.log(selectedColor + " has been selected")
-        this.setState({
-            currentlySelected : selectedColor
+            gameInfo : {...gameInfo}
         })
     }
     render() {
-        const {color1, color2, color3, currentlySelected, gridSize} = this.state
+        const { gameInfo } = this.state
         return (
             <div className="pageContainer">
-                <div className="gutter">
-                    <ColorPicker name="color1" colorCallbackFromParent={this.colorCallback1} selectedCallbackFromParent={this.selectedColorCallback}/>
-                    <ColorPicker name="color2" colorCallbackFromParent={this.colorCallback2} selectedCallbackFromParent={this.selectedColorCallback}/>
-                    <ColorPicker name="color3" colorCallbackFromParent={this.colorCallback3} selectedCallbackFromParent={this.selectedColorCallback}/>
-                </div>
                 <div className="mainDisplay">
-                    <GameGrid innerGridSize={gridSize} outerGridSize={gridSize + 2} color1={color1} color2={color2} color3={color3} currentlySelected={currentlySelected}/>
-                    <CheckValidity color1={color1} color2={color2} color3={color3} gridSize={gridSize}/>
-                </div>
-                <div style={this.gutterStyle}>
-                    <button onClick={this.new5x5Game}>New 5x5 Game</button>
+                    <GameGridPlay gameInfo={{...gameInfo}} callback={this.gridIndexCallback} />
+                    <CheckValidity color1={gameInfo.color1} color2={gameInfo.color2} color3={gameInfo.color3} gridSize={gameInfo.gridSize}/>
                 </div>
             </div>
         )
     }
 }
 
-export default SudoSudokuApp;
+export default SpeckleSpackleTestPlay;
