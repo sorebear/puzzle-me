@@ -6,6 +6,7 @@ class ClueSquare extends Component {
         super(props)
         this.startingEdge = props.startingEdge;
         this.endingEdge = props.endingEdge;
+        this.runCheck = null;
         this.state = {
             clueStyle : props.style
         }
@@ -14,9 +15,9 @@ class ClueSquare extends Component {
 
     componentWillMount() {
         const rowWidth = this.props.gridSize + 2;
-        if (props.id < rowWidth) {
-            //check from top
-        } else if (this.props.id > (props.gameGrid.length - rowWidth)) {
+        if (this.props.id < rowWidth) {
+            this.runCheck
+        } else if (this.props.id > (this.props.gameGrid.length - rowWidth)) {
             //check from bottom
         } else if (this.props.id % rowWidth === 0) {
             //check from left
