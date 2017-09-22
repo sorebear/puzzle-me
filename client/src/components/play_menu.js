@@ -20,7 +20,7 @@ class PlayMenu extends Component {
             "Unblock Me" : unblock_me,
             "Speckle Spackle" : speckle_spackle
         }
-        this.BASE_URL = 'http://localhost:4000/puzzles';
+        this.URL_EXT = '/puzzles';
         this.QUERY_KEY = 'retrieve';
         this.QUERY_VAL = 'recent10';
         this.updateData = this.updateData.bind(this);
@@ -44,16 +44,16 @@ class PlayMenu extends Component {
     }
 
     getData() {
-        Axios.get(this.BASE_URL + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
+        Axios.get(SERVER_BASE_ADDRESS + this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
             console.log("Error getting 10 most recent puzzles: ", err);
         });
     }
 
     updateData(response){
-        const receivedData = response.data.data
+        const receivedData = response.data.data;
         this.setState({
             data: receivedData
-        })
+        });
     }
 
     render() {
