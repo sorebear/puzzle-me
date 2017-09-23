@@ -36,7 +36,11 @@ div[name=clue] {
     box-sizing: border-box;
     border-radius: 100%;
     display: inline-block;
-    transition: .5s;
+    transition: .2s;
+}
+
+div[name=clue]:hover {
+    opacity: .5;
 }
 
 div[name=square] {

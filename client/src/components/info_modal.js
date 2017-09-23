@@ -8,7 +8,7 @@ function InfoModal(props) {
                 <div className="card-body">
                     <h4 className="card-title">Test</h4>
                     <p className="card-text">  
-                        
+                        {props.info}
                     </p>
                     <button type="button" onClick={props.closeModal} className="m-2 btn btn-outline-danger">Cancel</button>
                 </div>

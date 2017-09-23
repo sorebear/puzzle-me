@@ -3,7 +3,8 @@ import React from 'react';
 function GridSquarePlay(props) {
     const style = {
         backgroundColor : `rgb(${props.bgColor[0]},${props.bgColor[1]},${props.bgColor[2]})`,
-        width : `${props.width}%`
+        width : `${props.width}%`,
+        opacity: props.opacity
     }
     function passUpIndex(event) {
         props.callback(event.target.id);

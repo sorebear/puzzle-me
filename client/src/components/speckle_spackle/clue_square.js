@@ -4,8 +4,9 @@ class ClueSquare extends Component {
     constructor(props) {
         console.log("Here are the Clue's Props", props)
         super(props)
-        this.startingEdge = props.startingEdge;
-        this.endingEdge = props.endingEdge;
+        this.id = props.id;
+        this.innerGridSize = props.gridSize;
+        this.outerGridSize = props.gridSize;
         this.runCheck = null;
         this.state = {
             clueStyle : props.style
@@ -13,36 +14,11 @@ class ClueSquare extends Component {
         this.clueClickHandler = this.clueClickHandler.bind(this);
     }
 
-    componentWillMount() {
-        const rowWidth = this.props.gridSize + 2;
-        if (this.props.id < rowWidth) {
-            this.runCheck
-        } else if (this.props.id > (this.props.gameGrid.length - rowWidth)) {
-            //check from bottom
-        } else if (this.props.id % rowWidth === 0) {
-            //check from left
-        } else {
-            //check from right
-        }
-    }
-
-    // componentWillReceiveProps(nextProps) {
-    //     if (this.row === `row0`) {
-    //         this.checkFromTop();
-    //     } else if (this.row === `row${this.endingEdge}`) {
-    //         this.checkFromBottom();
-    //     } else if (this.column === `column${this.endingEdge}`) {
-    //         this.checkFromRight();
-    //     } else {
-    //         this.checkFromLeft();
-    //     }
-    // }
     checkFromTop() {
         const {clueStyle} = this.state;
-        const columnArray = Array.from(document.getElementsByClassName(this.column));
         let newColor = "rgb(255, 255, 255)";
-        for (let i = 1; i < this.endingEdge; i++) {
-            if (columnArray[i].style.backgroundColor !== "rgb(255, 255, 255)") {
+        for (let i = this.id + this.outerGridSize; i <= this.gameGrid.length - this.innerGridSize; i += this.outerGridSize) {
+            if (gameGrid[i][colorNum] !== "color0" ) {
                 newColor = columnArray[i].style.backgroundColor;
                 break;
             }

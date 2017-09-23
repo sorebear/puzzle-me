@@ -21,7 +21,17 @@ class GameGrid extends Component {
         const { gameGrid } = this.state;
         const grid = gameGrid.map((item, index) => {
             return ( 
-                <GridSquarePlay callback={this.props.callback} key={index} index={index} color0={this.color0} bgColor={this[item.colorNum]} name={item.name} className={item.className} width={this.squareWidth} />
+                <GridSquarePlay 
+                    callback={this.props.callback} 
+                    key={index} 
+                    index={index} 
+                    color0={this.color0} 
+                    bgColor={this[item.colorNum]} 
+                    name={item.name} 
+                    className={item.className} 
+                    width={this.squareWidth} 
+                    opacity={item.opacity}
+                />
             )
         })
         return (
