@@ -14,6 +14,7 @@ class GameGrid extends Component {
                 color2 : props.gameInfo.color2,
                 color3 : props.gameInfo.color3,
                 currentlySelected : props.gameInfo.currentlySelected,
+                gridSize : props.gameInfo.gridSize,
                 gameGrid : props.gameInfo.gameGrid
             }
         }
@@ -28,18 +29,20 @@ class GameGrid extends Component {
 
 
     render() {
-        const {gameGrid} = this.state.gameInfo;
+        const {gameGrid, gridSize} = this.state.gameInfo;
         const grid = gameGrid.map((item, index) => {
             return ( 
                 <GridSquare 
-                    callback={this.props.gridIndexCallback} 
+                    callback={this.props.gridIndexCallback}
+                    clueCallback={this.props.clueIndexCallback}
                     key={index} 
                     index={index} 
                     bgColor={this.state.gameInfo[item.colorNum]} 
                     name={item.name} 
                     className={item.className} 
-                    width={this.squareWidth} 
+                    width={Math.floor(100 / (gridSize + 2))} 
                     gameGrid = {[...gameGrid]}
+                    opacity={item.opacity}
                 />
             )
         })
