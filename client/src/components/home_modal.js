@@ -1,7 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function HomeModal(props) {
-    console.log("Modal Props", props)
     const { modalInfo } = props
     return (
         <div className={props.showModal}>
@@ -15,7 +15,9 @@ function HomeModal(props) {
                         <strong>Creator:</strong> {modalInfo.creator}<br/>
                         <strong>Created:</strong> {modalInfo.date_created.substr(0,10)}<br/>
                     </p>
-                    <button type="button" onClick={null} className="m-2 btn btn-outline-info">Play</button>
+                    <Link to={`play/${modalInfo.type}/${modalInfo.url_ext}`}>
+                        <button type="button" onClick={null} className="m-2 btn btn-outline-info">Play</button>
+                    </Link>
                     <button type="button" onClick={props.closeModal} className="m-2 btn btn-outline-danger">Cancel</button>
                 </div>
             </div>

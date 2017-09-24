@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import ColorPicker from './color_picker';
-import ColorSwatchNew from './color_swatch_new';
+import ColorSwatch from './color_swatch';
 import GameGrid from './game_grid';
 import './sudoku_style.css';
 import grid4 from '../imgs/grid4.png'
@@ -17,6 +16,7 @@ class SpeckleSpackleCreate extends Component {
                 color2 : props.gameInfo.color2,
                 color3 : props.gameInfo.color3,
                 gridSize : props.gameInfo.gridSize,
+                numOfColors : props.gameInfo.numOfColors,
                 currentlySelected : "color1",
                 gameGrid : props.gameInfo.gameGrid
             }
@@ -97,7 +97,6 @@ class SpeckleSpackleCreate extends Component {
 
     componentWillReceiveProps(nextProps) {
         const { gameInfo } = this.state;
-        console.log("Receiving New Props")
         if (nextProps.dataRequested) {
             nextProps.gameInfoCallback({...gameInfo})
         }
@@ -241,24 +240,18 @@ class SpeckleSpackleCreate extends Component {
         return (
             <div className="pageContainer">
                 <div className="gutter">
-                    <ColorSwatchNew name="color1" currentlySelected={currentlySelected} color={color1} randomColorCallback={this.chooseRandomColor} selectedCallback={this.selectedColorCallback} />
-                    <ColorSwatchNew name="color2" currentlySelected={currentlySelected} color={color2} randomColorCallback={this.chooseRandomColor} selectedCallback={this.selectedColorCallback} />
-                    <ColorSwatchNew name="color3" currentlySelected={currentlySelected} color={color3} randomColorCallback={this.chooseRandomColor} selectedCallback={this.selectedColorCallback} />
+                    <ColorSwatch name="color1" currentlySelected={currentlySelected} color={color1} randomColorCallback={this.chooseRandomColor} selectedCallback={this.selectedColorCallback} />
+                    <ColorSwatch name="color2" currentlySelected={currentlySelected} color={color2} randomColorCallback={this.chooseRandomColor} selectedCallback={this.selectedColorCallback} />
+                    <ColorSwatch name="color3" currentlySelected={currentlySelected} color={color3} randomColorCallback={this.chooseRandomColor} selectedCallback={this.selectedColorCallback} />
                 </div>
                 <div className="mainDisplay">
                     <GameGrid gameInfo={{...gameInfo}} gridIndexCallback={this.gridIndexCallback} clueIndexCallback={this.clueIndexCallback}/>
                     {/* <button className="btn btn-outline-primary m-5">Test Play</button> */}
                 </div>
                 <div className="gutter">
-                    <div className="p-1">
-                        <img onClick={() => this.createGrid(4)} style={{width:"100%"}} src={grid4} />
-                    </div>
-                    <div className="p-1">
-                        <img onClick={() => this.createGrid(5)} style={{width:"100%"}} src={grid5} />
-                    </div>
-                    <div className="p-1">
-                        <img onClick={() => this.createGrid(6)} style={{width:"100%"}} src={grid6} />
-                    </div>
+                        <img className="p-1 gridSizeIcon" onClick={() => this.createGrid(4)} src={grid4} />
+                        <img className="p-1 gridSizeIcon" onClick={() => this.createGrid(5)} src={grid5} />
+                        <img className="p-1 gridSizeIcon" onClick={() => this.createGrid(6)} src={grid6} />
                 </div>
             </div>
         )

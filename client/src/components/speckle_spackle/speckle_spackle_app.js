@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
-import ColorPicker from './color_picker';
-import GameGrid from './game_grid';
-import CheckValidity from './check_validity.js';
 import SpeckleSpackleCreate from './speckle_spackle_create';
 import SpeckleSpackleTestPlay from './speckle_spackle_testplay';
-import Modal from './speckle_spackle_modal';
+import CreateCheckModal from './create_check_modal';
 import './sudoku_style.css';
 
 class SpeckleSpackleApp extends Component {
@@ -25,6 +22,7 @@ class SpeckleSpackleApp extends Component {
                 color1 : [132,0,0],
                 color2 : [0,105,113],
                 color3 : [130,137,72],
+                numOfColors : 3,
                 gridSize : 4,
                 gameGrid : []
             }
@@ -47,7 +45,6 @@ class SpeckleSpackleApp extends Component {
     }
     
     changeVisibility() {
-        console.log("Test Game Called");
         if (this.state.testStyle.display === "block") {
             this.setState({
                 createStyle : {display : "block"},
@@ -64,7 +61,6 @@ class SpeckleSpackleApp extends Component {
     }
 
     checkPuzzleValidty(newGameInfo) {
-        console.log('Checking If Your Puzzle is Valid');
         const rowLog = this.isEachColorInEveryRowOnce({...newGameInfo}, ['color1', 'color2', 'color3']);
         const columnLog = this.isEachColorInEveryColumnOnce({...newGameInfo}, ['color1', 'color2', 'color3']);
         this.setState({
@@ -72,12 +68,7 @@ class SpeckleSpackleApp extends Component {
             modalInfo : [rowLog, columnLog]
         })
     }
-    // areSelectedColorsDifferent(color1, color2, color3) {
-    //     console.log("CHECKING COLORS");
-    //     if (color1 === color2 || color1 === color3 || color2 === color3) {
-    //         console.log('Sorry, two or more of your colors are the same');
-    //     } 
-    // }
+
     isEachColorInEveryRowOnce(gameInfo, colorArr) {
         let rowLog = [];
         const { gameGrid, gridSize } = gameInfo;
@@ -132,12 +123,11 @@ class SpeckleSpackleApp extends Component {
     }
 
     render() {
-        console.log("Something in the App Changed", this.state);
         const { testStyle, createStyle, gameInfo, dataRequested } = this.state;
         if (createStyle['display'] === "none") {
             return (
                 <div>
-                    <Modal info={this.state.modalInfo} play={() => this.changeVisibility()} showModal={this.state.showModal} closeModal={() => {this.close()}} />
+                    <CreateCheckModal info={this.state.modalInfo} play={() => this.changeVisibility()} showModal={this.state.showModal} closeModal={() => {this.close()}} />
                     <SpeckleSpackleCreate gameInfo={{...gameInfo}} gameInfoCallback={this.gameInfoCallback} dataRequested={dataRequested} />    
                     <div className="play-test">
                         <button className="btn btn-outline-primary m-2" onClick={this.testPlay} style={testStyle}>Test Play</button>

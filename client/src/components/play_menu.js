@@ -16,14 +16,32 @@ class PlayMenu extends Component {
             data: null
         }
         this.gameTypes = {
-            "Word Guess" : word_guess,
-            "Unblock Me" : unblock_me,
-            "Speckle Spackle" : speckle_spackle
+            "word_guess" : word_guess,
+            "unblock_me" : unblock_me,
+            "speckle_spackle" : speckle_spackle
         }
         this.URL_EXT = '/puzzles';
         this.QUERY_KEY = 'retrieve';
         this.QUERY_VAL = 'recent10';
         this.updateData = this.updateData.bind(this);
+    }
+
+    componentWillMount() {
+        this.getData();
+    }
+
+    getData() {
+        Axios.get(SERVER_BASE_ADDRESS + this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
+            console.log("Error getting 10 most recent puzzles: ", err);
+        });
+    }
+
+    updateData(response){
+        const receivedData = response.data.data;
+        console.log(receivedData);
+        this.setState({
+            data: receivedData
+        });
     }
 
     callModal(info) {
@@ -39,29 +57,11 @@ class PlayMenu extends Component {
         })
     }
 
-    componentWillMount() {
-        this.getData();
-    }
-
-    getData() {
-        Axios.get(SERVER_BASE_ADDRESS + this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
-            console.log("Error getting 10 most recent puzzles: ", err);
-        });
-    }
-
-    updateData(response){
-        const receivedData = response.data.data;
-        this.setState({
-            data: receivedData
-        });
-    }
-
     render() {
         const { data } = this.state
         if (data === null) {
             return <h1>Loading...</h1>
         } else {
-            console.log(this.state);
             const list = data.map((item, index) => {
                 return (
                     <tr key={index} onClick={() => {this.callModal(item)}}>

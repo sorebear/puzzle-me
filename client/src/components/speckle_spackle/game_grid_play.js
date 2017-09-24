@@ -11,10 +11,8 @@ class GameGrid extends Component {
         this.color1 = props.gameInfo.color1;
         this.color2 = props.gameInfo.color2;
         this.color3 = props.gameInfo.color3;
-        this.colorArray = [this.color0, this.color1, this.color2, this.color3]
-        this.innerGridSize = props.gameInfo.gridSize;
-        this.outerGridSize = props.gameInfo.gridSize + 2;
-        this.squareWidth = Math.floor(100 / this.outerGridSize)
+        this.colorArray = [this.color0, this.color1, this.color2, this.color3];
+        this.squareWidth = Math.floor(100 / (props.gameInfo.gridSize + 2));
     }
 
     render() {

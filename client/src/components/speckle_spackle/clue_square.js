@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 class ClueSquare extends Component {
     constructor(props) {
-        console.log("Here are the Clue's Props", props)
         super(props)
         this.id = props.id;
         this.innerGridSize = props.gridSize;
@@ -29,7 +28,6 @@ class ClueSquare extends Component {
         })
     }
     checkFromBottom() {
-        console.log("Check From Bottom");
         const {clueStyle} = this.state;
         const columnArray = Array.from(document.getElementsByClassName(this.column));
         let newColor = "rgb(255, 255, 255)";
@@ -45,7 +43,6 @@ class ClueSquare extends Component {
         })
     }
     checkFromRight() {
-        console.log("Check From Right");
         const {clueStyle} = this.state;
         const rowArray = Array.from(document.getElementsByClassName(this.row));
         let newColor = "rgb(255, 255, 255)";
@@ -61,7 +58,6 @@ class ClueSquare extends Component {
         })
     }
     checkFromLeft() {
-        console.log("Check From Left");
         const {clueStyle} = this.state;
         const rowArray = Array.from(document.getElementsByClassName(this.row));
         let newColor = "rgb(255, 255, 255)";

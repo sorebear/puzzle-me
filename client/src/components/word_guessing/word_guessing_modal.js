@@ -20,7 +20,6 @@ class OneButtonModal extends Component {
         })
     }
     render() {
-        console.log(this.state);
         if (this.state.info === null) {
             return <div></div>
         } else {

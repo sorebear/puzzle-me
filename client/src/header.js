@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 export default (props) => {
-    console.log(props);
     return (
         <ul className="nav justify-content-between header">
             <li className="nav-item align-self-center">

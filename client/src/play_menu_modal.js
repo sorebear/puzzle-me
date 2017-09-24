@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 function PlayMenuModal(props) {
-    console.log("PlayMenu Props", props)
     if (props.info === null) {
         return <div></div>
     } else {
-        const { creator, date_created, puzzle_name, likes, dislikes, size, type } = props.info
+        const { creator, date_created, puzzle_name, likes, dislikes, size, type, url_ext } = props.info
         return (
         <div className={props.showModal}>
             <div onClick={props.closeModal}>
@@ -19,7 +19,9 @@ function PlayMenuModal(props) {
                         Creator: {creator}<br/>
                         Created: {date_created.substr(0,10)}<br/>
                     </p>
-                    <a href="#" className="m-1 btn btn-outline-info">Play</a>
+                    <Link to={`play/${type}/${url_ext}`}>
+                        <button className="m-1 btn btn-outline-info">Play</button>
+                    </Link>
                     <button type="button" onClick={props.closeModal} className="m-1 btn btn-outline-danger">Cancel</button>
                 </div>
             </div>

@@ -1,8 +1,12 @@
 import React from 'react';
 
 function GridSquare(props) {
-    const style = {
+    const squareStyle = {
         backgroundColor : `rgb(${props.bgColor[0]},${props.bgColor[1]},${props.bgColor[2]})`,
+        width : `${props.width}%`
+    }
+    const cornerStyle = {
+        backgroundColor : "transparent",
         width : `${props.width}%`
     }
     let clueStyle = {
@@ -19,7 +23,7 @@ function GridSquare(props) {
 
     if (props.name === "square") {
         return (
-            <div onClick={(e) => passUpIndex(e)} name={props.name} id={props.index} className={props.className} style={{...style}} />
+            <div onClick={(e) => passUpIndex(e)} name={props.name} id={props.index} className={props.className} style={{...squareStyle}} />
         )
     } else if (props.name === "clue") {
         return (
@@ -27,7 +31,7 @@ function GridSquare(props) {
         )
     } else {
         return (
-            <div name={props.name} id={props.index} className={props.className} style={{...style}}/>
+            <div name={props.name} id={props.index} className={props.className} style={{...cornerStyle}}/>
         )
     }
 }

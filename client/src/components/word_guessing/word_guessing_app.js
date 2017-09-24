@@ -47,7 +47,6 @@ class WordGuessingApp extends Component {
         }
     }
     gameInfoCallback = (gameInfoFromChild) => {
-        console.log("I received game information from my child", gameInfoFromChild);
         this.setState({
             gameInfo: {
                 hiddenWord : gameInfoFromChild.hiddenWord,
@@ -58,7 +57,6 @@ class WordGuessingApp extends Component {
         })
     }
     render() {
-        console.log("App State", this.state)
         const { testStyle, createStyle, gameInfo } = this.state
         if (this.state.createStyle.display === "none") {
             return (
@@ -75,7 +73,7 @@ class WordGuessingApp extends Component {
                     <WordGuessingTestPlay gameInfo={gameInfo}/>    
                     <div className="play-test">
                         <button className="btn btn-outline-primary m-2" onClick={this.changeVisibility} style={createStyle}>Back To Edit</button>
-                        <button className="btn btn-outline-danger m-2" style={createStyle}>Submit</button>
+                        <button className="btn btn-outline-danger m-2" style={createStyle}>Submit Puzzle</button>
                     </div>
                 </div>
             )
