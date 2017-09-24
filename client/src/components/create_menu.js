@@ -22,16 +22,21 @@ export default () => {
                         <img src={unblock_me} className="d-none d-sm-block" style={{width : "inherit"}}/>
                         <button className="btn btn-outline-danger btn-block d-none d-sm-block">Unblock Me</button>
                         <div className="row d-block d-sm-none">
+                            <Link to="/create/speckle_spackle">
                                 <img className="col-6" src={speckle_spackle} style={{width : "inherit"}}/>
+                            </Link>
+                            <Link to="/create/unblock_me">
                                 <img className="col-6" src={unblock_me} style={{width : "inherit"}}/>
-
+                            </Link>
                         </div>
                         <div className="row d-block d-sm-none">
-                            <img className="col-6 offset-3" src={word_guess} style={{width : "inherit"}}/>
+                            <Link to="create/word_guess">
+                                <img className="col-6 offset-3" src={word_guess} style={{width : "inherit"}}/>
+                            </Link>
                         </div>
                     </div>
                     <div className="col-1 col-sm-4">
-                        <Link className="btn-block" to="/create/word_guessing">
+                        <Link className="btn-block" to="/create/word_guess">
                             <img src={word_guess} className="d-none d-sm-block" style={{width : "inherit"}}/>
                             <button className="btn btn-outline-danger btn-block d-none d-sm-block">Word Guess</button>
                         </Link>

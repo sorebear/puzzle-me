@@ -1,5 +1,3 @@
-import React from 'react';
-
 const gameInfo = {
     color0 : [255, 255, 255],
     color1 : [132, 0, 0],

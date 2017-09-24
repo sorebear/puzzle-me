@@ -105,7 +105,17 @@ i {
 
     .swatch {
         width: 100%;
-        height: 12vw;
+        font-size: 12vh;
         border-radius: 100%;
+    }
+
+    .gridSizeIcon {
+        height: 100%;
+    }
+}
+
+@media screen and (orientation:landscape) {
+    .gridSizeIcon {
+        width: inherit;
     }
 }

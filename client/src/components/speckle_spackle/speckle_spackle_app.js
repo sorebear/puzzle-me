@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import GameGrid from './game_grid';
 import SpeckleSpackleCreate from './speckle_spackle_create';
 import SpeckleSpackleTestPlay from './speckle_spackle_testplay';
 import CreateCheckModal from './create_check_modal';
@@ -23,6 +22,7 @@ class SpeckleSpackleApp extends Component {
                 color1 : [132,0,0],
                 color2 : [0,105,113],
                 color3 : [130,137,72],
+                numOfColors : 3,
                 gridSize : 4,
                 gameGrid : []
             }
@@ -45,7 +45,6 @@ class SpeckleSpackleApp extends Component {
     }
     
     changeVisibility() {
-        console.log("Test Game Called");
         if (this.state.testStyle.display === "block") {
             this.setState({
                 createStyle : {display : "block"},
@@ -62,7 +61,6 @@ class SpeckleSpackleApp extends Component {
     }
 
     checkPuzzleValidty(newGameInfo) {
-        console.log('Checking If Your Puzzle is Valid');
         const rowLog = this.isEachColorInEveryRowOnce({...newGameInfo}, ['color1', 'color2', 'color3']);
         const columnLog = this.isEachColorInEveryColumnOnce({...newGameInfo}, ['color1', 'color2', 'color3']);
         this.setState({
@@ -125,7 +123,6 @@ class SpeckleSpackleApp extends Component {
     }
 
     render() {
-        console.log("Something in the App Changed", this.state);
         const { testStyle, createStyle, gameInfo, dataRequested } = this.state;
         if (createStyle['display'] === "none") {
             return (

@@ -34,7 +34,7 @@ class WordGuessingCreate extends Component {
     addClue(event) {
         event.preventDefault();
         const { startingWords, hiddenWord } = this.state;
-        if (startingWords[0].length !== hiddenWord.length || startingWords[0].length === 0) {return}
+        if (startingWords[0].length === 0) {return}
         startingWords[0] = {
             guess : startingWords[0],
             correctLetter : null,
@@ -51,10 +51,6 @@ class WordGuessingCreate extends Component {
             startingWords : [...startingWords]
         })
     }
-
-    // wrongLength() {
-    //     console.log(`${this.state.guess} Is Not ${this.hiddenWord.length}-Letters Long`);
-    // }
 
     handleClueSubmit(event) {
         event.preventDefault();
@@ -97,19 +93,27 @@ class WordGuessingCreate extends Component {
     }
 
     render() {
-        console.log(this.state)
-        const { startingWords } = this.state;
+        const { startingWords, hiddenWord } = this.state;
         const startingWordsList = startingWords.map((item, index) => {
-            if (index === 0) {return} 
-            return (
-                <li key={index} className="list-group-item list-group-item-info justify-content-between">
-                    {item.guess} : {item.correctLetter} - {item.correctPosition}
-                    <i className="fa fa-times-circle" onClick={() => this.removeClue(index)} ></i>
-                </li>
-            )
+            if (index === 0) { return } 
+            if (item.guess.length !== hiddenWord.length) {
+                return (
+                    <li key={index} className="list-group-item list-group-item-danger justify-content-between">
+                        {item.guess} : {item.correctLetter} - {item.correctPosition}
+                        <i className="fa fa-times-circle" onClick={() => this.removeClue(index)} ></i>
+                    </li>
+                )
+            } else {
+                return (
+                    <li key={index} className="list-group-item list-group-item-info justify-content-between">
+                        {item.guess} : {item.correctLetter} - {item.correctPosition}
+                        <i className="fa fa-times-circle" onClick={() => this.removeClue(index)} ></i>
+                    </li>
+                )
+            }
         })
         return (
-            <div className="container">
+            <div className="container mt-4">
                 <h3 className="text-center p-2">Pick a 4-6-Letter Word</h3>
                 <form onSubmit={(event) => this.handleClueSubmit(event)}>
                     <input 

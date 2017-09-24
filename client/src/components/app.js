@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+import InfoModal from './info_modal';
+
+import Header from '../header';
+import Footer from '../footer';
+import Home from './home';
+import CreateMenu from './create_menu';
+import PlayMenu from './play_menu';
 import SpeckleSpackleApp from './speckle_spackle/speckle_spackle_app';
 import SpeckleSpacklePlay from './speckle_spackle/speckle_spackle_play'
 import WordGuessingApp from './word_guessing/word_guessing_app'
 import WordGuessPlay from './word_guessing/word_guessing_play'
-import Footer from '../footer';
-import Header from '../header';
-import Home from './home';
-import CreateMenu from './create_menu';
-import PlayMenu from './play_menu';
-import Login from './login';
-import InfoModal from './info_modal';
 import Rankings from './rankings';
+import Login from './login';
 
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+
 
 class App extends Component {
     constructor(props) {
@@ -49,11 +51,11 @@ class App extends Component {
                     <Route path="/home" component={Home} />
         
                     <Route exact path="/play" component={PlayMenu} />
-                    <Route path="/play/word_guessing" render={() => <WordGuessPlay gameInfo={null} />} />
+                    <Route path="/play/word_guess" component={WordGuessPlay} />
                     <Route path="/play/speckle_spackle" component={SpeckleSpacklePlay} />
         
                     <Route exact path="/create" component={CreateMenu} />
-                    <Route path="/create/word_guessing" component={WordGuessingApp} />
+                    <Route path="/create/word_guess" component={WordGuessingApp} />
                     <Route path="/create/speckle_spackle" component={SpeckleSpackleApp} />
         
                     <Route exact path="/rankings" component={Rankings} />

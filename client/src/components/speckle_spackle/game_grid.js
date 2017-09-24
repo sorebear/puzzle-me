@@ -4,9 +4,7 @@ import GridSquare from './grid_square';
 class GameGrid extends Component {
     constructor(props) {
         super(props);
-        this.innerGridSize = props.gameInfo.gridSize;
-        this.outerGridSize = props.gameInfo.gridSize + 2;
-        this.squareWidth = Math.floor(100 / this.outerGridSize)
+        this.squareWidth = Math.floor(100 / (props.gameInfo.gridSize + 2))
         this.state = {
             gameInfo : {
                 color0 : props.gameInfo.color0,
@@ -26,7 +24,6 @@ class GameGrid extends Component {
             gameInfo : {...gameInfo}
         })
     }
-
 
     render() {
         const {gameGrid, gridSize} = this.state.gameInfo;

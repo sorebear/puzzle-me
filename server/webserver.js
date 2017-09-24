@@ -39,11 +39,24 @@ webserver.get('/puzzles', function(req, res){
             default:
                 console.log("unknown query value for puzzles key");
         }
+    } else if (req.query.url_ext) {
+        console.log("Request URL is: ", req.query.url_ext);
+        getGamePlayInfo(res, req.query.url_ext);
     }
-    else{
+    else {
         console.log("Query key puzzles is not present");
     }
 });
+
+function getGamePlayInfo(res, url_ext){
+    console.log("Inside of getGamePlayInfo function");
+    var query = `SELECT * FROM puzzles WHERE url_ext='${url_ext}'`
+    console.log("QUERY is: ", query);
+    pool.query(query, (err, rows, fields) => {
+        if(err) console.log(err);
+        else res.end(JSON.stringify({success: true, data: rows}));
+    });
+}
 
 function getMostRecent10Puzzles(res){
     var query = "SELECT p.puzzle_name, u.username AS creator, p.type, p.size, p.url_ext, p.likes, p.dislikes, p.date_created, p.puzzle_object, p.avg_time_to_complete " +

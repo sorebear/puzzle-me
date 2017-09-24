@@ -41,7 +41,6 @@ class Rankings extends Component {
         const { data } = this.state;
         console.log("Data", data, "and Field", field)
         data.sort(function(a,b) {return a[field] - b[field]});
-        console.log("Sorted Data", data);
         this.setState({
             data : [...data]
         })
@@ -65,7 +64,6 @@ class Rankings extends Component {
         if (data === null) {
             return <h1>Loading...</h1>
         } else {
-            console.log(this.state);
             const list = data.map((item, index) => {
                 return (
                     <tr key={index} onClick={() => {this.callModal(item)}}>

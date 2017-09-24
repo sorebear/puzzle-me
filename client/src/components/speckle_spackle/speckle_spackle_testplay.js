@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import ColorPicker from './color_picker';
 import GameGridPlay from './game_grid_play';
-import './sudoku_style.css';
 import PlayCheckModal from './play_check_modal';
 import dummy_grid from './dummy_grid'
+import './sudoku_style.css';
 
 class SpeckleSpackleTestPlay extends Component {
     constructor(props) {
@@ -19,7 +18,7 @@ class SpeckleSpackleTestPlay extends Component {
                 color2 : props.gameInfo.color2,
                 color3 : props.gameInfo.color3,
                 currentlySelected : props.gameInfo.currentlySelected,
-                numOfColors : 3,
+                numOfColors : props.gameInfo.numOfColors,
                 gridSize : props.gameInfo.gridSize,
                 gameGrid : props.gameInfo.gameGrid
             }
@@ -39,7 +38,6 @@ class SpeckleSpackleTestPlay extends Component {
     }
 
     changeVisibility() {
-        console.log("Test Game Called");
         if (this.state.testStyle.display === "block") {
             this.setState({
                 createStyle : {display : "block"},
@@ -123,11 +121,11 @@ class SpeckleSpackleTestPlay extends Component {
     }
 
     winConditionMet() {
-        console.log(`Congratulations you won in ${this.state.timer} seconds!`)
         this.setState({
             showModal : "showModal",
             modalInfo : [this.state.timer]
         })
+        clearInterval(this.timeInt);
     }
 
     checkLeftClues(gameInfo, outerGridSize) {

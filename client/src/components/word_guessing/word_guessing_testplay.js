@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 class WordGuessingTestPlay extends Component {
     constructor(props) {
-        console.log("Initial Props", props);
         super(props);
         this.state = { 
             guess : "",
@@ -93,12 +92,9 @@ class WordGuessingTestPlay extends Component {
     }
 
     render() {
-        console.log(this.numOfStartingWords);
         const { guessHistory } = this.state;
         const switchPoint = guessHistory.length - this.numOfStartingWords;
         const guessHistoryList = guessHistory.map((item, index) => {
-            console.log("My map", index, item)
-            console.log("My Switch Point", switchPoint);
             if (index < switchPoint) {
                 return <li key={index} className="list-group-item justify-content-between">
                     {item.guess} : {item.correctLetter} - {item.correctPosition}
@@ -112,12 +108,12 @@ class WordGuessingTestPlay extends Component {
             }
         })
         return (
-            <div className="container">
+            <div className="container mt-4">
                 <h3 className="text-center p-2">Guess This {this.hiddenWord.length}-Letter Word</h3>
                 <form onSubmit={this.handleSubmit}>
                     <input onChange={this.onChangeHandler} maxLength={this.hiddenWord.length} value={this.state.guess} className="form-control"/>
                     <div className="text-center">
-                        <button className="btn btn-outline-danger m-2">Submit Guess</button>
+                        <button className="btn btn-outline-danger m-2">Guess</button>
                         <ul className="list-group">{guessHistoryList}</ul>
                     </div>
                 </form>

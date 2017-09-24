@@ -16,9 +16,9 @@ class HomePage extends Component {
             data: null
         }
         this.gameTypes = {
-            "Word Guess" : word_guess,
-            "Unblock Me" : unblock_me,
-            "Speckle Spackle" : speckle_spackle
+            "word_guess" : word_guess,
+            "unblock_me" : unblock_me,
+            "speckle_spackle" : speckle_spackle
         }
         this.BASE_URL = 'http://localhost:4000/puzzles';
         this.QUERY_KEY = 'retrieve';
@@ -66,7 +66,6 @@ class HomePage extends Component {
                 <h1>Loading...</h1>
             )
         }
-        console.log ("Data at Render", data);
         return (
             <div>
                 <HomeModal modalInfo={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => {this.close()}} />
