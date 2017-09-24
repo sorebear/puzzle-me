@@ -6,6 +6,10 @@ function GridSquarePlay(props) {
         width : `${props.width}%`,
         opacity: props.opacity
     }
+    const cornerStyle = {
+        backgroundColor : "transparent",
+        width : `${props.width}%`
+    }
     function passUpIndex(event) {
         props.callback(event.target.id);
     }
@@ -19,7 +23,7 @@ function GridSquarePlay(props) {
         )
     } else {
         return (
-            <div name={props.name} id={props.index} className={props.className} style={{...style}}/>
+            <div name={props.name} id={props.index} className={props.className} style={{...cornerStyle}}/>
         )
     }
 }

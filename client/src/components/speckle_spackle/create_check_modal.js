@@ -1,6 +1,6 @@
 import React from 'react';
 
-function SpeckleSpackleModal(props) {
+function CreateCheckModal(props) {
     if (props.showModal === "noModal") {
         return <div></div>
     } else if (props.info[0].length === 0 && props.info[1].length ===0 ) {
@@ -44,4 +44,4 @@ function SpeckleSpackleModal(props) {
     }
 }
 
-export default SpeckleSpackleModal;
+export default CreateCheckModal;

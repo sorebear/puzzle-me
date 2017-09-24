@@ -32,21 +32,18 @@ div[name=corner] {
 }
 
 div[name=clue] {
-    border: 1px dotted grey;
+    border: 2px solid lightgrey;
     box-sizing: border-box;
     border-radius: 100%;
     display: inline-block;
     transition: .2s;
 }
 
-div[name=clue]:hover {
-    opacity: .5;
-}
-
 div[name=square] {
-    border: 1px solid black;
+    border: 2px solid lightgrey;
     box-sizing: border-box;
     display: inline-block;
+    border-radius: 7%;
 }
 
 div[name=square]:hover {
