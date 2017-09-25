@@ -53,7 +53,7 @@ body {
     display: none;
 }
 
-h2, button, a, .title {
+h2, h4, button, a, .title {
     font-family: 'Metamorphous', sans-serif;
 }
 

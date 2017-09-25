@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import GameGridPlay from './game_grid_play';
 import PlayCheckModal from './play_check_modal';
 import Axios from 'axios';
-import './sudoku_style.css';
+import './speckle_spackle_style.css';
 
 class SpeckleSpacklePlay extends Component {
     constructor(props) {
@@ -260,13 +260,16 @@ class SpeckleSpacklePlay extends Component {
             <div className="pageContainer">
                 <PlayCheckModal info={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => {this.close()}} />
                 <div className="gutter align-items-center justify-content-center text-center">
-                    <h3>{timer}</h3>
+                    <i className="fa fa-clock-o swatch m-1" style={{color: "white"}}></i>
+                    <h3 style={{fontSize: "2rem", position:"absolute", opacity:".8"}}>{timer}</h3>
                 </div>
                 <div className="mainDisplay">
                     <GameGridPlay gameInfo={{...gameInfo}} callback={this.gridIndexCallback} />
                 </div>
-                <div className="gutter">
-                    <button onClick={this.evaluateAnswer} className="btn btn-outline-primary justify-content-center align-items-center">Check</button>
+                <div className="gutter align-items-center">
+                    <div>
+                        <button onClick={this.evaluateAnswer} className="btn btn-outline-primary justify-content-center align-items-center">Check</button>
+                    </div>
                 </div>
             </div>
         )
