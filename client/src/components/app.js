@@ -14,6 +14,7 @@ import WordGuessPlay from './word_guessing/word_guessing_play'
 import Rankings from './rankings';
 import Login from './login';
 
+import UnBlockApp from './unblock_me/un_block_app'
 
 
 class App extends Component {
@@ -57,6 +58,7 @@ class App extends Component {
                     <Route exact path="/create" component={CreateMenu} />
                     <Route path="/create/word_guess" component={WordGuessingApp} />
                     <Route path="/create/speckle_spackle" component={SpeckleSpackleApp} />
+                    <Route path="/create/unblock_me" component={UnBlockApp}/>
         
                     <Route exact path="/rankings" component={Rankings} />
         

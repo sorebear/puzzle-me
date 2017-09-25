@@ -12,35 +12,58 @@ export default () => {
             <div className="container">
                 <h3 className="text-center m-4">Choose A Puzzle Style To Create</h3>
                 <div className="row">
+
+
                     <div className="col-1 col-sm-4">
                         <Link className="btn-block" to="/create/speckle_spackle">
                             <img src={speckle_spackle} className="d-none d-sm-block" style={{width : "inherit"}}/>
                             <button className="btn btn-outline-danger btn-block d-none d-sm-block p-2">Speckle Spackle</button>
                         </Link>
                     </div>
+
+
                     <div className="col-10 col-sm-4">
-                        <img src={unblock_me} className="d-none d-sm-block" style={{width : "inherit"}}/>
-                        <button className="btn btn-outline-danger btn-block d-none d-sm-block">Unblock Me</button>
+                        <Link to="/create/unblock_me">
+                            <img src={unblock_me} className="d-none d-sm-block" style={{width : "inherit"}}/>
+                        </Link>
+                        <Link to="/create/unblock_me">
+                            <button className="btn btn-outline-danger btn-block d-none d-sm-block">Unblock Me</button>
+                        </Link>
+
+
+
                         <div className="row d-block d-sm-none">
                             <Link to="/create/speckle_spackle">
                                 <img className="col-6" src={speckle_spackle} style={{width : "inherit"}}/>
                             </Link>
+
+
+
                             <Link to="/create/unblock_me">
                                 <img className="col-6" src={unblock_me} style={{width : "inherit"}}/>
                             </Link>
                         </div>
+
+
                         <div className="row d-block d-sm-none">
                             <Link to="create/word_guess">
                                 <img className="col-6 offset-3" src={word_guess} style={{width : "inherit"}}/>
                             </Link>
                         </div>
                     </div>
+
+
                     <div className="col-1 col-sm-4">
                         <Link className="btn-block" to="/create/word_guess">
                             <img src={word_guess} className="d-none d-sm-block" style={{width : "inherit"}}/>
                             <button className="btn btn-outline-danger btn-block d-none d-sm-block">Word Guess</button>
                         </Link>
                     </div>
+
+
+
+
+
                 </div>
             </div>
         </div>
