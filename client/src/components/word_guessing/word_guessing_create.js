@@ -93,6 +93,7 @@ class WordGuessingCreate extends Component {
     }
 
     render() {
+        console.log("State at Render: ", this.state)
         const { startingWords, hiddenWord } = this.state;
         const startingWordsList = startingWords.map((item, index) => {
             if (index === 0) { return } 
@@ -137,7 +138,7 @@ class WordGuessingCreate extends Component {
                                 placeholder="...Give A Clue">
                             </input>
                         </ul>
-                        <button className="btn btn-outline-danger m-2 justify-content-center" onClick={this.addClue}>Add Clue</button>
+                        <button type="submit" className="btn btn-outline-danger m-2 justify-content-center">Add Clue</button>
                         <ul className="list-group">{startingWordsList}</ul>
                     </div>
                 </form>

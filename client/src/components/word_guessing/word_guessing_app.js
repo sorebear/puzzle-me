@@ -21,7 +21,7 @@ class WordGuessingApp extends Component {
             gameInfo : {
                 hiddenWord : "",
                 startingWords : [""],
-                size : null,
+                size : 0,
                 title : "Test Title"
             }
         }
@@ -31,10 +31,37 @@ class WordGuessingApp extends Component {
     }
 
     testPlay() {
+        const wordLength = this.testWordLength();
+        const clueLength = this.testClueLength();
         this.setState({
             showModal : "showModal",
-            modalInfo : "Go To Test Play?"
+            modalInfo : [wordLength, clueLength]
         })
+    }
+
+    testClueLength() {
+        const { startingWords, size } = this.state.gameInfo;
+        let counter = 0;
+        for (let i = 0; i < startingWords.length; i++) {
+            if (startingWords[i].length !== size || startingWords[i].length !== 0) {
+                counter++;
+            }
+        }
+        if (counter !== 0) {
+            return `${counter} of your word(s) are different lengths from your hidden word`
+        } else {
+            return null;
+        }
+    }
+
+    testWordLength() {
+        if (this.state.gameInfo.size < 4) {
+            return "Your word is shorter than 4 letters"
+        } else if (this.state.size > 6) {
+            return "Your word is longer than 6 letters"
+        } else {
+            return null;
+        }
     }
 
     close() {

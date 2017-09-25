@@ -89,13 +89,13 @@ export default class CreationStation extends Component {
             this.setState({
                 creationStack: [...creationStack],
             })
-        } else if (thisPieceBottom > this.state.creationBoardWidth + this.state.creationBoardTop) {
-            creationStack[ev.target.id].yPos = this.state.creationBoardBottom - pieceHeight;
+        } else if (thisPieceBottom > this.state.creationBoardWidth) {
+            creationStack[ev.target.id].yPos = this.state.creationBoardWidth - pieceHeight;
             this.setState({
                 creationStack: [...creationStack],
             })
-        } else if (thisPieceTop < this.state.creationBoardTop) {
-            creationStack[ev.target.id].yPos = this.state.creationBoardTop;
+        } else if (thisPieceTop < 0) {
+            creationStack[ev.target.id].yPos = 0;
             this.setState({
                 creationStack: [...creationStack],
             })
@@ -179,7 +179,7 @@ export default class CreationStation extends Component {
                                    onDrag={this.handleDragging}
                                    onStop={this.handleEnd}
                     >
-                        <div id={index} className={pieceType + ' gamePiece'} style={
+                        <div key={index} id={index} className={pieceType + ' gamePiece'} style={
                             {
                                 width: width,
                                 height: height,
@@ -244,15 +244,15 @@ export default class CreationStation extends Component {
                         {pieceArr}
                     </div>
 
-                    <div className="form-group">
-                        <label htmlFor="typeDropDown" className="dropDownLabel">Type:</label>
-                        <select className="form-control mr-1" id="typeDropDown">
+                    <div className="form-group-block justify-content-around align-items-center d-flex pt-4 pb-4" >
+                        <label htmlFor="typeDropDown" className="dropDownLabel m-0">Type:</label>
+                        <select className="form-control-unblock" id="typeDropDown">
                             <option>Vertical</option>
                             <option>Horizontal</option>
                         </select>
 
-                        <label htmlFor="sizeDropDown" className="dropDownLabel">Size:</label>
-                        <select className="form-control" id="sizeDropDown">
+                        <label htmlFor="sizeDropDown" className="dropDownLabel m-0">Size:</label>
+                        <select className="form-control-unblock" id="sizeDropDown">
                             <option>1.0</option>
                             <option>1.5</option>
                             <option>2.0</option>
@@ -264,8 +264,10 @@ export default class CreationStation extends Component {
                             <option>5.0</option>
                             <option>5.5</option>
                         </select>
-                        <button className="btn-outline-primary create_piece_button ml-1" onClick={this.createPiece}>Create</button>
-                        <button className="btn-outline-success unBlock_playButton float-right" onClick={this.instantiateGame}>Test Play</button>
+                        <button className="btn btn-outline-danger create_piece_button" onClick={this.createPiece}>Create</button>
+                    </div>
+                    <div className="justify-content-center d-flex">
+                        <button className="btn btn-outline-primary" style={{position: "fixed", bottom: "50px"}} onClick={this.instantiateGame}>Test Play</button>
                     </div>
                 </div>
             )
@@ -277,8 +279,8 @@ export default class CreationStation extends Component {
             return (
                 <div className="container gameArea">
                         <GameBoard pieceStack={playableStack}/>
-                        <div className="form-group">
-                            <button className="btn-outline-danger continue_edit_btn col-xs-6 col-sm-6" onClick={this.backToCreate}>Continue Editing</button>
+                        <div className="d-flex justify-content-center">
+                            <button className="btn btn-outline-danger" style={{position:"fixed", bottom:"50px"}} onClick={this.backToCreate}>Continue Editing</button>
                         </div>
                 </div>
             )

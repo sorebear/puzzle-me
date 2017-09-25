@@ -40,11 +40,11 @@
     font-size: 4vw;
 }
 
-.form-group{
-    background-color: black;
+.form-group-block {
+    background-color: transparent;
     height: 10vw;
 }
-.form-control{
+.form-control-block {
     padding: 0;
     display: inline-block;
     width: 20vw;

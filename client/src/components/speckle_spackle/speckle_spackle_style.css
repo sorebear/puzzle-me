@@ -124,6 +124,6 @@ i {
 
 @media screen and (orientation:landscape) {
     .gridSizeIcon {
-        width: inherit;
+        width: 95%;
     }
 }

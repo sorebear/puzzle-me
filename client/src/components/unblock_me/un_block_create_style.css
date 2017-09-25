@@ -36,15 +36,15 @@
 }
 
 .dropDownLabel{
-    color: red;
+    color: rgb(217,83,79);
     font-size: 4vw;
 }
 
-.form-group{
+.form-group-unblock {
     background-color: black;
     height: 10vw;
 }
-.form-control{
+.form-control-unblock {
     padding: 0;
     display: inline-block;
     width: 20vw;
@@ -53,26 +53,22 @@
     text-align: center;
 }
 #typeDropDown{
-    background-color: black;
-    border: 2px solid #0271d1;
-    color: #0271d1;
+    background-color: #222;
+    border: 2px solid white;
+    color: white;
     height: 7vw;
 }
 #sizeDropDown{
     height: 7vw;
-    background-color: black;
-    border:2px solid #0271d1;
-    color: #0271d1;
+    background-color: #222;
+    border:2px solid white;
+    color: white;
 }
 .create_piece_button{
     border-radius: 5px;
-    font-size: 4vw;
+    font-size: 3vw;
 }
-.unBlock_playButton{
-    border-radius: 5px;
-    font-size: 4vw;
-    background-color: black;
-}
+
 .continue_edit_btn{
     border-radius: 5px;
 }
