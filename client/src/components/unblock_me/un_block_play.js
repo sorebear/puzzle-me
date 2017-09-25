@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Draggable, { DraggableCore } from 'react-draggable';
-import './game_board_style.css';
+import './un_block_play_style.css';
 
 export default class extends Component {
     constructor(props){

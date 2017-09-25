@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import Draggable, { DraggableCore } from 'react-draggable';
-import GameBoard from './gameBoard'
-import Header from '../header';
-import Footer from '../footer';
-import './creation_station_style.css';
+import GameBoard from './un_block_play'
+
+import './un_block_create_style.css';
 
 export default class CreationStation extends Component {
     constructor(props) {

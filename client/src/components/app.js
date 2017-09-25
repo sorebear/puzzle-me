@@ -14,7 +14,7 @@ import WordGuessPlay from './word_guessing/word_guessing_play'
 import Rankings from './rankings';
 import Login from './login';
 
-import UnBlockApp from './unblock_me/unBlock_app'
+import UnBlockApp from './unblock_me/un_block_app'
 
 
 class App extends Component {
