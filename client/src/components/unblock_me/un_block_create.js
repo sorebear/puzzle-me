@@ -225,7 +225,6 @@ export default class CreationStation extends Component {
             return(
 
                 <div className="container gameArea">
-                    <Header/>
                     <div className="creationBoardDiv">
                         <DraggableCore
 
@@ -268,7 +267,6 @@ export default class CreationStation extends Component {
                         <button className="btn-outline-primary create_piece_button ml-1" onClick={this.createPiece}>Create</button>
                         <button className="btn-outline-success unBlock_playButton float-right" onClick={this.instantiateGame}>Test Play</button>
                     </div>
-                    <Footer/>
                 </div>
             )
         } else if(this.state.mode === "play") {
@@ -278,12 +276,10 @@ export default class CreationStation extends Component {
             })
             return (
                 <div className="container gameArea">
-                    <Header/>
                         <GameBoard pieceStack={playableStack}/>
                         <div className="form-group">
                             <button className="btn-outline-danger continue_edit_btn col-xs-6 col-sm-6" onClick={this.backToCreate}>Continue Editing</button>
                         </div>
-                    <Footer/>
                 </div>
             )
         }
