@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import SpeckleSpackleCreate from './speckle_spackle_create';
 import SpeckleSpackleTestPlay from './speckle_spackle_testplay';
 import CreateCheckModal from './create_check_modal';
-import './sudoku_style.css';
+import './speckle_spackle_style.css';
 
 class SpeckleSpackleApp extends Component {
     constructor(props) {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ColorSwatch from './color_swatch';
 import GameGrid from './game_grid';
-import './sudoku_style.css';
+import './speckle_spackle_style.css';
 import grid4 from '../imgs/grid4.png'
 import grid5 from '../imgs/grid5.png'
 import grid6 from '../imgs/grid6.png'
@@ -249,9 +249,9 @@ class SpeckleSpackleCreate extends Component {
                     {/* <button className="btn btn-outline-primary m-5">Test Play</button> */}
                 </div>
                 <div className="gutter">
-                        <img className="p-1 gridSizeIcon" onClick={() => this.createGrid(4)} src={grid4} />
-                        <img className="p-1 gridSizeIcon" onClick={() => this.createGrid(5)} src={grid5} />
-                        <img className="p-1 gridSizeIcon" onClick={() => this.createGrid(6)} src={grid6} />
+                        <img className="m-1 gridSizeIcon" onClick={() => this.createGrid(4)} src={grid4} />
+                        <img className="m-1 gridSizeIcon" onClick={() => this.createGrid(5)} src={grid5} />
+                        <img className="m-1 gridSizeIcon" onClick={() => this.createGrid(6)} src={grid6} />
                 </div>
             </div>
         )

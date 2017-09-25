@@ -69,7 +69,7 @@ class PlayMenu extends Component {
                         <td className="align-middle">{item.puzzle_name}</td>
                         <td><img src={this.gameTypes[item.type]} style={{height: "48px"}} /></td>
                         <td className="align-middle">{item.size}</td>
-                        <td className="align-middle">
+                        {/* <td className="align-middle">
                             <span style={{color: "rgb(92,184,92)"}}>
                                 {item.likes} <i className="fa fa-thumbs-o-up"></i> 
                             </span> 
@@ -77,7 +77,7 @@ class PlayMenu extends Component {
                             <span style={{color: "rgb(217,83,79)"}}>
                                 {item.dislikes} <i className="fa fa-thumbs-o-down"></i>
                             </span>
-                        </td>
+                        </td> */}
                         <td className="align-middle">{item.date_created.substr(0, 10)}</td>
                     </tr>
                 )
@@ -93,7 +93,7 @@ class PlayMenu extends Component {
                                 <th>Name</th>
                                 <th>Type</th>
                                 <th>Size</th>
-                                <th>Rating</th>
+                                {/* <th>Rating</th> */}
                                 <th>Created</th>
                             </tr>
                         </thead>

@@ -81,7 +81,6 @@ export default class extends Component {
                 canMoveUp: true,
                 canMoveDown: true
             })
-
      }
     handleDragStartY(ev){
         this.setState({
@@ -261,7 +260,7 @@ render() {
                                    onDrag={this.handleDraggingY}
                                    onStop={this.handleEndY}
                     >
-                        <div id={index} className={pieceType + ' gamePiece'} style={
+                        <div key={index} id={index} className={pieceType + ' gamePiece'} style={
                             {
                                 width: width,
                                 height: height,
@@ -285,7 +284,7 @@ render() {
                         onDrag={this.handleDragging}
                         onStop={this.handleEnd}
                     >
-                        <div id={index} className={pieceType + ' gamePiece'} style={
+                        <div key={index} id={index} className={pieceType + ' gamePiece'} style={
                             {
                                 width: width,
                                 height: height,

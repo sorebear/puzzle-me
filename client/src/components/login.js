@@ -33,8 +33,8 @@ class Login extends Component{
         return (
             <div>
                 <PageTitle backgroundImg="forestvalley" color="white" text="LOGIN" subText="enter your credentials below"/>
-                <div className="container">
-                    <form className="m-5">
+                <div className="container mt-5 text-center">
+                    {/* <form className="m-5">
                         <div className="form-group">
                             <label>Username</label>
                             <input type="text" className="form-control"/>
@@ -44,7 +44,7 @@ class Login extends Component{
                             <input type="text" className="form-control"/>
                         </div>
                         <button type="button" className="btn btn-default">Login</button>
-                    </form>
+                    </form> */}
                     <h1>Login with Facebook</h1>
                     <button className="loginBtn loginBtn--facebook" onClick={this.facebookLogin}>Login with Facebook</button>
                 </div>

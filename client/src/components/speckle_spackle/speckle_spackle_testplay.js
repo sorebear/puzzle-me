@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import GameGridPlay from './game_grid_play';
 import PlayCheckModal from './play_check_modal';
 import dummy_grid from './dummy_grid'
-import './sudoku_style.css';
+import './speckle_spackle_style.css';
 
 class SpeckleSpackleTestPlay extends Component {
     constructor(props) {
+        console.log("Props at Load", JSON.stringify(props));
         super(props);
         this.timeInt = null;
         this.state = {
@@ -125,7 +126,6 @@ class SpeckleSpackleTestPlay extends Component {
             showModal : "showModal",
             modalInfo : [this.state.timer]
         })
-        clearInterval(this.timeInt);
     }
 
     checkLeftClues(gameInfo, outerGridSize) {
@@ -249,7 +249,8 @@ class SpeckleSpackleTestPlay extends Component {
             <div className="pageContainer">
                 <PlayCheckModal info={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => {this.close()}} />
                 <div className="gutter align-items-center justify-content-center text-center">
-                    <h3>{timer}</h3>
+                    <i className="fa fa-clock-o swatch" style={{color: "white"}}></i>
+                    <h3 style={{fontSize: "3rem"}}>{timer}</h3>
                 </div>
                 <div className="mainDisplay">
                     <GameGridPlay gameInfo={{...gameInfo}} callback={this.gridIndexCallback} />
