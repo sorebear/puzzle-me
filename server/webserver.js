@@ -25,50 +25,50 @@ webserver.use(bodyParser.urlencoded({ extended: false }))
 webserver.use(bodyParser.json());
 webserver.use(express.static(path.resolve(__dirname, 'public')));
 
-// const pool = mysql.createPool(credentials);
-// pool.getConnection(function(err, conn){
-//    if(err) console.log("Error connecting to MySQL database");
-// });
-//
-// webserver.get('/puzzles', function(req, res){
-//     console.log("req.query.retrieve is: ", req.query.retrieve);
-//     if(req.query.retrieve){
-//         switch(req.query.retrieve) {
-//             case 'recent10':
-//                 getMostRecent10Puzzles(res);//grab 10 most recent puzzles from database
-//                 break;
-//             default:
-//                 console.log("unknown query value for puzzles key");
-//         }
-//     } else if (req.query.url_ext) {
-//         console.log("Request URL is: ", req.query.url_ext);
-//         getGamePlayInfo(res, req.query.url_ext);
-//     }
-//     else {
-//         console.log("Query key puzzles is not present");
-//     }
-// });
-//
-// function getGamePlayInfo(res, url_ext){
-//     console.log("Inside of getGamePlayInfo function");
-//     var query = `SELECT * FROM puzzles WHERE url_ext='${url_ext}'`
-//     console.log("QUERY is: ", query);
-//     pool.query(query, (err, rows, fields) => {
-//         if(err) console.log(err);
-//         else res.end(JSON.stringify({success: true, data: rows}));
-//     });
-// }
-//
-// function getMostRecent10Puzzles(res){
-//     var query = "SELECT p.puzzle_name, u.username AS creator, p.type, p.size, p.url_ext, p.likes, p.dislikes, p.date_created, p.puzzle_object, p.avg_time_to_complete " +
-//                 "FROM `puzzles` AS `p` " +
-//                 "JOIN `users` AS `u`" +
-//                 "ON p.creator_id = u.u_id";
-//     pool.query(query, (err, rows, fields) => {
-//         if(err) console.log(err);
-//         else res.end(JSON.stringify({success: true, data: rows}));
-//     });
-// }
+const pool = mysql.createPool(credentials);
+pool.getConnection(function(err, conn){
+   if(err) console.log("Error connecting to MySQL database");
+});
+
+webserver.get('/puzzles', function(req, res){
+    console.log("req.query.retrieve is: ", req.query.retrieve);
+    if(req.query.retrieve){
+        switch(req.query.retrieve) {
+            case 'recent10':
+                getMostRecent10Puzzles(res);//grab 10 most recent puzzles from database
+                break;
+            default:
+                console.log("unknown query value for puzzles key");
+        }
+    } else if (req.query.url_ext) {
+        console.log("Request URL is: ", req.query.url_ext);
+        getGamePlayInfo(res, req.query.url_ext);
+    }
+    else {
+        console.log("Query key puzzles is not present");
+    }
+});
+
+function getGamePlayInfo(res, url_ext){
+    console.log("Inside of getGamePlayInfo function");
+    var query = `SELECT * FROM puzzles WHERE url_ext='${url_ext}'`
+    console.log("QUERY is: ", query);
+    pool.query(query, (err, rows, fields) => {
+        if(err) console.log(err);
+        else res.end(JSON.stringify({success: true, data: rows}));
+    });
+}
+
+function getMostRecent10Puzzles(res){
+    var query = "SELECT p.puzzle_name, u.username AS creator, p.type, p.size, p.url_ext, p.likes, p.dislikes, p.date_created, p.puzzle_object, p.avg_time_to_complete " +
+                "FROM `puzzles` AS `p` " +
+                "JOIN `users` AS `u`" +
+                "ON p.creator_id = u.u_id";
+    pool.query(query, (err, rows, fields) => {
+        if(err) console.log(err);
+        else res.end(JSON.stringify({success: true, data: rows}));
+    });
+}
 // webserver.post('/login', function(req, res){
 //     //console.log("We received facebook data: ", req.body);
 //     //set the session cookie to have the facebook user id.
