@@ -65,7 +65,7 @@ class PlayMenu extends Component {
             const list = data.map((item, index) => {
                 return (
                     <tr key={index} onClick={() => {this.callModal(item)}}>
-                        <td className="align-middle">{index}</td>
+                        <td className="align-middle">{index + 1}</td>
                         <td className="align-middle">{item.puzzle_name}</td>
                         <td><img src={this.gameTypes[item.type]} style={{height: "48px"}} /></td>
                         <td className="align-middle">{item.size}</td>

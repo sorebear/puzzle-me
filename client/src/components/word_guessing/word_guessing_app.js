@@ -12,6 +12,7 @@ class WordGuessingApp extends Component {
         this.state = {
             showModal : "noModal",
             modalInfo : null,
+            dataRequested : false,
             testStyle : {
                 display : "block"
             },
@@ -31,19 +32,31 @@ class WordGuessingApp extends Component {
     }
 
     testPlay() {
-        const wordLength = this.testWordLength();
-        const clueLength = this.testClueLength();
         this.setState({
-            showModal : "showModal",
-            modalInfo : [wordLength, clueLength]
+            dataRequested: true
         })
     }
 
-    testClueLength() {
-        const { startingWords, size } = this.state.gameInfo;
+    gameInfoCallback = (gameInfoFromChild) => {
+        const wordLength = this.testWordLength(gameInfoFromChild.hiddenWord);
+        const clueLength = this.testClueLength(gameInfoFromChild.startingWords ,gameInfoFromChild.hiddenWord);
+        this.setState({
+            dataRequested : false,
+            showModal : "showModal",
+            modalInfo : [wordLength, clueLength],
+            gameInfo: {
+                hiddenWord : gameInfoFromChild.hiddenWord,
+                startingWords : [...gameInfoFromChild.startingWords],
+                size : `${gameInfoFromChild.hiddenWord.length}-Letter Word`,
+                title : this.state.title
+            },
+        })
+    }
+
+    testClueLength(startingWords, hiddenWord) {
         let counter = 0;
-        for (let i = 0; i < startingWords.length; i++) {
-            if (startingWords[i].length !== size || startingWords[i].length !== 0) {
+        for (let i = 1; i < startingWords.length; i++) {
+            if (startingWords[i].guess.length !== hiddenWord.length) {
                 counter++;
             }
         }
@@ -54,10 +67,10 @@ class WordGuessingApp extends Component {
         }
     }
 
-    testWordLength() {
-        if (this.state.gameInfo.size < 4) {
+    testWordLength(hiddenWord) {
+        if (hiddenWord.length < 4) {
             return "Your word is shorter than 4 letters"
-        } else if (this.state.size > 6) {
+        } else if (hiddenWord.length > 6) {
             return "Your word is longer than 6 letters"
         } else {
             return null;
@@ -93,23 +106,14 @@ class WordGuessingApp extends Component {
             })
         }
     }
-    gameInfoCallback = (gameInfoFromChild) => {
-        this.setState({
-            gameInfo: {
-                hiddenWord : gameInfoFromChild.hiddenWord,
-                startingWords : [...gameInfoFromChild.startingWords],
-                size : `${gameInfoFromChild.hiddenWord.length}-Letter Word`,
-                title : this.state.title
-            },
-        })
-    }
+
     render() {
-        const { testStyle, createStyle, gameInfo } = this.state
+        const { testStyle, createStyle, gameInfo, dataRequested } = this.state
         if (this.state.createStyle.display === "none") {
             return (
                 <div>
                     <CreateCheckModal info={this.state.modalInfo} play={() => this.changeVisibility()} showModal={this.state.showModal} closeModal={() => {this.close()}} />
-                    <WordGuessingCreate gameInfo={gameInfo} gameInfoCallback={this.gameInfoCallback} />    
+                    <WordGuessingCreate gameInfo={gameInfo} dataRequested={dataRequested} gameInfoCallback={this.gameInfoCallback} />    
                     <div className="play-test">
                         <button className="btn btn-outline-primary m-2" onClick={this.testPlay} style={testStyle}>Test Play</button>
                     </div>

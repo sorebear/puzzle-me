@@ -6,7 +6,12 @@ import './speckle_spackle_style.css';
 
 class SpeckleSpackleTestPlay extends Component {
     constructor(props) {
-        console.log("Props at Load", JSON.stringify(props));
+        console.log("Props at Load", JSON.stringify({
+            puzzle_name : "Puzz Puzz",
+            size : `${props.gameInfo.gridSize}x${props.gameInfo.gridSize}`,
+            type : 'speckle_spackle',
+            puzzle_object : props.gameInfo
+        }));
         super(props);
         this.timeInt = null;
         this.state = {
