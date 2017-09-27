@@ -20,7 +20,7 @@
         // This is called with the results from from FB.getLoginStatus().
         function statusChangeCallback(response) {
             console.log('statusChangeCallback');
-            console.log(response);
+            console.log("Facebook Response at Index: ", response);
             // The response object is returned with a status field that lets the
             // app know the current login status of the person.
             // Full docs on the response object can be found in the documentation
@@ -52,12 +52,12 @@
         // This function is called when someone finishes with the Login
         // Button.  See the onlogin handler attached to it in the sample
         // code below.
-        function checkLoginState() {
-            console.log("checkLoginState was called");
-            FB.getLoginStatus(function(response) {
-                statusChangeCallback(response);
-            });
-        }
+        // function checkLoginState() { TODO  
+            // console.log("checkLoginState was called");
+            // FB.getLoginStatus(function(response) {
+            //     statusChangeCallback(response);
+            // });
+        // }
 //        function facebookLogin(){
 //            FB.login(function(response){
 //                if(response.status === 'connected'){
@@ -72,7 +72,7 @@
 //        }
         window.fbAsyncInit = function() {
             FB.init({
-                appId      : '283817422120269',
+                appId      : '286280385163',
                 cookie     : true,  // enable cookies to allow the server to access
                                     // the session
                 xfbml      : true,  // parse social plugins on this page
@@ -105,6 +105,11 @@
             js.src = "//connect.facebook.net/en_US/sdk.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
+
+        // Check login status after loading in Javascript Facebook SDK
+        // FB.getLoginStatus(function(response) {
+        //     statusChangeCallback(response);
+        // });
 
         // Here we run a very simple test of the Graph API after login is
         // successful.  See statusChangeCallback() for when this call is made.

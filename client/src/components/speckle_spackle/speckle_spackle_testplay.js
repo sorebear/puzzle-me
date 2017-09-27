@@ -37,10 +37,21 @@ class SpeckleSpackleTestPlay extends Component {
             width: '70vw',
             overflow: 'hidden'
         }
+
+        this.URL_EXT = '/savepuzzle';
+        this.QUERY_KEY = 'url_ext';
+        this.QUERY_VAL = props.location.pathname.substr(22);
+
         this.gridIndexCallback = this.gridIndexCallback.bind(this);
         this.updateTimer = this.updateTimer.bind(this);
         this.evaluateAnswer = this.evaluateAnswer.bind(this);
         this.close = this.close.bind(this);
+    }
+
+    submitPuzzle() {
+        Axios.get(SERVER_BASE_ADDRESS + this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
+            console.log("Error Loading Puzzle: ", err);
+        });
     }
 
     changeVisibility() {

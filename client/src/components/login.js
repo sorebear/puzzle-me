@@ -14,6 +14,9 @@ class Login extends Component{
     }
     facebookLogin(){
         console.log("Facebooklogin called");
+        // FB.getLoginStatus(function(response) {
+        //     statusChangeCallback(response);
+        // });
         var auth = false;
         FB.login(function(response){
             console.log('We got a response from FB.login and it is: ', response);
@@ -34,17 +37,6 @@ class Login extends Component{
             <div>
                 <PageTitle backgroundImg="forestvalley" color="white" text="LOGIN" subText="enter your credentials below"/>
                 <div className="container mt-5 text-center">
-                    {/* <form className="m-5">
-                        <div className="form-group">
-                            <label>Username</label>
-                            <input type="text" className="form-control"/>
-                        </div>
-                        <div className="form-group">
-                            <label>Password</label>
-                            <input type="text" className="form-control"/>
-                        </div>
-                        <button type="button" className="btn btn-default">Login</button>
-                    </form> */}
                     <h1>Login with Facebook</h1>
                     <button className="loginBtn loginBtn--facebook" onClick={this.facebookLogin}>Login with Facebook</button>
                 </div>
