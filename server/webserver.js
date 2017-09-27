@@ -70,6 +70,31 @@ function getMostRecent10Puzzles(res){
         else res.end(JSON.stringify({success: true, data: rows}));
     });
 }
+
+// webserver.post('/login', function(req, res){
+//     //console.log("We received facebook data: ", req.body);
+//     //set the session cookie to have the facebook user id.
+//     var facebook_uid =  req.body.response.authResponse.userID;
+//     req.session.userid = facebook_uid;
+//     //check if the user is in the database, if not add them to it
+//     var query = `SELECT * FROM users WHERE facebook_u_id='${facebook_uid}'`;
+//     pool.query(query, (err,rows,fields) => {
+//         console.log("Here are the rows: ", rows);
+//         if(rows.length === 0){
+//             query = `INSERT INTO users (facebook_u_id) VALUES (${facebook_uid})`;
+//             pool.query(query, function(error, results){
+//                 if(error) console.log("Error inserting into users table: ", error);
+//                 else console.log("results.affectedRows is: ", results.affectedRows);
+//             });
+//         }
+//     });
+//     res.end("Successful Login");
+// });
+//
+// webserver.post('/create/word_guessing', function(req, res){
+//
+// });
+
 webserver.post('/login', function(req, res){
     //console.log("We received facebook data: ", req.body);
     //set the session cookie to have the facebook user id.
@@ -89,6 +114,7 @@ webserver.post('/login', function(req, res){
     });
     res.end("Successful Login");
 });
+
 webserver.post('/savepuzzle', function(req, res){
     console.log("req.query.retrieve is: ", req.query.retrieve);
     console.log("data: "+JSON.stringify(req.body));
@@ -110,7 +136,8 @@ webserver.post('/savepuzzle', function(req, res){
 		dislikes = 0,
 		date_created = NOW(),
 		total_plays = 0
-	`;
+    `;
+    
 	console.log(generatePuzzleID());
     pool.query(query, (err, rows, fields) => {
         if(err) console.log(err);
@@ -131,9 +158,6 @@ webserver.post('/savepuzzle', function(req, res){
     // else {
     //     console.log("Query key puzzles is not present");
     // }
-});
-webserver.post('/create/word_guessing', function(req, res){
-
 });
 
 webserver.get('/*', function(req, res){

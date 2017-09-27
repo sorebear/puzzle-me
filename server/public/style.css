@@ -1,3 +1,7 @@
+body {
+    background-color: lightgrey;
+}
+
 .icon-style {
     font-size: 20px;
     color: grey;
@@ -20,7 +24,6 @@
 }
 
 .card {
-    margin: 2%;
     padding: 2%;
 }
 
@@ -33,20 +36,23 @@
     left: 0;
     right: 0;
     bottom: 0;
+    z-index: 100;
 }
 
 .showModal > div:last-child {
     position: fixed;
-    top: 40%;
+    width: fit-content;
+    top: 48%;
     left: 50%;
-    transform: translate(-50%, -60%);
+    transform: translate(-50%, -52%);
+    z-index: 101;
 } 
 
 .noModal {
     display: none;
 }
 
-h2, button, a, .title {
+h2, h4, button, a, .title {
     font-family: 'Metamorphous', sans-serif;
 }
 
@@ -62,6 +68,12 @@ h2 {
     justify-content: center;
     align-items: center;
     margin-bottom: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.page-title * {
+    text-shadow: 1px 1px black;
 }
 
 .play-test {

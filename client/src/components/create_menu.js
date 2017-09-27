@@ -15,7 +15,7 @@ export default () => {
 
 
                     <div className="col-1 col-sm-4">
-                        <Link className="btn-block" to="/create/speckle_spackle">
+                        <Link style={{textDecoration: "none"}} className="btn-block" to="/create/speckle_spackle">
                             <img src={speckle_spackle} className="d-none d-sm-block" style={{width : "inherit"}}/>
                             <button className="btn btn-outline-danger btn-block d-none d-sm-block p-2">Speckle Spackle</button>
                         </Link>
@@ -23,7 +23,7 @@ export default () => {
 
 
                     <div className="col-10 col-sm-4">
-                        <Link className="btn-block" to="/create/unblock_me">
+                        <Link style={{textDecoration: "none"}} className="btn-block" to="/create/unblock_me">
                             <img src={unblock_me} className="d-none d-sm-block" style={{width : "inherit"}}/>
                             <button className="btn btn-outline-danger btn-block d-none d-sm-block">Unblock Me</button>
                         </Link>
@@ -52,7 +52,7 @@ export default () => {
 
 
                     <div className="col-1 col-sm-4">
-                        <Link className="btn-block" to="/create/word_guess">
+                        <Link style={{textDecoration: "none"}} className="btn-block" to="/create/word_guess">
                             <img src={word_guess} className="d-none d-sm-block" style={{width : "inherit"}}/>
                             <button className="btn btn-outline-danger btn-block d-none d-sm-block">Word Guess</button>
                         </Link>

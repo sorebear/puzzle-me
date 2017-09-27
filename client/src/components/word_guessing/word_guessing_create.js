@@ -13,8 +13,11 @@ class WordGuessingCreate extends Component {
         this.addClue = this.addClue.bind(this);
     }
 
-    passUpGameInfo () {
-        this.props.gameInfoCallback(this.state);
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.dataRequested) {
+            console.log("Componenet Has Received Props", this.state);
+            this.props.gameInfoCallback(this.state);
+        }
     }
 
     hiddenWordChangeHandler(event) {
@@ -49,7 +52,7 @@ class WordGuessingCreate extends Component {
         startingWords.splice(index, 1);
         this.setState({
             startingWords : [...startingWords]
-        })
+        });
     }
 
     handleClueSubmit(event) {
@@ -89,7 +92,6 @@ class WordGuessingCreate extends Component {
         this.setState({
             startingWords : [...updatedStartingWords]
         })
-        this.passUpGameInfo();
     }
 
     render() {
@@ -127,18 +129,18 @@ class WordGuessingCreate extends Component {
                     />
                 </form>
                 <br/>
-                <form onSubmit={this.addClue}>
+                <form onSubmit={(event) => this.addClue(event)}>
                     <div className="text-center">
                         <ul className="list-group">
                             <input
                                 onChange={this.clueChangeHandler}
-                                onBlur={() => this.evaluateClues([...this.state.startingWords])}
+                                onBlur={(event) => this.addClue(event)}
                                 className="form-control"
                                 value={startingWords[0]} 
                                 placeholder="...Give A Clue">
                             </input>
                         </ul>
-                        <button type="submit" className="btn btn-outline-danger m-2 justify-content-center">Add Clue</button>
+                        <button className="btn btn-outline-danger m-2 justify-content-center">Add Clue</button>
                         <ul className="list-group">{startingWordsList}</ul>
                     </div>
                 </form>
