@@ -163,7 +163,7 @@ webserver.post('/savepuzzle', function(req, res){
 webserver.get('/*', function(req, res){
     //console.log('gettting here');
     console.log('req.session is: ', req.session);
-    res.sendFile(__dirname + '/public/index.html');
+    res.sendFile(path.resolve(__dirname, '..', 'client', 'dist'));
 });
 
 webserver.listen(PORT, function(){
