@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import GameGridPlay from './game_grid_play';
 import PlayCheckModal from './play_check_modal';
-import dummy_grid from './dummy_grid'
 import './speckle_spackle_style.css';
 
 class SpeckleSpackleTestPlay extends Component {
@@ -38,20 +37,10 @@ class SpeckleSpackleTestPlay extends Component {
             overflow: 'hidden'
         }
 
-        this.URL_EXT = '/savepuzzle';
-        this.QUERY_KEY = 'url_ext';
-        this.QUERY_VAL = props.location.pathname.substr(22);
-
         this.gridIndexCallback = this.gridIndexCallback.bind(this);
         this.updateTimer = this.updateTimer.bind(this);
         this.evaluateAnswer = this.evaluateAnswer.bind(this);
         this.close = this.close.bind(this);
-    }
-
-    submitPuzzle() {
-        Axios.get(SERVER_BASE_ADDRESS + this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
-            console.log("Error Loading Puzzle: ", err);
-        });
     }
 
     changeVisibility() {
@@ -88,7 +77,7 @@ class SpeckleSpackleTestPlay extends Component {
 
     close() {
         this.setState({
-            showModal: "noModal"
+            showModal: "noModal",
         })
     }
 
@@ -266,13 +255,15 @@ class SpeckleSpackleTestPlay extends Component {
                 <PlayCheckModal info={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => {this.close()}} />
                 <div className="gutter align-items-center justify-content-center text-center">
                     <i className="fa fa-clock-o swatch" style={{color: "white"}}></i>
-                    <h3 style={{fontSize: "3rem"}}>{timer}</h3>
+                    <h3 style={{fontSize: "2rem", position:"absolute", opacity:".8"}}>{timer}</h3>
                 </div>
                 <div className="mainDisplay">
                     <GameGridPlay gameInfo={{...gameInfo}} callback={this.gridIndexCallback} />
                 </div>
                 <div className="gutter">
-                    <button onClick={this.evaluateAnswer} className="btn btn-outline-primary justify-content-center align-items-center">Check</button>
+                    <div>
+                        <button onClick={this.evaluateAnswer} className="btn btn-outline-primary justify-content-center align-items-center">Check</button>
+                    </div>
                 </div>
             </div>
         )
