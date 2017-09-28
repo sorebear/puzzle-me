@@ -26,7 +26,7 @@ class WordGuessingApp extends Component {
                 title : "Test Title"
             }
         }
-        this.BASE_URL = 'http://localhost:4000/puzzles';
+        this.BASE_URL = '/puzzles';
         this.QUERY_KEY = 'retrieve';
         this.QUERY_VAL = 'recent10';
     }
