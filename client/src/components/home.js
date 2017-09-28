@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PageTitle from './page_title';
-import Axios from 'axios';
+import axios from 'axios';
 import speckle_spackle from './imgs/speckle_spackle.png';
 import word_guess from './imgs/word_guess.png';
 import unblock_me from './imgs/unblock_me.png';
@@ -20,7 +20,7 @@ class HomePage extends Component {
             "unblock_me" : unblock_me,
             "speckle_spackle" : speckle_spackle
         }
-        this.BASE_URL = 'http://localhost:4000/puzzles';
+        this.BASE_URL = '/puzzles';
         this.QUERY_KEY = 'retrieve';
         this.QUERY_VAL = 'recent10';
         this.updateData = this.updateData.bind(this);
@@ -45,7 +45,7 @@ class HomePage extends Component {
     }
 
     getData() {
-        Axios.get(this.BASE_URL + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
+        axios.get(this.BASE_URL + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
             console.log("Error getting 10 most recent puzzles: ", err);
         });
     }
