@@ -24,7 +24,7 @@ webserver.use(cors());
 
 webserver.use(bodyParser.urlencoded({ extended: false }))
 webserver.use(bodyParser.json());
-webserver.use(express.static(path.resolve(__dirname, 'public')));
+webserver.use(express.static(path.resolve(__dirname, '..', 'client', 'dist')));
 
 const pool = mysql.createPool(credentials);
 pool.getConnection(function(err, conn){
