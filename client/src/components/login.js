@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PageTitle from './page_title';
 import './login_style.css';
-import Axios from 'axios';
+import axios from 'axios';
 
 class Login extends Component{
     constructor(props){
@@ -22,7 +22,7 @@ class Login extends Component{
             console.log('We got a response from FB.login and it is: ', response);
             if(response.status === 'connected'){
                 console.log("We are connected");
-                axios.post(SERVER_BASE_ADDRESS + '/login', {response}).then(function(response){
+                axios.post('/login', {response}).then(function(response){
                     window.location = SERVER_BASE_ADDRESS;
                 });
 

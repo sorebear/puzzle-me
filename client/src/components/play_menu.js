@@ -5,7 +5,7 @@ import PageTitle from './page_title';
 import speckle_spackle from './imgs/speckle_spackle.png';
 import word_guess from './imgs/word_guess.png';
 import unblock_me from './imgs/unblock_me.png';
-import Axios from 'axios';
+import axios from 'axios';
 
 class PlayMenu extends Component {
     constructor(props) {
@@ -31,7 +31,7 @@ class PlayMenu extends Component {
     }
 
     getData() {
-        Axios.get(SERVER_BASE_ADDRESS + this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
+        axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
             console.log("Error getting 10 most recent puzzles: ", err);
         });
     }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import DummyData from './puzzle_dummy_data';
 import PlayMenuModal from '../play_menu_modal';
 import PageTitle from './page_title';
-import Axios from 'axios';
+import axios from 'axios';
 import rankings_dummy_data from './rankings_dummy_data';
 
 class Rankings extends Component {
@@ -13,7 +13,7 @@ class Rankings extends Component {
             showModal : "noModal",
             data: rankings_dummy_data
         }
-        this.BASE_URL = 'http://localhost:4000/users';
+        this.BASE_URL = '/users';
         this.QUERY_KEY = 'retrieve';
         this.QUERY_VAL = 'recent10';
         this.updateData = this.updateData.bind(this);
@@ -47,7 +47,7 @@ class Rankings extends Component {
     }
 
     getData() {
-        Axios.get(this.BASE_URL + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
+        axios.get(this.BASE_URL + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
             console.log("Error getting 10 most recent puzzles: ", err);
         });
     }

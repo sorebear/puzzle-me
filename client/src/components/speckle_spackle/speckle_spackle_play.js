@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import GameGridPlay from './game_grid_play';
 import PlayCheckModal from './play_check_modal';
-import Axios from 'axios';
+import axios from 'axios';
 import './speckle_spackle_style.css';
 
 class SpeckleSpacklePlay extends Component {
@@ -40,7 +40,7 @@ class SpeckleSpacklePlay extends Component {
     }
 
     getData() {
-        Axios.get(SERVER_BASE_ADDRESS + this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
+        axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
             console.log("Error Loading Puzzle: ", err);
         });
     }
