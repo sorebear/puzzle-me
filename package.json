@@ -1,0 +1,21 @@
+{
+  "name": "puzzleme",
+  "version": "1.0.0",
+  "description": "A collection of fun puzzle games",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run dev --prefix client/",
+    "dev": "npm run start", 
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sNicolls/c717_puzzle_challenge.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sNicolls/c717_puzzle_challenge/issues"
+  },
+  "homepage": "https://github.com/sNicolls/c717_puzzle_challenge#readme"
+}

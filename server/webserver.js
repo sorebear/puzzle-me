@@ -24,7 +24,7 @@ webserver.use(cors());
 
 webserver.use(bodyParser.urlencoded({ extended: false }))
 webserver.use(bodyParser.json());
-webserver.use(express.static(path.resolve(__dirname, 'public')));
+webserver.use(express.static(path.resolve(__dirname, '..', 'client', 'dist')));
 
 const pool = mysql.createPool(credentials);
 pool.getConnection(function(err, conn){
@@ -163,7 +163,7 @@ webserver.post('/savepuzzle', function(req, res){
 webserver.get('/*', function(req, res){
     //console.log('gettting here');
     console.log('req.session is: ', req.session);
-    res.sendFile(__dirname + '/public/index.html');
+    res.sendFile(path.resolve(__dirname, '..', 'client', 'dist'));
 });
 
 webserver.listen(PORT, function(){
