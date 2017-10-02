@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-import InfoModal from './info_modal';
+import InfoModal from './info_modal/info_modal';
 
 import Header from '../header';
 import Footer from '../footer';
