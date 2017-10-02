@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
 import infoObject from './info_object';
-import eachPerRowCol from './ss-eachPerRowCol.gif'
-
-import ss_threeColors from './ss-threeColors.gif';
-import ss_eachPerRowCol from './ss-eachPerRowCol.gif';
-import ss_clickToChange from './ss-clickToChange.gif';
 
 class InfoModal extends Component {
     constructor(props) {
