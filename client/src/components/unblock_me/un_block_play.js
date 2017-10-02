@@ -56,6 +56,7 @@ export default class extends Component {
 
     //WHEN THE COMPONENT MOUNTS, SET BOARD WIDTH & ADJUST PIECE MAP TO PROPER SCALE
     componentDidMount(){
+        this.props.updateCurrentPath("unblock_me_play");
         const gameBoardWidth = document.getElementsByClassName("gameBoardDiv")[0].clientHeight;
         const gameBoardTop = document.getElementsByClassName("gameBoardDiv")[0].getBoundingClientRect().top;
         const gameBoardBottom = gameBoardTop + gameBoardWidth;

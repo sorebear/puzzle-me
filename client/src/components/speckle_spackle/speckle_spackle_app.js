@@ -43,6 +43,10 @@ class SpeckleSpackleApp extends Component {
         this.successfulSubmit = this.successfulSubmit.bind(this);
     }
 
+    componentWillMount() {
+        this.props.updateCurrentPath("speckle_spackle_create");
+    }
+
     submitPuzzle(req, res) {
         Axios.post(SERVER_BASE_ADDRESS + this.URL_EXT, {
             puzzle_name : this.state.puzzle_name,

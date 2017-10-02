@@ -22,6 +22,7 @@ class WordGuessPlay extends Component {
 
     componentWillMount() {
         this.getData();
+        this.props.updateCurrentPath("word_guessing_play");
     }
 
     getData() {

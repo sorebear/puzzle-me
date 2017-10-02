@@ -1,0 +1,15 @@
+
+
+.speckle_tut_1 {
+    animation: speckle-tut-1 6s steps(5) infinite alternate;
+    background-image: url(three-colors.png);
+    background-size: cover;
+    width: 100px;
+    height: 100px;
+
+}
+
+@keyframes speckle-tut-1 {
+    from {background-position: bottom;}
+    to   {background-position: top;}
+}

@@ -37,6 +37,7 @@ class SpeckleSpacklePlay extends Component {
 
     componentWillMount() {
         this.getData();
+        this.props.updateCurrentPath("speckle_spackle_play");
         this.timeInt = setInterval(this.updateTimer, 1000)
     }
 
