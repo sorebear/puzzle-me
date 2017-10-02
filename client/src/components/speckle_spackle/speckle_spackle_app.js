@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import SpeckleSpackleCreate from './speckle_spackle_create';
 import SpeckleSpackleTestPlay from './speckle_spackle_testplay';
 import CreateCheckModal from './create_check_modal';
+import SubmitModal from '../common_components/submit_modal';
+import Axios from 'axios';
 import './speckle_spackle_style.css';
 
 class SpeckleSpackleApp extends Component {
@@ -10,7 +12,11 @@ class SpeckleSpackleApp extends Component {
         this.state = {
             dataRequested : false,
             modalInfo : null,
+            submitModalInfo : null,
             showModal : "noModal",
+            showSubmitModal : "noModal",
+            puzzle_name : "Test Puzzle",
+            submitted: false,
             createStyle : {
                 display : "none"
             },
@@ -27,9 +33,49 @@ class SpeckleSpackleApp extends Component {
                 gameGrid : []
             }
         }
+        this.URL_EXT = '/savepuzzle';
+        this.submitPuzzle = this.submitPuzzle.bind(this);
         this.changeVisibility = this.changeVisibility.bind(this);
         this.checkPuzzleValidty = this.checkPuzzleValidty.bind(this);
         this.testPlay = this.testPlay.bind(this)
+        this.submitConfirmation = this.submitConfirmation.bind(this);
+        this.updatePuzzleName = this.updatePuzzleName.bind(this);
+        this.successfulSubmit = this.successfulSubmit.bind(this);
+    }
+
+    componentWillMount() {
+        this.props.updateCurrentPath("speckle_spackle_create");
+    }
+
+    submitPuzzle(req, res) {
+        Axios.post(SERVER_BASE_ADDRESS + this.URL_EXT, {
+            puzzle_name : this.state.puzzle_name,
+            type : "speckle_spackle",
+            size : `${this.state.gameInfo.gridSize}x${this.state.gameInfo.gridSize}`,
+            puzzle_object : this.state.gameInfo
+        }).then(this.successfulSubmit).catch(err => {
+            console.log("Error Loading Puzzle: ", err);
+        });
+    }
+
+    successfulSubmit() {
+        console.log("Puzzle Submitted!");
+        this.setState({
+            submitted: true
+        })
+    }
+
+    updatePuzzleName(responseFromModal) {
+        console.log("Receiving New Name:", responseFromModal)
+        this.setState({
+            puzzle_name : responseFromModal
+        })
+    }
+
+    submitConfirmation() {
+        this.setState({
+            showSubmitModal : "showModal",
+        })
     }
 
     testPlay() {
@@ -40,7 +86,8 @@ class SpeckleSpackleApp extends Component {
 
     close() {
         this.setState({
-            showModal: "noModal"
+            showModal: "noModal",
+            showSubmitModal: "noModal"
         })
     }
     
@@ -123,7 +170,7 @@ class SpeckleSpackleApp extends Component {
     }
 
     render() {
-        const { testStyle, createStyle, gameInfo, dataRequested } = this.state;
+        const { testStyle, createStyle, gameInfo, dataRequested, submitted } = this.state;
         if (createStyle['display'] === "none") {
             return (
                 <div>
@@ -137,10 +184,11 @@ class SpeckleSpackleApp extends Component {
         } else {
             return (
                 <div>
+                    <SubmitModal showModal={this.state.showSubmitModal} updatePuzzleName={this.updatePuzzleName} isSubmitted={submitted} submit={this.submitPuzzle} closeModal={() => {this.close()}} />
                     <SpeckleSpackleTestPlay gameInfo={JSON.parse(JSON.stringify(gameInfo))}/>    
                     <div className="play-test">
-                        <button className="btn btn-outline-primary m-2" onClick={this.changeVisibility} style={createStyle}>Back To Edit</button>
-                        <button className="btn btn-outline-danger m-2" style={createStyle}>Submit</button>
+                        <button type="button" className="btn btn-outline-primary m-2" onClick={this.changeVisibility} style={createStyle}>Back To Edit</button>
+                        <button type="button" className={`btn btn-outline-danger m-2`} onClick={submitted ? null : this.submitConfirmation} style={createStyle}>{submitted ? 'Submitted' : 'Submit'}</button>
                     </div>
                 </div>
             )

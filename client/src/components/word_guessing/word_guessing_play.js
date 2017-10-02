@@ -8,6 +8,7 @@ class WordGuessPlay extends Component {
             guess : "",
             guessHistory : null
         }
+        this.puzzle_name = null;
         this.hiddenWord = null
         this.numOfStartingWords = null
 
@@ -21,6 +22,7 @@ class WordGuessPlay extends Component {
 
     componentWillMount() {
         this.getData();
+        this.props.updateCurrentPath("word_guessing_play");
     }
 
     getData() {
@@ -30,11 +32,13 @@ class WordGuessPlay extends Component {
     }
 
     updateData(response){
-        const receivedData = response.data.data;
-        const gameInfo = JSON.parse(receivedData[0].puzzle_object);
+        const receivedData = response.data.data[0];
+        console.log("Received Data: ", receivedData);
+        const gameInfo = JSON.parse(receivedData.puzzle_object);
         gameInfo.startingWords.shift();
         this.hiddenWord = gameInfo.hiddenWord
         this.numOfStartingWords = gameInfo.startingWords.length;
+        this.puzzle_name = receivedData.puzzle_name;
         this.setState({
             guessHistory : gameInfo.startingWords
         });
@@ -130,15 +134,18 @@ class WordGuessPlay extends Component {
             }
         })
         return (
-            <div className="container mt-4">
-                <h3 className="text-center p-2">Guess This {this.hiddenWord.length}-Letter Word</h3>
-                <form onSubmit={this.handleSubmit}>
-                    <input onChange={this.onChangeHandler} maxLength={this.hiddenWord.length} value={this.state.guess} className="form-control"/>
-                    <div className="text-center">
-                        <button className="btn btn-outline-danger m-2">Guess</button>
-                        <ul className="list-group">{guessHistoryList}</ul>
-                    </div>
-                </form>
+            <div>
+                <h2 className="puzzle_name">{this.puzzle_name}</h2>
+                <div className="container mt-4">
+                    <h3 className="text-center p-2">Guess This {this.hiddenWord.length}-Letter Word</h3>
+                    <form onSubmit={this.handleSubmit}>
+                        <input onChange={this.onChangeHandler} maxLength={this.hiddenWord.length} value={this.state.guess} className="form-control"/>
+                        <div className="text-center">
+                            <button className="btn btn-outline-danger m-2">Guess</button>
+                            <ul className="list-group">{guessHistoryList}</ul>
+                        </div>
+                    </form>
+                </div>
             </div>
         )
     }

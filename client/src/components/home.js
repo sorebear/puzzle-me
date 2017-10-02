@@ -70,24 +70,28 @@ class HomePage extends Component {
             <div>
                 <HomeModal modalInfo={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => {this.close()}} />
                 <PageTitle backgroundImg="sunset" color="white" text="PUZZLE ME" subText=""/>
-                <h4 className="m-1 text-center">Today's Top 4</h4>
                 <div style={{margin : "auto"}} className="row">
-                    <div className="col-6 text-center">
-                        <img onClick={() => {this.callModal(data[0])}} className="m-2" src={this.gameTypes[data[0].type]} style={{maxHeight: "23vh", maxWidth: "40vw"}} />
-                        <div>{data[0].puzzle_name}</div>
-                        <img onClick={() => {this.callModal(data[2])}} className="m-2" src={this.gameTypes[data[2].type]} style={{maxHeight: "23vh", maxWidth: "40vw"}} />
-                        <div>{data[2].puzzle_name}</div>
-                    </div>
-                    <div className="col-6 text-center">
-                        <img onClick={() => {this.callModal(data[1])}} className="m-2" src={this.gameTypes[data[1].type]} style={{maxHeight: "23vh", maxWidth: "40vw"}} />
-                        <div>{data[1].puzzle_name}</div>
-                        <img onClick={() => {this.callModal(data[3])}} className="m-2" src={this.gameTypes[data[3].type]} style={{maxHeight: "23vh", maxWidth: "40vw"}} />
-                        <div>{data[3].puzzle_name}</div>
-                    </div>
+                    <h4 className="m-1 text-center w-100">Today's Top 4</h4>
+                        <div className="col-6 text-center">
+                            <img onClick={() => {this.callModal(data[0])}} className="m-2" src={this.gameTypes[data[0].type]} style={{maxHeight: "23vh", maxWidth: "40vw"}} />
+                            <div>{data[0].puzzle_name}</div>
+                        </div>
+                        <div className="col-6 text-center">
+                            <img onClick={() => {this.callModal(data[1])}} className="m-2" src={this.gameTypes[data[2].type]} style={{maxHeight: "23vh", maxWidth: "40vw"}} />
+                            <div>{data[2].puzzle_name}</div>
+                        </div>
+                        <div className="col-6 text-center">
+                            <img onClick={() => {this.callModal(data[2])}} className="m-2" src={this.gameTypes[data[1].type]} style={{maxHeight: "23vh", maxWidth: "40vw"}} />
+                            <div>{data[1].puzzle_name}</div>
+                        </div>
+                        <div className="col-6 text-center">
+                            <img onClick={() => {this.callModal(data[3])}} className="m-2" src={this.gameTypes[data[3].type]} style={{maxHeight: "23vh", maxWidth: "40vw"}} />
+                            <div>{data[3].puzzle_name}</div>
+                        </div>
                 </div>
             </div>
         )
     }
 }
 
-export default HomePage;
+export default HomePage
