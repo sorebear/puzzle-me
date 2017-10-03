@@ -22,7 +22,8 @@ class App extends Component {
         super(props);
         this.state = {
             showModal : "noModal",
-            currentPath : "home"
+            currentPath : "home",
+            currentTitle : ""
         }
         this.updateCurrentPath = this.updateCurrentPath.bind(this);
     }
@@ -44,9 +45,10 @@ class App extends Component {
         })
     }
 
-    updateCurrentPath(currentPath) {
+    updateCurrentPath(currentPath, currentTitle = "") {
         this.setState({
-            currentPath : currentPath
+            currentPath : currentPath,
+            currentTitle : currentTitle
         })
     }
 
@@ -54,9 +56,9 @@ class App extends Component {
         return (
             <div>
                 <InfoModal showModal={this.state.showModal} closeModal={() => {this.close()}} currentPath={this.state.currentPath} />
-                <Header callModal={() => {this.callModal()}}/>
-                <Route exact path="/" component={Home} />
-                <Route path="/home" component={Home} />
+                <Header currentTitle={this.state.currentTitle} callModal={() => {this.callModal()}}/>
+                <Route exact path="/" render={(props) => <Home {...props} updateCurrentPath={this.updateCurrentPath} />} />
+                <Route path="/home" render={(props) => <Home {...props} updateCurrentPath={this.updateCurrentPath} />} />
     
                 <Route exact path="/play" component={PlayMenu} />
                 <Route path="/play/word_guess" render={(props) => <WordGuessPlay {...props} updateCurrentPath={this.updateCurrentPath} />} />

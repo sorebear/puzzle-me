@@ -8,7 +8,6 @@ class SpeckleSpacklePlay extends Component {
     constructor(props) {
         super(props);
         this.timeInt = null;
-        this.puzzle_name = null;
         this.state = {
             modalInfo : null,
             showModal : "noModal",
@@ -37,7 +36,6 @@ class SpeckleSpacklePlay extends Component {
 
     componentWillMount() {
         this.getData();
-        this.props.updateCurrentPath("speckle_spackle_play");
         this.timeInt = setInterval(this.updateTimer, 1000)
     }
 
@@ -51,8 +49,8 @@ class SpeckleSpacklePlay extends Component {
         const receivedData = response.data.data[0];
         console.log("Received Data: ", receivedData)
         const receivedGameInfo = JSON.parse(receivedData.puzzle_object);
-        this.puzzle_name = receivedData.puzzle_name;
         receivedGameInfo.gameGrid = this.resetSquares([...receivedGameInfo.gameGrid])
+        this.props.updateCurrentPath("speckle_spackle_play", receivedData.puzzle_name);
         this.setState({
             gameInfo : receivedGameInfo
         });
@@ -263,7 +261,6 @@ class SpeckleSpacklePlay extends Component {
         return (
             <div className="pageContainer">
                 <PlayCheckModal info={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => {this.close()}} />
-                <h2 className="puzzle_name">{this.puzzle_name}</h2>
                 <div className="gutter align-items-center justify-content-center text-center">
                     <i className="fa fa-clock-o swatch m-1" style={{color: "white"}}></i>
                     <h3 style={{fontSize: "2rem", position:"absolute", opacity:".8"}}>{timer}</h3>

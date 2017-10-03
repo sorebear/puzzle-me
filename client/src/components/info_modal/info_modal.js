@@ -32,7 +32,6 @@ class InfoModal extends Component {
     }
     render() {
         const { infoObjectValue, infoIndex } = this.state;
-        console.log("IMG SRC: ", infoObjectValue.tutorial[infoIndex].animation)
         return (
             <div className={this.props.showModal}>
                 <div onClick={this.props.closeModal}></div>

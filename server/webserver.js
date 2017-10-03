@@ -206,6 +206,7 @@ webserver.post('/savepuzzle', function(req, res){
 });
 webserver.post('/puzzleComplete', function(req, res){
     let data = req.body;
+    console.log('puzzle data:', data);
     const HARDCODED_ID = 4;
     let user_id  = HARDCODED_ID;
     // console.log(req.body);
