@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Draggable, { DraggableCore } from 'react-draggable';
 import './un_block_style.css';
+import Axios from 'axios';
 
 export default class extends Component {
     constructor(props){
@@ -13,6 +14,8 @@ export default class extends Component {
         this.handleDragStartY = this.handleDragStartY.bind(this);
         this.handleDraggingY = this.handleDraggingY.bind(this);
         this.handleEndY = this.handleEndY.bind(this);
+
+        this.URL_EXT = '/savepuzzle';
 
         this.state = {
             gameBoardWidth: 0,
@@ -27,6 +30,7 @@ export default class extends Component {
             mouseCurrent: null,
 
             hasRendered: false,
+            createdStack: props.pieceStack,
             pieceMap: createPieceMap(props),
 
             canMoveRight: true,
@@ -108,7 +112,17 @@ export default class extends Component {
         const {pieceMap} = this.state;
 
         if(ev.target.id == 0 && this.state.pieceMap[ev.target.id].x + this.state.oneBoardUnit*2 > this.state.gameBoardWidth - 1){
-            prompt("YOU WON")
+
+            var puzzName = prompt("Enter name");
+            console.log(SERVER_BASE_ADDRESS + this.URL_EXT);
+            Axios.post(SERVER_BASE_ADDRESS + this.URL_EXT, {
+                puzzle_name : puzzName,
+                type : "unblock_me",
+                size : `6x6`,
+                puzzle_object : this.state.createdStack,
+            }).then(()=>{console.log("submitted")}).catch(err => {
+                console.log("Error Loading Puzzle: ", err);
+            });
         }
 
         //////
