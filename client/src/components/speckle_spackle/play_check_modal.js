@@ -13,6 +13,9 @@ function PlayCheckModal(props) {
                         <p className="card-text">  
                             You won in {props.info[0]} seconds!
                         </p>
+                        <p className="card-text">
+                            {props.error ? props.error : 'Your time has been submitted!'}
+                        </p>
                         <button type="button" onClick={props.closeModal} className="m-2 btn btn-outline-danger">Close</button>
                     </div>
                 </div>

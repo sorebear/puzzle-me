@@ -42,6 +42,7 @@ class HomePage extends Component {
 
     componentWillMount() {
         this.getData();
+        this.props.updateCurrentPath("home");
     }
 
     getData() {
@@ -78,11 +79,11 @@ class HomePage extends Component {
                         </div>
                         <div className="col-6 text-center">
                             <img onClick={() => {this.callModal(data[1])}} className="m-2" src={this.gameTypes[data[2].type]} style={{maxHeight: "23vh", maxWidth: "40vw"}} />
-                            <div>{data[2].puzzle_name}</div>
+                            <div>{data[1].puzzle_name}</div>
                         </div>
                         <div className="col-6 text-center">
                             <img onClick={() => {this.callModal(data[2])}} className="m-2" src={this.gameTypes[data[1].type]} style={{maxHeight: "23vh", maxWidth: "40vw"}} />
-                            <div>{data[1].puzzle_name}</div>
+                            <div>{data[2].puzzle_name}</div>
                         </div>
                         <div className="col-6 text-center">
                             <img onClick={() => {this.callModal(data[3])}} className="m-2" src={this.gameTypes[data[3].type]} style={{maxHeight: "23vh", maxWidth: "40vw"}} />
