@@ -53,13 +53,21 @@ export default class CreationStation extends Component {
     }
 
     handleDragStart(ev){
-        this.setState({
-            startPosY: ev.touches[0].clientY,
-            startPosX: ev.touches[0].clientX,
-        })
+        if(ev.type == 'touchstart') {
+            this.setState({
+                startPosY: ev.touches[0].clientY,
+                startPosX: ev.touches[0].clientX,
+            })
+        }else if(ev.type == 'mousedown'){
+            this.setState({
+                startPosY: ev.clientY,
+                startPosX: ev.clientX
+            })
+        }
     }
 
     handleDragging(ev) {
+
         const pieceWidth = this.state.creationStack[ev.target.id].width;
         const pieceHeight = this.state.creationStack[ev.target.id].height;
         const thisPieceLeft = this.state.creationStack[ev.target.id].xPos;
@@ -69,9 +77,18 @@ export default class CreationStation extends Component {
 
         var currentPositionX = this.state.creationStack[ev.target.id].xPos;
         var currentPositionY = this.state.creationStack[ev.target.id].yPos;
+        var moveX = null;
+        var moveY = null;
 
-        var moveX = ev.touches[0].clientX - this.state.startPosX;
-        var moveY = ev.touches[0].clientY - this.state.startPosY;
+        console.log("WIDDDDTH", ev.target)
+
+        if(ev.type == 'touchmove') {
+             moveX = ev.touches[0].clientX - this.state.startPosX;
+             moveY = ev.touches[0].clientY - this.state.startPosY;
+        } else if (ev.type == 'mousemove'){
+            moveX = ev.clientX - this.state.startPosX;
+            moveY = ev.clientY - this.state.startPosY;
+        }
 
         const {creationStack} = this.state;
 
@@ -103,11 +120,22 @@ export default class CreationStation extends Component {
             }
             creationStack[ev.target.id].xPos = currentPositionX + moveX;
             creationStack[ev.target.id].yPos = currentPositionY + moveY;
-            this.setState({
-                creationStack: [...creationStack],
-                startPosX: ev.touches[0].clientX,
-                startPosY: ev.touches[0].clientY
-            });
+
+
+            if(ev.type == 'touchmove') {
+                this.setState({
+                    creationStack: [...creationStack],
+                    startPosX: ev.touches[0].clientX,
+                    startPosY: ev.touches[0].clientY
+                });
+            } else if (ev.type == 'mousemove'){
+                this.setState({
+                    creationStack: [...creationStack],
+                    startPosX: ev.clientX,
+                    startPosY: ev.clientY
+                });
+            }
+
         }
     }
 
@@ -194,8 +222,6 @@ export default class CreationStation extends Component {
                 )
             }
         });
-
-
 
         if (this.state.mode === "create"){
             return(

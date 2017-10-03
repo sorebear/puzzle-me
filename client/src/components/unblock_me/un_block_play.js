@@ -115,6 +115,7 @@ export default class extends Component {
     }
 
     handleDragging(ev) {
+        ev.preventDefault();
         const pieceWidth = this.state.pieceMap[ev.target.id].width;
         const pieceHeight = this.state.pieceMap[ev.target.id].height;
         const thisPieceLeft = this.state.pieceMap[ev.target.id].x;
