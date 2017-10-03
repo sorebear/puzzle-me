@@ -60,6 +60,22 @@ function getGamePlayInfo(res, url_ext){
     });
 }
 
+function respondWithError(res, err){
+    res.end(JSON.stringify({success: false, errors: err}));
+}
+
+function getPuzzleInfoFromPuzzleURL(url_ext, callback){
+    var query = `SELECT * FROM puzzles WHERE url_ext='${url_ext}'`
+    console.log("QUERY is: ", query);
+    pool.query(query, (err, rows, fields) => {
+        if(err) {
+            respondWithError(res, err);
+        } else {
+            callback(rows[0]);
+        }
+    });    
+}
+
 function getMostRecent10Puzzles(res){
     var query = "SELECT p.puzzle_name, u.username AS creator, p.type, p.size, p.url_ext, p.likes, p.dislikes, p.date_created, p.puzzle_object, p.avg_time_to_complete " +
                 "FROM `puzzles` AS `p` " +
@@ -69,6 +85,44 @@ function getMostRecent10Puzzles(res){
         if(err) console.log(err);
         else res.end(JSON.stringify({success: true, data: rows}));
     });
+}
+
+function getPuzzleCompletionsByUser(user_id, puzzle_id, callback){
+    var query = `SELECT * FROM puzzleSolutionTimes WHERE user_id='${user_id}' AND puzzle_id='${puzzle_id}'`;
+    console.log('query = ',query);
+    pool.query(query, (err, rows, fields) => {
+        if(err) {
+            respondWithError(res, err);
+        }
+        else {
+            callback(rows);
+        }
+    });    
+}
+
+function calculatePuzzleRatings(res,callback){
+    let query = "SELECT puzzle_id, AVG(completionTime) AS average_time FROM puzzleSolutionTimes WHERE firstCompletion=1 AND status='enabled' GROUP BY puzzle_id";
+    pool.query(query, (err, rows, fields) => {
+        if(err) {
+            respondWithError(res, err);
+        }
+        else {
+            let combinedQuery = `
+            UPDATE puzzles SET 
+                avg_time_to_complete = CASE `;
+            rows.forEach(entry=>{
+                combinedQuery += `
+                    WHEN p_id = '${entry.puzzle_id}' THEN '${entry.average_time}'`;
+            });
+            combinedQuery+= `
+            ELSE avg_time_to_complete END`;
+            console.log(combinedQuery);
+            pool.query(combinedQuery, (err, rows, fields) =>{
+                callback(rows);
+            })
+            
+        }
+    }); 
 }
 
 // webserver.post('/login', function(req, res){
@@ -95,6 +149,13 @@ function getMostRecent10Puzzles(res){
 //
 // });
 
+webserver.get('/calculateRatings', function(req, res){
+    calculatePuzzleRatings(res,data=>{
+        console.log(data);
+        res.end(JSON.stringify(data));
+    })
+});
+
 webserver.post('/login', function(req, res){
     //console.log("We received facebook data: ", req.body);
     //set the session cookie to have the facebook user id.
@@ -116,8 +177,8 @@ webserver.post('/login', function(req, res){
 });
 
 webserver.post('/savepuzzle', function(req, res){
-    console.log("req.query.retrieve is: ", req.query.retrieve);
-    console.log("data: "+JSON.stringify(req.body));
+    // console.log("req.query.retrieve is: ", req.query.retrieve);
+    // console.log("data: "+JSON.stringify(req.body));
     let data = req.body;
     const HARDCODED_ID = 4;
     const HARDCODED_COMPLETE = 'yes';
@@ -138,28 +199,45 @@ webserver.post('/savepuzzle', function(req, res){
 		total_plays = 0
     `;
     
-	console.log(generatePuzzleID());
     pool.query(query, (err, rows, fields) => {
         if(err) console.log(err);
         else res.end(JSON.stringify({success: true, queryID: code}));
     });
-    // if(req.query.retrieve){
-    //     switch(req.query.retrieve) {
-    //         case 'recent10':
-    //             getMostRecent10Puzzles(res);//grab 10 most recent puzzles from database
-    //             break;
-    //         default:
-    //             console.log("unknown query value for puzzles key");
-    //     }
-    // } else if (req.query.url_ext) {
-    //     console.log("Request URL is: ", req.query.url_ext);
-    //     getGamePlayInfo(res, req.query.url_ext);
-    // }
-    // else {
-    //     console.log("Query key puzzles is not present");
-    // }
 });
-
+webserver.post('/puzzleComplete', function(req, res){
+    let data = req.body;
+    const HARDCODED_ID = 4;
+    let user_id  = HARDCODED_ID;
+    // console.log(req.body);
+    getPuzzleInfoFromPuzzleURL(data.queryID, puzzleData =>{
+        console.log(puzzleData);
+        getPuzzleCompletionsByUser(user_id, puzzleData.p_id, completionData=>{
+            if(completionData.length>0){
+                var first_puzzle = 0;
+            } else {
+                first_puzzle = 1;
+            }
+             let query = `INSERT INTO puzzleSolutionTimes SET 
+                user_id = '${HARDCODED_ID}',
+                puzzle_id = '${puzzleData.p_id}',
+                completionTime = '${data.completionTime}',
+                completionRegistered = NOW(),
+                status = 'enabled',
+                firstCompletion = ${first_puzzle}
+            `;
+            
+            pool.query(query, (err, rows, fields) => {
+                if(err){
+                    console.log(err);
+                }
+                else {
+                    res.end(JSON.stringify({success: true}))   
+                } ;
+            });
+        })
+      
+    });
+});
 webserver.get('/*', function(req, res){
     //console.log('gettting here');
     console.log('req.session is: ', req.session);
