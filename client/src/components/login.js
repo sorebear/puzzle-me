@@ -11,6 +11,7 @@ class Login extends Component{
             password: ''
         };
         this.facebookLogin = this.facebookLogin.bind(this);
+        this.HOME_ADDRESS = "/home";
     }
     facebookLogin(){
         console.log("Facebooklogin called");
@@ -23,9 +24,14 @@ class Login extends Component{
             if(response.status === 'connected'){
                 console.log("We are connected");
                 axios.post('/login', {response}).then(function(response){
-                    window.location = SERVER_BASE_ADDRESS;
+                    // console.log("The Complete Response", JSON.parse(response.config) );
+                    const receivedData = JSON.parse(response.config.data)
+                    console.log("Received Data: ", receivedData);
+                    const token = receivedData.response.authResponse.accessToken;
+                    console.log("User Access Token: ", token)
+                    localStorage.setItem('token', receivedData.response.authResponse.accessToken);
+                    // window.location = this.HOME_ADDRESS;
                 });
-
             }
             else{
                 console.log("Failed to log in via Facebook");

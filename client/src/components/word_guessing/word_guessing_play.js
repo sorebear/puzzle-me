@@ -25,7 +25,7 @@ class WordGuessPlay extends Component {
         this.GET_URL_EXT = '/puzzles';
         this.QUERY_KEY = 'url_ext';
         this.QUERY_VAL = props.location.pathname.substr(17); //retrieves the URL_EXT by pulling off the end of the current path
-        this.POST_URL_EXT = '/puzzleComplet';
+        this.POST_URL_EXT = '/puzzleComplete';
 
         //Bound Methods - to preserve the meaning of "THIS" to refer to the class WordGuessPlay
         this.updateData = this.updateData.bind(this);
