@@ -6,7 +6,7 @@ export default (props) => {
         <ul className="nav justify-content-around align-items-center footer">
             <li className="nav-item">
                 <NavLink to="/home" className="nav-link" >
-                    <i className="icon-style fa fa-home" onClick={() => props.updateCurrentPath("home_menu")}></i>
+                    <i className="icon-style fa fa-home" onClick={() => props.updateCurrentPath("home")}></i>
                 </NavLink>
             </li>
             <li className="nav-item">

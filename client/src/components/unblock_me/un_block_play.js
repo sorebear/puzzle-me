@@ -64,34 +64,35 @@ export default class extends Component {
         });
     }
 
-
     //WHEN THE COMPONENT MOUNTS, SET BOARD WIDTH & ADJUST PIECE MAP TO PROPER SCALE
     componentDidMount() {
-        console.log("DID MOUNT");
-        const gameBoardWidth = document.getElementsByClassName("gameBoardDiv")[0].clientHeight;
-        const gameBoardTop = document.getElementsByClassName("gameBoardDiv")[0].getBoundingClientRect().top;
-        const gameBoardBottom = gameBoardTop + gameBoardWidth;
-        const oneBoardUnit = document.getElementsByClassName("gameBoardDiv")[0].clientHeight / 6;
-        var correctedMap = [];
+        setTimeout(()=>{
+            console.log("STATE", this.state)
+            const gameBoardWidth = window.screen.width;
+            const gameBoardTop = 55;
+            const gameBoardBottom = gameBoardTop + gameBoardWidth;
+            const oneBoardUnit = gameBoardWidth / 6;
 
-        this.state.pieceMap.map((piece, index) => {
-            correctedMap.push({
-                x: piece.x * oneBoardUnit,
-                y: piece.y * oneBoardUnit + gameBoardTop,
-                type: piece.type,
-                width: piece.width * oneBoardUnit,
-                height: piece.height * oneBoardUnit
-            })
-        });
-        this.setState({
-            gameBoardWidth: gameBoardWidth,
-            oneBoardUnit: oneBoardUnit,
-            pieceMap: correctedMap,
-            gameBoardTop: gameBoardTop,
-            gameBoardBottom: gameBoardBottom
-        });
+            var correctedMap = [];
+
+            this.state.pieceMap.map((piece, index) => {
+                correctedMap.push({
+                    x: piece.x * oneBoardUnit,
+                    y: piece.y * oneBoardUnit + gameBoardTop,
+                    type: piece.type,
+                    width: piece.width * oneBoardUnit,
+                    height: piece.height * oneBoardUnit
+                })
+            });
+            this.setState({
+                gameBoardWidth: gameBoardWidth,
+                oneBoardUnit: oneBoardUnit,
+                pieceMap: correctedMap,
+                gameBoardTop: gameBoardTop,
+                gameBoardBottom: gameBoardBottom
+            });
+        }, 3000);
     }
-
 
     handleDragStart(ev) {
         this.setState({

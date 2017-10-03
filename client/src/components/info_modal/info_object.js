@@ -5,6 +5,7 @@ import wg_clueMeanings from './wg-clueMeanings.gif';
 import wg_lengthMustMatch from './wg-lengthMustMatch.gif';
 import wg_startingClues from './wg-startingClues.png';
 import wg_winInFewestGuesses from './wg-winInFewestGuesses.gif';
+import wg_hiddenWord from './wg-hiddenWord.gif';
 
 const InfoObject = {
     home : {
@@ -81,6 +82,10 @@ const InfoObject = {
     word_guess_play : {
         name : 'Playing Word Guess',
         tutorial : [
+            {
+                animation : wg_hiddenWord,
+                text: `You are trying to guess a hidden word between 4 and 6 letters long.`
+            },
             {
                 animation : wg_lengthMustMatch,
                 text: `Your guess must match the word length specified.`
