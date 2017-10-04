@@ -29,9 +29,8 @@ class WordGuessingApp extends Component {
                 title : "Test Title"
             }
         }
-        this.BASE_URL = '/puzzles';
-        this.QUERY_KEY = 'retrieve';
-        this.QUERY_VAL = 'recent10';
+        this.URL_EXT = '/savepuzzle';
+
         this.changeVisibility = this.changeVisibility.bind(this);
         this.close = this.close.bind(this);
         this.testPlay = this.testPlay.bind(this);
@@ -42,7 +41,7 @@ class WordGuessingApp extends Component {
     }
 
     componentWillMount() {
-        this.props.updateCurrentPath("word_guess_create")
+        this.props.updateCurrentPath("word_guess_create", '', 'create', [this.testPlay, this.changeVisibility, this.submitPuzzle]);
     }
 
     submitPuzzle(req, res) {
@@ -52,7 +51,7 @@ class WordGuessingApp extends Component {
             size : `${this.state.gameInfo.hiddenWord.length}-Letter`,
             puzzle_object : this.state.gameInfo
         }).then(this.successfulSubmit).catch(err => {
-            console.log("Error Loading Puzzle: ", err);
+            console.log("Error Submitting Puzzle: ", err);
         });
     }
 
@@ -91,12 +90,14 @@ class WordGuessingApp extends Component {
 
     changeVisibility() {
         if (this.state.testStyle.display === "block") {
+            this.props.updateCurrentPath("word_guess_create", '', 'testplay', [this.testPlay, this.changeVisibility, this.submitPuzzle]);
             this.setState({
                 showModal : "noModal",
                 createStyle : { display : "block" },
                 testStyle : { display : "none" }
             })
         } else {
+            this.props.updateCurrentPath("word_guess_create", '', 'create', [this.testPlay, this.changeVisibility, this.submitPuzzle]);
             this.setState({
                 showModal : "noModal",
                 createStyle : { display : "none"},
@@ -152,9 +153,6 @@ class WordGuessingApp extends Component {
                 <div>
                     <CreateCheckModal info={this.state.modalInfo} play={() => this.changeVisibility()} showModal={this.state.showModal} closeModal={() => {this.close()}} />
                     <WordGuessingCreate gameInfo={gameInfo} dataRequested={dataRequested} gameInfoCallback={this.gameInfoCallback} />    
-                    <div className="play-test">
-                        <button className="btn btn-outline-primary m-2" onClick={this.testPlay} style={testStyle}>Test Play</button>
-                    </div>
                 </div>
             )
         } else {
@@ -162,10 +160,6 @@ class WordGuessingApp extends Component {
                 <div>
                     <SubmitModal showModal={this.state.showSubmitModal} updatePuzzleName={this.updatePuzzleName} isSubmitted={submitted} submit={this.submitPuzzle} closeModal={() => {this.close()}} />
                     <WordGuessingTestPlay gameInfo={gameInfo}/>    
-                    <div className="play-test">
-                        <button type="button" className="btn btn-outline-primary m-2" onClick={this.changeVisibility} style={createStyle}>Back To Edit</button>
-                        <button type="button" className="btn btn-outline-danger m-2" onClick={submitted ? null : this.submitConfirmation} style={createStyle}>{submitted ? 'Submitted' : 'Submit Puzzle'}</button>
-                    </div>
                 </div>
             )
         }

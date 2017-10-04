@@ -7,13 +7,9 @@ export default class extends Component {
         super(props);
     }
 
-    componentWillMount() {
-        this.props.updateCurrentPath("unblock_me_create")
-    }
-
     render() {
         return (
-            <CreationStation />
+            <CreationStation updateCurrentPath={this.props.updateCurrentPath}/>
         )
     }
 }

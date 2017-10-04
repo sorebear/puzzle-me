@@ -14,18 +14,20 @@ body {
 
 .footer, .header {
     background-color: #222;
-    width: 100%;
 }
 
 .header {
     top: 0;
     height: 55px;
+    width: 100%;    
 }
 
 .footer {
     bottom: 0;
     position: fixed;
     height: 45px;
+    width: 200%;
+    transition: 1s;
 }
 
 .card {
@@ -59,19 +61,28 @@ body {
     top: 48%;
     left: 50%;
     transform: translate(-50%, -52%);
+    transition: .75s;
     z-index: 101;
-} 
+}
+
+.noModal > div:last-child {
+    transform: translate(-50%, -250%);
+}
+
+.noModal > div:first-child {
+    position: fixed;
+    bottom: -150%;
+    top: 250%;
+}
+
+.noModal {
+    position: absolute
+}
 
 @media screen and (orientation:landscape) {
     .showModal > div:last-child {
         max-width: 500px;
     } 
-}
-
-
-
-.noModal {
-    display: none;
 }
 
 h2, h4, button, a, .title {

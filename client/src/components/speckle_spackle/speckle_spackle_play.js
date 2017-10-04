@@ -52,11 +52,10 @@ class SpeckleSpacklePlay extends Component {
 
     updateData(response){
         const receivedData = response.data.data[0];
-        console.log("Received Data", receivedData);
         const receivedGameInfo = JSON.parse(receivedData.puzzle_object);
         this.queryID = receivedData.url_ext
         receivedGameInfo.gameGrid = this.resetSquares([...receivedGameInfo.gameGrid])
-        this.props.updateCurrentPath("speckle_spackle_play", receivedData.puzzle_name);
+        this.props.updateCurrentPath("speckle_spackle_play", receivedData.puzzle_name, 'play', [this.evaluateAnswer]);
         this.setState({
             gameInfo : receivedGameInfo
         });
@@ -302,9 +301,6 @@ class SpeckleSpacklePlay extends Component {
                     <GameGridPlay gameInfo={{...gameInfo}} callback={this.gridIndexCallback} />
                 </div>
                 <div className="gutter align-items-center">
-                    <div>
-                        <button onClick={this.evaluateAnswer} className="btn btn-outline-primary justify-content-center align-items-center">Check</button>
-                    </div>
                 </div>
             </div>
         )
