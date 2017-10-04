@@ -67,6 +67,8 @@ export default class CreationStation extends Component {
     }
 
     handleDragging(ev) {
+        console.log(ev)
+
 
         const pieceWidth = this.state.creationStack[ev.target.id].width;
         const pieceHeight = this.state.creationStack[ev.target.id].height;
@@ -79,8 +81,6 @@ export default class CreationStation extends Component {
         var currentPositionY = this.state.creationStack[ev.target.id].yPos;
         var moveX = null;
         var moveY = null;
-
-        console.log("WIDDDDTH", ev.target)
 
         if(ev.type == 'touchmove') {
              moveX = ev.touches[0].clientX - this.state.startPosX;
