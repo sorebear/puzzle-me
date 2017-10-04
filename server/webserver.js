@@ -239,10 +239,10 @@ webserver.post('/puzzleComplete', function(req, res){
       
     });
 });
-webserver.get('/*', function(req, res){
-    //console.log('gettting here');
-    console.log('req.session is: ', req.session);
-    res.sendFile(path.resolve(__dirname, '..', 'client', 'dist'));
+webserver.get('*', function(req, res){
+    // console.log('gettting here');
+    // console.log('req.session is: ', req.session);
+    res.sendFile(path.resolve(__dirname, '..', 'client', 'dist', 'index.html'));
 });
 
 webserver.listen(PORT, function(){

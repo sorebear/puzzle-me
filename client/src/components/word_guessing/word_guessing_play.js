@@ -24,7 +24,7 @@ class WordGuessPlay extends Component {
         //Information needed to make an Axios Call to the Server
         this.GET_URL_EXT = '/puzzles';
         this.QUERY_KEY = 'url_ext';
-        this.QUERY_VAL = props.location.pathname.substr(17); //retrieves the URL_EXT by pulling off the end of the current path
+        this.QUERY_VAL = props.match.params.game_id; //retrieves the URL_EXT by pulling off the end of the current path
         this.POST_URL_EXT = '/puzzleComplete';
 
         //Bound Methods - to preserve the meaning of "THIS" to refer to the class WordGuessPlay
