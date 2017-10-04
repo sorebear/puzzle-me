@@ -46,6 +46,7 @@ export default class extends Component {
         const QUERY_VAL = this.props.location.pathname.substr(17);
 
         Axios.get(URL_EXT + '?' + QUERY_KEY + '=' + QUERY_VAL).then((resp) => {
+            this.props.updateCurrentPath("unblock_me_play", resp.data.data[0].puzzle_name);
             const gameData = JSON.parse(resp.data.data[0].puzzle_object);
             const starterPiece = {y: 1, x: 0, type: "unBlock_starterPiece", width: 2, height: 1};
             var pieceMap = [starterPiece];
