@@ -114,7 +114,6 @@ export default class extends Component {
         })
     }
     handleDragging(ev) {
-        console.log(ev.type)
         //ev.preventDefault();
         const pieceWidth = this.state.pieceMap[ev.target.id].width;
         const pieceHeight = this.state.pieceMap[ev.target.id].height;

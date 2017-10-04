@@ -28,6 +28,7 @@ export default class CreationStation extends Component {
             canMoveLeft: true,
 
             hasRendered: false,
+            numbers: 1,
 
             creationStack: [],
         };
@@ -40,6 +41,7 @@ export default class CreationStation extends Component {
 
     }
     componentDidMount(){
+        //console.log("MAIN WINDOW", document.getElementsByClassName("mainViewingWindow"))
         const creationBoardWidth = document.getElementsByClassName("creationBoardDiv")[0].clientHeight;
         const creationBoardTop = document.getElementsByClassName("creationBoardDiv")[0].getBoundingClientRect().top;
         const creationBoardBottom = creationBoardTop + creationBoardWidth;
@@ -67,20 +69,20 @@ export default class CreationStation extends Component {
     }
 
     handleDragging(ev) {
-        console.log(ev)
-
 
         const pieceWidth = this.state.creationStack[ev.target.id].width;
         const pieceHeight = this.state.creationStack[ev.target.id].height;
         const thisPieceLeft = this.state.creationStack[ev.target.id].xPos;
         const thisPieceRight = this.state.creationStack[ev.target.id].xPos + pieceWidth;
         const thisPieceTop = this.state.creationStack[ev.target.id].yPos;
-        const thisPieceBottom = this.state.creationStack[ev.target.id].yPos + pieceHeight;
+        const thisPieceBottom = (this.state.creationStack[ev.target.id].yPos + pieceHeight)/10;
 
         var currentPositionX = this.state.creationStack[ev.target.id].xPos;
         var currentPositionY = this.state.creationStack[ev.target.id].yPos;
         var moveX = null;
         var moveY = null;
+        console.log("STATEEEEEE", this.state.creationStack[ev.target.id].yPos);
+        console.log(thisPieceBottom)
 
         if(ev.type == 'touchmove') {
              moveX = ev.touches[0].clientX - this.state.startPosX;
@@ -93,16 +95,19 @@ export default class CreationStation extends Component {
         const {creationStack} = this.state;
 
         if (thisPieceRight > this.state.creationBoardWidth && this.state.canMoveRight === true) {
+            console.log("TRUE");
             creationStack[ev.target.id].xPos = this.state.creationBoardWidth - pieceWidth;
             this.setState({
                 creationStack: [...creationStack],
             })
         } else if (thisPieceLeft < 0) {
+            console.log("LEFT");
             creationStack[ev.target.id].xPos = 0;
             this.setState({
                 creationStack: [...creationStack],
             })
         } else if (thisPieceBottom > this.state.creationBoardWidth) {
+            console.log("BOTTOM");
             creationStack[ev.target.id].yPos = this.state.creationBoardWidth - pieceHeight;
             this.setState({
                 creationStack: [...creationStack],
@@ -144,7 +149,7 @@ export default class CreationStation extends Component {
         var newStack = this.state.creationStack;
         switch(document.getElementById("typeDropDown").value){
             case "Vertical":
-                newStack.push({type: "unBlock_tallPiece", xPos: 0, yPos: 0, height: this.state.creationBoardUnit*pieceSize, width: this.state.creationBoardUnit});
+                newStack.push({type: "unBlock_tallPiece", xPos: 0, yPos: 0, height: pieceSize, width: 1});
                 break;
             case "Horizontal":
                 newStack.push({type: "unBlock_longPiece", xPos: 0, yPos: 0, height: this.state.creationBoardUnit, width: this.state.creationBoardUnit*pieceSize})
@@ -169,6 +174,9 @@ export default class CreationStation extends Component {
 
     render() {
 
+        var boardWidth = window.innerWidth;
+        var boardUnit = boardWidth / 6;
+
         var pieceArr = [];
         this.state.creationStack.map((piece, index) => {
             const pieceType = piece.type;
@@ -185,8 +193,8 @@ export default class CreationStation extends Component {
                     >
                         <div key={index} id={index} className={pieceType + ' gamePiece'} style={
                             {
-                                width: width,
-                                height: height,
+                                width: boardUnit*width,
+                                height: boardUnit*height,
                                 top: yPos,
                                 left: xPos,
                             }
@@ -226,7 +234,7 @@ export default class CreationStation extends Component {
         if (this.state.mode === "create"){
             return(
 
-                <div className="container gameArea">
+                <div className="container gameArea" style={{width: boardWidth}}>
                     <div className="creationBoardDiv">
                         <DraggableCore
 
@@ -234,10 +242,10 @@ export default class CreationStation extends Component {
                             <div
                                 className="starterPiece gamePiece" style={
                                 {
-                                    top: this.state.creationBoardUnit*2 ,
+                                    top: boardUnit*2 ,
                                     left: 0,
-                                    width: this.state.creationBoardUnit*2,
-                                    height: this.state.creationBoardUnit,
+                                    width: boardUnit*2,
+                                    height: boardUnit,
                                 }
                             }
                             >
