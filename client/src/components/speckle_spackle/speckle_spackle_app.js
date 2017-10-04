@@ -44,7 +44,7 @@ class SpeckleSpackleApp extends Component {
     }
 
     componentWillMount() {
-        this.props.updateCurrentPath("speckle_spackle_create");
+        this.props.updateCurrentPath("speckle_spackle_create", '', 'create', [this.testPlay, this.changeVisibility, this.submitConfirmation]);
     }
 
     submitPuzzle(req, res) {
@@ -93,12 +93,14 @@ class SpeckleSpackleApp extends Component {
     
     changeVisibility() {
         if (this.state.testStyle.display === "block") {
+            this.props.updateCurrentPath("speckle_spackle_create", '', 'testplay', [this.testPlay, this.changeVisibility, this.submitConfirmation]);
             this.setState({
                 createStyle : {display : "block"},
                 testStyle : {display : "none"},
                 showModal : "noModal"
             })
         } else {
+            this.props.updateCurrentPath("speckle_spackle_create", '', 'create', [this.testPlay, this.changeVisibility, this.submitConfirmation]);
             this.setState({
                 createStyle : {display : "none"}, 
                 testStyle : {display : "block"},
@@ -176,9 +178,6 @@ class SpeckleSpackleApp extends Component {
                 <div>
                     <CreateCheckModal info={this.state.modalInfo} play={() => this.changeVisibility()} showModal={this.state.showModal} closeModal={() => {this.close()}} />
                     <SpeckleSpackleCreate gameInfo={{...gameInfo}} gameInfoCallback={this.gameInfoCallback} dataRequested={dataRequested} />    
-                    <div className="play-test">
-                        <button className="btn btn-outline-primary m-2" onClick={this.testPlay} style={testStyle}>Test Play</button>
-                    </div>
                 </div>
             )
         } else {
@@ -186,10 +185,6 @@ class SpeckleSpackleApp extends Component {
                 <div>
                     <SubmitModal showModal={this.state.showSubmitModal} updatePuzzleName={this.updatePuzzleName} isSubmitted={submitted} submit={this.submitPuzzle} closeModal={() => {this.close()}} />
                     <SpeckleSpackleTestPlay gameInfo={JSON.parse(JSON.stringify(gameInfo))}/>    
-                    <div className="play-test">
-                        <button type="button" className="btn btn-outline-primary m-2" onClick={this.changeVisibility} style={createStyle}>Back To Edit</button>
-                        <button type="button" className={`btn btn-outline-danger m-2`} onClick={submitted ? null : this.submitConfirmation} style={createStyle}>{submitted ? 'Submitted' : 'Submit'}</button>
-                    </div>
                 </div>
             )
         }

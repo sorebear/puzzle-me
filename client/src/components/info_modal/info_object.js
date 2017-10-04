@@ -113,11 +113,11 @@ const InfoObject = {
             },
             {
                 animation : wg_lengthMustMatch,
-                text: `Your guess must match the word length specified.`
+                text: `Your guess length must match the word length specified.`
             },
             {
                 animation : wg_clueMeanings,
-                text: `The first number is how many letters are correct. The second is how many are ALSO in the correct position.`
+                text: `You will get feedback on your guess. The first number is how many letters are correct. The second is how many are ALSO in the correct position.`
             },
             {
                 animation : wg_startingClues,

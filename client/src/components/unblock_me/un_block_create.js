@@ -40,6 +40,7 @@ export default class CreationStation extends Component {
 
     }
     componentDidMount(){
+        this.props.updateCurrentPath("unblock_me_create", '', 'create', [this.instantiateGame, this.backToCreate])
         const creationBoardWidth = document.getElementsByClassName("creationBoardDiv")[0].clientHeight;
         const creationBoardTop = document.getElementsByClassName("creationBoardDiv")[0].getBoundingClientRect().top;
         const creationBoardBottom = creationBoardTop + creationBoardWidth;
