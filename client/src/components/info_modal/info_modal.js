@@ -35,12 +35,12 @@ class InfoModal extends Component {
         return (
             <div className={this.props.showModal}>
                 <div onClick={this.props.closeModal}></div>
-                <div className="card p-5">
+                <div className="card p-5 text-center">
                     <div className="card-body">
                         <h4 className="card-title">{infoObjectValue.name}</h4>
                         <img src={infoObjectValue.tutorial[infoIndex].animation} style={{width: "100%", maxWidth: "300px"}}/>
-                        <p>{infoObjectValue.tutorial[infoIndex].text}</p>
-                        <button type="button" onClick={this.props.closeModal} className="m-2 btn btn-outline-danger">Cancel</button>
+                        <p className="mt-2">{infoObjectValue.tutorial[infoIndex].text}</p>
+                        <button type="button" onClick={this.props.closeModal} className="m-2 btn btn-outline-danger">Close</button>
                         <button type="button" onClick={this.incrementInfoIndex} className="m-2 btn btn-outline-primary">Next</button>
                     </div>
                 </div>

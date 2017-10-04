@@ -26,7 +26,7 @@ class SpeckleSpacklePlay extends Component {
 
         this.URL_EXT = '/puzzles';
         this.QUERY_KEY = 'url_ext';
-        this.QUERY_VAL = props.location.pathname.substr(22);
+        this.QUERY_VAL = props.match.params.game_id;
         this.POST_URL_EXT = '/puzzleComplete';
         this.queryID = null;
 
@@ -51,11 +51,10 @@ class SpeckleSpacklePlay extends Component {
     }
 
     updateData(response){
-        console.log("Update Data Called");
         const receivedData = response.data.data[0];
         console.log("Received Data", receivedData);
         const receivedGameInfo = JSON.parse(receivedData.puzzle_object);
-        this.queryID = receivedData.url_ext;
+        this.queryID = receivedData.url_ext
         receivedGameInfo.gameGrid = this.resetSquares([...receivedGameInfo.gameGrid])
         this.props.updateCurrentPath("speckle_spackle_play", receivedData.puzzle_name);
         this.setState({
