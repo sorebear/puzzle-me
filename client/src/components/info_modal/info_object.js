@@ -1,6 +1,11 @@
 import ss_threeColors from './ss-threeColors.gif';
 import ss_eachPerRowCol from './ss-eachPerRowCol.gif';
+import ss_clueMatch from './ss-clueMatch.gif'
+import ss_clueMatchFaster from './ss-clueMatchFaster.gif'
 import ss_clickToChange from './ss-clickToChange.gif';
+import um_howToWin from './um-howToWin.gif';
+import um_moveBlocks from './um-moveBlocks.gif';
+import um_horAndVert from './um-horAndVert.gif';
 import wg_clueMeanings from './wg-clueMeanings.gif';
 import wg_lengthMustMatch from './wg-lengthMustMatch.gif';
 import wg_startingClues from './wg-startingClues.png';
@@ -62,11 +67,19 @@ const InfoObject = {
             },
             {
                 animation : ss_eachPerRowCol,
-                text: `Each row and column MUST contain ONE of every color`
+                text: `Each row and column MUST contain EXACTLY ONE of every color. You cannot have duplicates in a row or column`
+            },
+            {
+                animation : ss_clueMatchFaster,
+                text: `The circles around the border must match in color with the first colored square they hit, coming from that direction. (Remember white is considered 'blank')`
             },
             {
                 animation : ss_clickToChange,
                 text: `Click on a square to rotate through possible color values`
+            },
+            {
+                animation : null,
+                text: `That's it. You should be all set to go. Happy Puzzling!`
             }
         ]
     },
@@ -74,8 +87,20 @@ const InfoObject = {
         name: 'Playing Unblock Me',
         tutorial : [
             {
+                animation : um_howToWin,
+                text: `Your goal is to move the white block to the right edge of the map`
+            },
+            {
+                animation : um_moveBlocks,
+                text: `You may have blocks in your way that you'll need to move.`
+            },
+            {
+                animation : um_horAndVert,
+                text: `Some blocks will only move horizontally, while others will only move vertically.`
+            },
+            {
                 animation : null,
-                text: `Welcome To PuzzleMe`
+                text: `That's it. You should be all set to go. Happy Puzzling!`
             }
         ]
     },
@@ -101,6 +126,10 @@ const InfoObject = {
             {
                 animation : wg_winInFewestGuesses,
                 text : `Try to guess the hidden word in the fewest number of guesses`
+            },
+            {
+                animation : null,
+                text: `That's it. You should be all set to go. Happy Puzzling!`
             }
         ]
     },

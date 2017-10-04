@@ -2,6 +2,11 @@ body {
     background-color: lightgrey;
 }
 
+.mainViewingWindow > div {
+    height: inherit;
+    width: inherit;
+}
+
 .icon-style {
     font-size: 20px;
     color: grey;
@@ -56,6 +61,14 @@ body {
     transform: translate(-50%, -52%);
     z-index: 101;
 } 
+
+@media screen and (orientation:landscape) {
+    .showModal > div:last-child {
+        max-width: 500px;
+    } 
+}
+
+
 
 .noModal {
     display: none;
