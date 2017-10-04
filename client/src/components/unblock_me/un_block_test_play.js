@@ -43,8 +43,8 @@ export default class extends Component {
 //GETS CALLED FROM STATE TO CREATE PIECE MAP FROM PROPS OBJ
         function createPieceMap(props){
             console.log(props)
-            var starterPiece = {y: 1, x: 0, type: "unBlock_starterPiece", width: 2, height: 1};
-            var pieceMap = [starterPiece];
+
+            var pieceMap = [];
 
             props.pieceStack.map((piece, index)=>{
                 var yPos = piece.yPos;
@@ -65,7 +65,7 @@ export default class extends Component {
         const gameBoardTop = document.getElementsByClassName("gameBoardDiv")[0].getBoundingClientRect().top;
         const gameBoardBottom = gameBoardTop + gameBoardWidth;
         const oneBoardUnit = document.getElementsByClassName("gameBoardDiv")[0].clientHeight/6;
-        var correctedMap = [];
+        var correctedMap = [{y: 2*oneBoardUnit, x: 0, type: "unBlock_starterPiece", width: 2*oneBoardUnit, height: 1*oneBoardUnit}];
 
         this.state.pieceMap.map((piece, index)=>{
             correctedMap.push({x: piece.x*oneBoardUnit, y: piece.y*oneBoardUnit + gameBoardTop, type: piece.type, width: piece.width*oneBoardUnit, height: piece.height*oneBoardUnit})
@@ -81,8 +81,15 @@ export default class extends Component {
 
 
     handleDragStart(ev){
+        var startPosition = null;
+        if(ev.type == 'touchstart') {
+            startPosition = ev.touches[0].clientX;
+        }else if(ev.type == 'mousedown'){
+           startPosition = ev.clientX;
+        }
+
         this.setState({
-            startPos: ev.touches[0].clientX,
+            startPos: startPosition,
             canMoveLeft: true,
             canMoveRight: true,
             canMoveUp: true,
@@ -90,8 +97,16 @@ export default class extends Component {
         })
     }
     handleDragStartY(ev){
+        var startPosition = null;
+
+        if(ev.type == 'touchstart') {
+            startPosition = ev.touches[0].clientY;
+        }else if(ev.type == 'mousedown'){
+            startPosition = ev.clientY;
+        }
+
         this.setState({
-            startPos: ev.touches[0].clientY,
+            startPos: startPosition,
             canMoveLeft: true,
             canMoveRight: true,
             canMoveUp: true,
@@ -99,6 +114,8 @@ export default class extends Component {
         })
     }
     handleDragging(ev) {
+        console.log(ev.type)
+        //ev.preventDefault();
         const pieceWidth = this.state.pieceMap[ev.target.id].width;
         const pieceHeight = this.state.pieceMap[ev.target.id].height;
         const thisPieceLeft = this.state.pieceMap[ev.target.id].x;
@@ -107,7 +124,15 @@ export default class extends Component {
         const thisPieceBottom = this.state.pieceMap[ev.target.id].y + pieceHeight;
 
         var currentPosition = this.state.pieceMap[ev.target.id].x;
-        var amountToMove = ev.touches[0].clientX - this.state.startPos;
+        var amountToMove = null;
+        if(ev.type == 'touchmove') {
+            amountToMove = ev.touches[0].clientX - this.state.startPos;
+            console.log(amountToMove)
+        }else if(ev.type == 'mousemove'){
+            amountToMove = ev.clientX - this.state.startPos;
+        }
+
+
 
         const {pieceMap} = this.state;
 
@@ -126,7 +151,7 @@ export default class extends Component {
         }
 
         //////
-        if (amountToMove > 0 && amountToMove < this.state.oneBoardUnit*2) {
+        if (amountToMove > 0 && amountToMove < this.state.oneBoardUnit*3) {
             this.setState({
                 canMoveLeft: true,
             });
@@ -147,13 +172,21 @@ export default class extends Component {
                     })
                 } else if (this.state.canMoveRight === true) {
                     pieceMap[ev.target.id].x = currentPosition + amountToMove;
+
+                    var startingPosition = null;
+
+                    if(ev.type == 'touchmove') {
+                        startingPosition = ev.touches[0].clientX;
+                    }else if(ev.type == 'mousemove'){
+                        startingPosition= ev.clientX;
+                    }
                     this.setState({
                         pieceMap: [...pieceMap],
-                        startPos: ev.touches[0].clientX
+                        startPos: startingPosition
                     });
                 }
             })
-        } else if (amountToMove < 0 && Math.abs(amountToMove) < this.state.oneBoardUnit*2) {
+        } else if (amountToMove < 0 && Math.abs(amountToMove) < this.state.oneBoardUnit*3) {
             this.setState({
                 canMoveRight: true,
             });
@@ -173,9 +206,16 @@ export default class extends Component {
                     })
                 } else if (this.state.canMoveLeft === true) {
                     pieceMap[ev.target.id].x = currentPosition + amountToMove;
+
+                    var startingPosition = null;
+                    if(ev.type == 'touchmove') {
+                        startingPosition = ev.touches[0].clientX;
+                    }else if(ev.type == 'mousemove'){
+                        startingPosition= ev.clientX;
+                    }
                     this.setState({
                         pieceMap: [...pieceMap],
-                        startPos: ev.touches[0].clientX
+                        startPos: startingPosition,
                     });
 
                 }
@@ -193,7 +233,13 @@ export default class extends Component {
         const thisPieceBottom = this.state.pieceMap[ev.target.id].y + pieceHeight;
 
         var currentPosition = this.state.pieceMap[ev.target.id].y;
-        var amountToMove = ev.touches[0].clientY - this.state.startPos;
+
+        var amountToMove = null;
+        if(ev.type == 'touchmove') {
+            amountToMove = ev.touches[0].clientY - this.state.startPos;
+        }else if(ev.type == 'mousemove'){
+            amountToMove = ev.clientY - this.state.startPos;
+        }
 
         const {pieceMap} = this.state;
 
@@ -217,9 +263,16 @@ export default class extends Component {
                     })
                 } else if(this.state.canMoveDown === true){
                     pieceMap[ev.target.id].y = currentPosition + amountToMove;
+
+                    var startingPosition = null;
+                    if(ev.type == 'touchmove') {
+                        startingPosition = ev.touches[0].clientY;
+                    }else if(ev.type == 'mousemove'){
+                        startingPosition= ev.clientY;
+                    }
                     this.setState({
                         pieceMap: [...pieceMap],
-                        startPos: ev.touches[0].clientY
+                        startPos: startingPosition
                     });
                 }
             })
@@ -242,10 +295,18 @@ export default class extends Component {
                         pieceMap: [...pieceMap],
                     })
                 } else if(this.state.canMoveUp === true){
+
                     pieceMap[ev.target.id].y = currentPosition + amountToMove;
+
+                    var startingPosition = null;
+                    if(ev.type == 'touchmove') {
+                        startingPosition = ev.touches[0].clientY;
+                    }else if(ev.type == 'mousemove'){
+                        startingPosition= ev.clientY;
+                    }
                     this.setState({
                         pieceMap: [...pieceMap],
-                        startPos: ev.touches[0].clientY
+                        startPos: startingPosition
                     });
                 }
             })
