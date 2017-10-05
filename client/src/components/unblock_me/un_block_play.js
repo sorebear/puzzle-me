@@ -40,60 +40,74 @@ export default class extends Component {
     }
 
     componentWillMount() {
-        console.log("WILL MOUNT")
+        const gameBoardWidth = window.screen.width;
+        const gameBoardTop = 55;
+        const gameBoardBottom = gameBoardTop + gameBoardWidth;
+        const oneBoardUnit = gameBoardWidth / 6;
+
         const URL_EXT = '/puzzles';
         const QUERY_KEY = 'url_ext';
         const QUERY_VAL = this.props.location.pathname.substr(17);
 
         Axios.get(URL_EXT + '?' + QUERY_KEY + '=' + QUERY_VAL).then((resp) => {
+            console.log(JSON.parse(resp.data.data[0].puzzle_object))
             this.props.updateCurrentPath("unblock_me_play", resp.data.data[0].puzzle_name, 'play');
             const gameData = JSON.parse(resp.data.data[0].puzzle_object);
-            const starterPiece = {y: 1, x: 0, type: "unBlock_starterPiece", width: 2, height: 1};
+            const starterPiece = {y: 2*oneBoardUnit, x: 0*oneBoardUnit, type: "unBlock_starterPiece", width: 2, height: 1};
             var pieceMap = [starterPiece];
 
             gameData.map((piece, index) => {
+                console.log(typeof piece.width)
                 var yPos = piece.yPos;
                 var xPos = piece.xPos;
                 var type = piece.type;
                 var pieceWidth = piece.width;
                 var pieceHeight = piece.height;
-                pieceMap.push({y: yPos, x: xPos, type: type, width: pieceWidth, height: pieceHeight})
+                console.log("PW",pieceWidth)
+                pieceMap.push({y: yPos*oneBoardUnit + gameBoardTop, x: xPos*oneBoardUnit, type: type, width: pieceWidth*oneBoardUnit, height: pieceHeight*oneBoardUnit})
             });
-            this.setState({pieceMap: pieceMap});
+            this.setState({
+                pieceMap: pieceMap,
+                gameBoardWidth: gameBoardWidth,
+                oneBoardUnit: oneBoardUnit,
+                gameBoardTop: gameBoardTop,
+                gameBoardBottom: gameBoardBottom
+            })
         }).catch(err => {
             console.log("Error Loading Puzzle: ", err);
         });
     }
 
     //WHEN THE COMPONENT MOUNTS, SET BOARD WIDTH & ADJUST PIECE MAP TO PROPER SCALE
-    componentDidMount() {
-        setTimeout(()=>{
-            console.log("STATE", this.state)
-            const gameBoardWidth = window.screen.width;
-            const gameBoardTop = 55;
-            const gameBoardBottom = gameBoardTop + gameBoardWidth;
-            const oneBoardUnit = gameBoardWidth / 6;
-
-            var correctedMap = [];
-
-            this.state.pieceMap.map((piece, index) => {
-                correctedMap.push({
-                    x: piece.x * oneBoardUnit,
-                    y: piece.y * oneBoardUnit + gameBoardTop,
-                    type: piece.type,
-                    width: piece.width * oneBoardUnit,
-                    height: piece.height * oneBoardUnit
-                })
-            });
-            this.setState({
-                gameBoardWidth: gameBoardWidth,
-                oneBoardUnit: oneBoardUnit,
-                pieceMap: correctedMap,
-                gameBoardTop: gameBoardTop,
-                gameBoardBottom: gameBoardBottom
-            });
-        }, 3000);
-    }
+    // componentDidMount() {
+    //     setTimeout(()=>{
+    //         console.log("STATE", this.state)
+    //         const gameBoardWidth = window.screen.width;
+    //         const gameBoardTop = 55;
+    //         const gameBoardBottom = gameBoardTop + gameBoardWidth;
+    //         const oneBoardUnit = gameBoardWidth / 6;
+    //
+    //         var correctedMap = [];
+    //
+    //         // this.state.pieceMap.map((piece, index) => {
+    //         //     console.log(piece.width)
+    //         //     correctedMap.push({
+    //         //         x: piece.x * oneBoardUnit,
+    //         //         y: piece.y * oneBoardUnit + gameBoardTop,
+    //         //         type: piece.type,
+    //         //         width: piece.width * oneBoardUnit,
+    //         //         height: piece.height * oneBoardUnit
+    //         //     })
+    //         // });
+    //         this.setState({
+    //             gameBoardWidth: gameBoardWidth,
+    //             oneBoardUnit: oneBoardUnit,
+    //             // pieceMap: correctedMap,
+    //             gameBoardTop: gameBoardTop,
+    //             gameBoardBottom: gameBoardBottom
+    //         });
+    //     }, 3000);
+    // }
 
     handleDragStart(ev) {
         this.setState({
@@ -117,12 +131,12 @@ export default class extends Component {
 
     handleDragging(ev) {
         ev.preventDefault();
-        const pieceWidth = this.state.pieceMap[ev.target.id].width;
-        const pieceHeight = this.state.pieceMap[ev.target.id].height;
-        const thisPieceLeft = this.state.pieceMap[ev.target.id].x;
-        const thisPieceRight = this.state.pieceMap[ev.target.id].x + pieceWidth;
-        const thisPieceTop = this.state.pieceMap[ev.target.id].y;
-        const thisPieceBottom = this.state.pieceMap[ev.target.id].y + pieceHeight;
+        const pieceWidth = parseInt(ev.target.style.width);
+        const pieceHeight = parseInt(ev.target.style.height);
+        const thisPieceLeft = parseInt(ev.target.style.left);
+        const thisPieceRight = parseInt(ev.target.style.left) + pieceWidth;
+        const thisPieceTop = parseInt(ev.target.style.top);
+        const thisPieceBottom = parseInt(ev.target.style.top) + pieceHeight;
 
         var currentPosition = this.state.pieceMap[ev.target.id].x;
         var amountToMove = ev.touches[0].clientX - this.state.startPos;
@@ -141,7 +155,7 @@ export default class extends Component {
             this.state.pieceMap.map((piece, index) => {
                 if (index == ev.target.id) {
 
-                } else if (thisPieceTop + 1 < piece.y + piece.height && thisPieceBottom - 1 > piece.y && thisPieceRight > piece.x - 1 && thisPieceLeft < piece.x) {
+                } else if (thisPieceTop + 1 < piece.y + piece.height*this.state.oneBoardUnit && thisPieceBottom - 1 > piece.y && thisPieceRight > piece.x - 1 && thisPieceLeft < piece.x) {
                     pieceMap[ev.target.id].x = piece.x - pieceWidth;
                     this.setState({
                         pieceMap: [...pieceMap],
@@ -168,8 +182,8 @@ export default class extends Component {
             this.state.pieceMap.map((piece, index) => {
                 if (index == ev.target.id) {
 
-                } else if (thisPieceTop + 1 < piece.y + piece.height && thisPieceBottom - 1 > piece.y && thisPieceLeft < piece.x + piece.width + 1 && thisPieceRight > piece.x + piece.width) {
-                    pieceMap[ev.target.id].x = piece.x + piece.width;
+                } else if (thisPieceTop + 1 < piece.y + piece.height*this.state.oneBoardUnit && thisPieceBottom - 1 > piece.y && thisPieceLeft < piece.x + piece.width*this.state.oneBoardUnit + 1 && thisPieceRight > piece.x + piece.width*this.state.oneBoardUnit) {
+                    pieceMap[ev.target.id].x = piece.x + piece.width*this.state.oneBoardUnit;
                     this.setState({
                         pieceMap: this.state.pieceMap,
                         canMoveLeft: false,
@@ -193,12 +207,12 @@ export default class extends Component {
 
     /////////////////////////////
     handleDraggingY(ev) {
-        const pieceWidth = this.state.pieceMap[ev.target.id].width;
-        const pieceHeight = this.state.pieceMap[ev.target.id].height;
-        const thisPieceLeft = this.state.pieceMap[ev.target.id].x;
-        const thisPieceRight = this.state.pieceMap[ev.target.id].x + pieceWidth;
-        const thisPieceTop = this.state.pieceMap[ev.target.id].y;
-        const thisPieceBottom = this.state.pieceMap[ev.target.id].y + pieceHeight;
+        const pieceWidth = parseInt(ev.target.style.width);
+        const pieceHeight = parseInt(ev.target.style.height);
+        const thisPieceLeft = parseInt(ev.target.style.left);
+        const thisPieceRight = parseInt(ev.target.style.left) + pieceWidth;
+        const thisPieceTop = parseInt(ev.target.style.top);
+        const thisPieceBottom = parseInt(ev.target.style.top) + pieceHeight;
 
         var currentPosition = this.state.pieceMap[ev.target.id].y;
         var amountToMove = ev.touches[0].clientY - this.state.startPos;
@@ -211,7 +225,7 @@ export default class extends Component {
             });
             this.state.pieceMap.map((piece, index) => {
                 if (index == ev.target.id) {
-                } else if (thisPieceLeft < piece.x + piece.width && thisPieceRight - 1 > piece.x && thisPieceBottom > piece.y - 1 && this.state.pieceMap[ev.target.id].y < piece.y) {
+                } else if (thisPieceLeft < piece.x + piece.width*this.state.oneBoardUnit && thisPieceRight - 1 > piece.x && thisPieceBottom > piece.y - 1 && this.state.pieceMap[ev.target.id].y < piece.y) {
                     pieceMap[ev.target.id].y = piece.y - pieceHeight;
                     this.setState({
                         pieceMap: [...pieceMap],
@@ -238,8 +252,8 @@ export default class extends Component {
             this.state.pieceMap.map((piece, index) => {
                 if (index == ev.target.id) {
 
-                } else if (thisPieceLeft < piece.x + piece.width && thisPieceRight - 1 > piece.x && thisPieceTop < piece.y + piece.height + 1 && thisPieceBottom > piece.y) {
-                    pieceMap[ev.target.id].y = piece.y + piece.height;
+                } else if (thisPieceLeft < piece.x + piece.width*this.state.oneBoardUnit && thisPieceRight - 1 > piece.x && thisPieceTop < piece.y + piece.height*this.state.oneBoardUnit + 1 && thisPieceBottom > piece.y) {
+                    pieceMap[ev.target.id].y = piece.y + piece.height*this.state.oneBoardUnit;
                     this.setState({
                         pieceMap: [...pieceMap],
                         canMoveUp: false,
@@ -273,6 +287,12 @@ export default class extends Component {
 
     render() {
 
+        const gameBoardWidth = window.innerWidth;
+        const gameBoardTop = 55;
+        const gameBoardBottom = window.innerWidth + 55;
+        const oneBoardUnit = window.innerWidth / 6;
+
+
         if (this.state.pieceMap !== null) {
             var pieceArr = [];
             this.state.pieceMap.map((piece, index) => {
@@ -290,8 +310,8 @@ export default class extends Component {
                         >
                             <div key={index} id={index} className={pieceType + ' gamePiece'} style={
                                 {
-                                    width: width,
-                                    height: height,
+                                    width: width*oneBoardUnit,
+                                    height: height*oneBoardUnit,
                                     top: yPos,
                                     left: xPos,
                                 }
@@ -314,8 +334,8 @@ export default class extends Component {
                         >
                             <div key={index} id={index} className={pieceType + ' gamePiece'} style={
                                 {
-                                    width: width,
-                                    height: height,
+                                    width: width*oneBoardUnit,
+                                    height: height*oneBoardUnit,
                                     top: yPos,
                                     left: xPos,
                                 }
@@ -327,8 +347,10 @@ export default class extends Component {
                 }
             });
 
+
+
             return (
-                <div className="gameBoardDiv">
+                <div className="gameBoardDiv" style={{width: window.innerWidth, height: window.innerWidth}}>
                     <DraggableCore
                         onStart={this.handleDragStart}
                         onDrag={this.handleDragging}
@@ -339,8 +361,8 @@ export default class extends Component {
                             {
                                 top: this.state.pieceMap[0].y,
                                 left: this.state.pieceMap[0].x,
-                                width: this.state.pieceMap[0].width,
-                                height: this.state.pieceMap[0].height,
+                                width: this.state.pieceMap[0].width * oneBoardUnit,
+                                height: this.state.pieceMap[0].height * oneBoardUnit,
                             }
                         }
                         >
@@ -351,7 +373,7 @@ export default class extends Component {
             )
         }else{
             return(
-                <div>LAME</div>
+                <div>Don't Blink!</div>
             )
         }
     }
