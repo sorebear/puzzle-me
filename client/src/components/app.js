@@ -16,6 +16,7 @@ import WordGuessPlay from './word_guessing/word_guessing_play';
 import Rankings from './rankings';
 import Login from './login';
 
+import Profile from './profile';
 
 class App extends Component {
     constructor(props) {
@@ -104,7 +105,7 @@ class App extends Component {
                         <Route exact path="/rankings" component={Rankings} />
             
                         <Route path="/login" component={Login} />
-                        <Route path="/profile" component={Login} />
+                        <Route path="/profile" component={Profile} />
                     </div>
                 <Footer mode={currentGameMode} clickHandlers={clickHandlers} updateCurrentPath={this.updateCurrentPath}/>
             </div>
