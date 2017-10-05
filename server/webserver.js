@@ -97,8 +97,37 @@ function getPuzzleCompletionsByUser(user_id, puzzle_id, callback){
         else {
             callback(rows);
         }
-    });    
+    });
 }
+
+webserver.get('/getRankings', function(req, res){
+    console.log("req.query.retrieve is: ", req.query.retrieve);
+    if(req.query.retrieve){
+        switch(req.query.retrieve) {
+            case 'getRankings':
+                getUserRankings(res);
+                break;
+            default:
+                console.log("unknown query value for puzzles key");
+        }
+    } else {
+        console.log("Query key puzzles is not present");
+    }
+});
+
+function getUserRankings(res){
+    var query = `SELECT * FROM users`;
+    console.log('query = ',query);
+    pool.query(query, (err, rows, fields) => {
+        if(err) {
+            respondWithError(res, err);
+        }
+        else {
+            res.json({"Success": true, "data": rows});
+        }
+    });
+}
+
 
 function calculatePuzzleRatings(res,callback){
     let query = "SELECT puzzle_id, AVG(completionTime) AS average_time FROM puzzleSolutionTimes WHERE firstCompletion=1 AND status='enabled' GROUP BY puzzle_id";

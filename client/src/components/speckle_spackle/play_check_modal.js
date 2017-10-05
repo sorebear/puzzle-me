@@ -22,10 +22,10 @@ function PlayCheckModal(props) {
             </div>
         )
     } else {
-        const Issues = props.info.map((subArr, index) => {
-            return subArr.map((item, index) => {
+        const Issues = props.info.map((item, index) => {
+            if (item.length) {
                 return <li key={index} className="list-group-item">{item}</li>
-            })
+            }
         });
         return (
             <div className={props.showModal}>

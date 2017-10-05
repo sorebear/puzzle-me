@@ -27,7 +27,8 @@ class GameGrid extends Component {
                     bgColor={this[item.colorNum]} 
                     name={item.name} 
                     className={item.className} 
-                    width={this.squareWidth} 
+                    width={this.squareWidth}
+                    error={item.error} 
                     opacity={item.opacity}
                 />
             )

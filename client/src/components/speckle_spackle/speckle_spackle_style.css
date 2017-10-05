@@ -36,7 +36,7 @@ div[name=clue] {
     box-sizing: border-box;
     border-radius: 100%;
     display: inline-block;
-    transition: .2s;
+    transition: .3s;
 }
 
 div[name=square] {
@@ -44,6 +44,7 @@ div[name=square] {
     box-sizing: border-box;
     display: inline-block;
     border-radius: 7%;
+    transition: .3s;
 }
 
 div[name=square]:hover {
