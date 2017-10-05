@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import Draggable, { DraggableCore } from 'react-draggable';
-import GameBoard from './un_block_play'
-
-import './un_block_create_style.css';
+import GameBoard from './un_block_test_play'
+import './un_block_style.css';
 
 export default class CreationStation extends Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {
             mode: "create",
-            
+
             creationBoardWidth: 0,
             creationBoardUnit: 0,
             creationBoardTop: 0,
@@ -35,15 +34,13 @@ export default class CreationStation extends Component {
         this.handleDragStart = this.handleDragStart.bind(this);
         this.handleDragging = this.handleDragging.bind(this);
 
-        
-        this.createTallPiece = this.createTallPiece.bind(this);
-        this.createLongPiece = this.createLongPiece.bind(this);
         this.instantiateGame = this.instantiateGame.bind(this);
         this.backToCreate = this.backToCreate.bind(this);
         this.createPiece = this.createPiece.bind(this);
-        
+
     }
     componentDidMount(){
+        this.props.updateCurrentPath("unblock_me_create", '', 'create', [this.instantiateGame, this.backToCreate])
         const creationBoardWidth = document.getElementsByClassName("creationBoardDiv")[0].clientHeight;
         const creationBoardTop = document.getElementsByClassName("creationBoardDiv")[0].getBoundingClientRect().top;
         const creationBoardBottom = creationBoardTop + creationBoardWidth;
@@ -57,13 +54,23 @@ export default class CreationStation extends Component {
     }
 
     handleDragStart(ev){
-        this.setState({
-            startPosY: ev.touches[0].clientY,
-            startPosX: ev.touches[0].clientX,
-        })
+        if(ev.type == 'touchstart') {
+            this.setState({
+                startPosY: ev.touches[0].clientY,
+                startPosX: ev.touches[0].clientX,
+            })
+        }else if(ev.type == 'mousedown'){
+            this.setState({
+                startPosY: ev.clientY,
+                startPosX: ev.clientX
+            })
+        }
     }
 
     handleDragging(ev) {
+        console.log(ev)
+
+
         const pieceWidth = this.state.creationStack[ev.target.id].width;
         const pieceHeight = this.state.creationStack[ev.target.id].height;
         const thisPieceLeft = this.state.creationStack[ev.target.id].xPos;
@@ -73,9 +80,16 @@ export default class CreationStation extends Component {
 
         var currentPositionX = this.state.creationStack[ev.target.id].xPos;
         var currentPositionY = this.state.creationStack[ev.target.id].yPos;
+        var moveX = null;
+        var moveY = null;
 
-        var moveX = ev.touches[0].clientX - this.state.startPosX;
-        var moveY = ev.touches[0].clientY - this.state.startPosY;
+        if(ev.type == 'touchmove') {
+             moveX = ev.touches[0].clientX - this.state.startPosX;
+             moveY = ev.touches[0].clientY - this.state.startPosY;
+        } else if (ev.type == 'mousemove'){
+            moveX = ev.clientX - this.state.startPosX;
+            moveY = ev.clientY - this.state.startPosY;
+        }
 
         const {creationStack} = this.state;
 
@@ -107,45 +121,36 @@ export default class CreationStation extends Component {
             }
             creationStack[ev.target.id].xPos = currentPositionX + moveX;
             creationStack[ev.target.id].yPos = currentPositionY + moveY;
-            this.setState({
-                creationStack: [...creationStack],
-                startPosX: ev.touches[0].clientX,
-                startPosY: ev.touches[0].clientY
-            });
-         }
+
+
+            if(ev.type == 'touchmove') {
+                this.setState({
+                    creationStack: [...creationStack],
+                    startPosX: ev.touches[0].clientX,
+                    startPosY: ev.touches[0].clientY
+                });
+            } else if (ev.type == 'mousemove'){
+                this.setState({
+                    creationStack: [...creationStack],
+                    startPosX: ev.clientX,
+                    startPosY: ev.clientY
+                });
+            }
+
+        }
     }
 
-
     createPiece(ev){
-        var pieceType = null;
         var pieceSize = document.getElementById("sizeDropDown").value;
         var newStack = this.state.creationStack;
         switch(document.getElementById("typeDropDown").value){
             case "Vertical":
-                newStack.push({type: "unBlock_tallPiece", xPos: 0, yPos: this.state.creationBoardTop, height: this.state.creationBoardUnit*pieceSize, width: this.state.creationBoardUnit});
+                newStack.push({type: "unBlock_tallPiece", xPos: 0, yPos: 0, height: this.state.creationBoardUnit*pieceSize, width: this.state.creationBoardUnit});
                 break;
             case "Horizontal":
-                newStack.push({type: "unBlock_longPiece", xPos: 0, yPos: this.state.creationBoardTop, height: this.state.creationBoardUnit, width: this.state.creationBoardUnit*pieceSize})
+                newStack.push({type: "unBlock_longPiece", xPos: 0, yPos: 0, height: this.state.creationBoardUnit, width: this.state.creationBoardUnit*pieceSize})
                 break;
         }
-
-        this.setState({
-            creationStack: newStack
-        });
-
-    }
-
-    createTallPiece() {
-        const newStack = this.state.creationStack;
-        newStack.push({type: "unBlock_tallPiece", xPos: 0, yPos: this.state.creationBoardTop, height: this.state.creationBoardUnit*2, width: this.state.creationBoardUnit})
-        this.setState({
-            creationStack: newStack
-        });
-    }
-
-    createLongPiece() {
-        const newStack = this.state.creationStack;
-        newStack.push({type: "unBlock_longPiece", xPos: 0, yPos: this.state.creationBoardTop, height: this.state.creationBoardUnit, width: this.state.creationBoardUnit*2})
         this.setState({
             creationStack: newStack
         });
@@ -218,9 +223,7 @@ export default class CreationStation extends Component {
                 )
             }
         });
-        
 
-        
         if (this.state.mode === "create"){
             return(
 
@@ -232,7 +235,7 @@ export default class CreationStation extends Component {
                             <div
                                 className="starterPiece gamePiece" style={
                                 {
-                                    top: this.state.creationBoardUnit*2 + this.state.creationBoardTop,
+                                    top: this.state.creationBoardUnit*2 ,
                                     left: 0,
                                     width: this.state.creationBoardUnit*2,
                                     height: this.state.creationBoardUnit,
@@ -278,10 +281,10 @@ export default class CreationStation extends Component {
             })
             return (
                 <div className="container gameArea">
-                        <GameBoard pieceStack={playableStack}/>
-                        <div className="d-flex justify-content-center">
-                            <button className="btn btn-outline-danger" style={{position:"fixed", bottom:"50px"}} onClick={this.backToCreate}>Continue Editing</button>
-                        </div>
+                    <GameBoard pieceStack={playableStack}/>
+                    <div className="d-flex justify-content-center">
+                        <button className="btn btn-outline-danger" style={{position:"fixed", bottom:"50px"}} onClick={this.backToCreate}>Continue Editing</button>
+                    </div>
                 </div>
             )
         }

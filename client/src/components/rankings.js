@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import DummyData from './puzzle_dummy_data';
 import PlayMenuModal from '../play_menu_modal';
 import PageTitle from './page_title';
 import axios from 'axios';

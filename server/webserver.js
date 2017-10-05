@@ -289,6 +289,7 @@ webserver.post('/savepuzzle', function(req, res){
 });
 webserver.post('/puzzleComplete', function(req, res){
     let data = req.body;
+    console.log('puzzle data:', data);
     const HARDCODED_ID = 4;
     let user_id  = HARDCODED_ID;
     // console.log(req.body);
@@ -327,10 +328,10 @@ webserver.post('/puzzleComplete', function(req, res){
       
     });
 });
-webserver.get('/*', function(req, res){
-    //console.log('gettting here');
-    console.log('req.session is: ', req.session);
-    res.sendFile(path.resolve(__dirname, '..', 'client', 'dist'));
+webserver.get('*', function(req, res){
+    // console.log('gettting here');
+    // console.log('req.session is: ', req.session);
+    res.sendFile(path.resolve(__dirname, '..', 'client', 'dist', 'index.html'));
 });
 
 webserver.listen(PORT, function(){

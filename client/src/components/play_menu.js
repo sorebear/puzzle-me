@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import DummyData from './puzzle_dummy_data';
 import PlayMenuModal from '../play_menu_modal';
 import PageTitle from './page_title';
 import speckle_spackle from './imgs/speckle_spackle.png';
@@ -66,7 +65,7 @@ class PlayMenu extends Component {
                 return (
                     <tr key={index} onClick={() => {this.callModal(item)}}>
                         <td className="align-middle">{index + 1}</td>
-                        <td className="align-middle">{item.puzzle_name}</td>
+                        <td className="align-middle">{item.puzzle_name.length > 10 ? `${item.puzzle_name.substr(0,7)}...` : item.puzzle_name}</td>
                         <td><img src={this.gameTypes[item.type]} style={{height: "48px"}} /></td>
                         <td className="align-middle">{item.size}</td>
                         {/* <td className="align-middle">
@@ -101,6 +100,7 @@ class PlayMenu extends Component {
                             {list}
                         </tbody>
                     </table>
+                    <div style={{height: "45px", position: "absolute", bottom:"0"}}></div>
                 </div>
             )
         }

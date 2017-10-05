@@ -11,6 +11,7 @@ class SpeckleSpacklePlay extends Component {
         this.state = {
             modalInfo : null,
             showModal : "noModal",
+            error_handler : null,
             timer : 0,
             gameInfo : null
         }
@@ -25,13 +26,17 @@ class SpeckleSpacklePlay extends Component {
 
         this.URL_EXT = '/puzzles';
         this.QUERY_KEY = 'url_ext';
-        this.QUERY_VAL = props.location.pathname.substr(22);
+        this.QUERY_VAL = props.match.params.game_id;
+        this.POST_URL_EXT = '/puzzleComplete';
+        this.queryID = null;
 
         this.gridIndexCallback = this.gridIndexCallback.bind(this);
         this.updateData = this.updateData.bind(this);
         this.updateTimer = this.updateTimer.bind(this);
         this.evaluateAnswer = this.evaluateAnswer.bind(this);
         this.close = this.close.bind(this);
+        this.successfulSubmit = this.successfulSubmit.bind(this);
+        this.failedSubmit = this.failedSubmit.bind(this);
     }
 
     componentWillMount() {
@@ -46,11 +51,13 @@ class SpeckleSpacklePlay extends Component {
     }
 
     updateData(response){
-        const receivedData = response.data.data;
-        const receivedGameInfo = JSON.parse(receivedData[0].puzzle_object);
-        receivedGameInfo.gameInfo.gameGrid = this.resetSquares([...receivedGameInfo.gameInfo.gameGrid])
+        const receivedData = response.data.data[0];
+        const receivedGameInfo = JSON.parse(receivedData.puzzle_object);
+        this.queryID = receivedData.url_ext
+        receivedGameInfo.gameGrid = this.resetSquares([...receivedGameInfo.gameGrid])
+        this.props.updateCurrentPath("speckle_spackle_play", receivedData.puzzle_name, 'play', [this.evaluateAnswer]);
         this.setState({
-            gameInfo : receivedGameInfo['gameInfo']
+            gameInfo : receivedGameInfo
         });
     }
 
@@ -124,7 +131,7 @@ class SpeckleSpacklePlay extends Component {
                 modalInfo : [rowLog, columnLog, topLog, rightLog, bottomLog, leftLog]
             })
         } else {
-            this.winConditionMet();
+            this.submitCompletion();
         }
     }
 
@@ -132,6 +139,33 @@ class SpeckleSpacklePlay extends Component {
         this.setState({
             showModal : "showModal",
             modalInfo : [this.state.timer]
+        })
+        clearInterval(this.timeInt);
+    }
+
+    submitCompletion(req, res) {
+        axios.post(this.POST_URL_EXT, {
+            //Calculate the completion time by the number of user guesses x 10
+            completionTime : this.state.timer,
+            queryID : this.queryID
+        }).then(this.successfulSubmit).catch(this.failedSubmit);
+    }
+
+    //On successful submit, open the WinModal to notify the user of their win, of their score, and of successful submittal
+    successfulSubmit() {
+        this.setState({
+            showModal : "showModal",
+            modalInfo : [this.state.timer]
+        })
+        clearInterval(this.timeInt);
+    }
+
+    //On failed submit, open the WinModal to notify the user they won and notify them there was an issue submitting their score
+    failedSubmit() {
+        this.setState({
+            error_handler : "Unfortunately, there was an issue submitting your score.",
+            modalInfo : [this.state.timer],
+            showModal : "showModal"
         })
         clearInterval(this.timeInt);
     }
@@ -255,10 +289,10 @@ class SpeckleSpacklePlay extends Component {
         if (this.state.gameInfo === null) {
             return <h1>Loading...</h1>
         }
-        const { gameInfo, timer } = this.state
+        const { gameInfo, timer, error_handler } = this.state
         return (
             <div className="pageContainer">
-                <PlayCheckModal info={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => {this.close()}} />
+                <PlayCheckModal error={error_handler} info={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => {this.close()}} />
                 <div className="gutter align-items-center justify-content-center text-center">
                     <i className="fa fa-clock-o swatch m-1" style={{color: "white"}}></i>
                     <h3 style={{fontSize: "2rem", position:"absolute", opacity:".8"}}>{timer}</h3>
@@ -267,9 +301,6 @@ class SpeckleSpacklePlay extends Component {
                     <GameGridPlay gameInfo={{...gameInfo}} callback={this.gridIndexCallback} />
                 </div>
                 <div className="gutter align-items-center">
-                    <div>
-                        <button onClick={this.evaluateAnswer} className="btn btn-outline-primary justify-content-center align-items-center">Check</button>
-                    </div>
                 </div>
             </div>
         )
