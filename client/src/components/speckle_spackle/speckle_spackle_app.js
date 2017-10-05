@@ -52,7 +52,8 @@ class SpeckleSpackleApp extends Component {
             puzzle_name : this.state.puzzle_name,
             type : "speckle_spackle",
             size : `${this.state.gameInfo.gridSize}x${this.state.gameInfo.gridSize}`,
-            puzzle_object : this.state.gameInfo
+            puzzle_object : this.state.gameInfo,
+            withCredentials:true
         }).then(this.successfulSubmit).catch(err => {
             console.log("Error Loading Puzzle: ", err);
         });
