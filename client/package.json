@@ -22,13 +22,17 @@
     "/getProfile": {
       "target": "http://localhost:4000"
     },
-//    "/getSolvedPuzzles": {
-//      "target": "http://localhost:4000"
-//    },
+    "/getSolvedPuzzles": {
+      "target": "http://localhost:4000"
+    },
     "/getCreatedPuzzles": {
+      "target": "http://localhost:4000"
+    },
+    "/getPuzzleFromId": {
       "target": "http://localhost:4000"
     }
   },
+
   "scripts": {
     "start": "node dev_server.js",
     "bundle": "node_modules/.bin/webpack --config webpack.deploy.config.js --progress --colors",
