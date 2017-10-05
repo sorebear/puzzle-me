@@ -3,6 +3,7 @@ import React from 'react';
 function GridSquare(props) {
     const squareStyle = {
         backgroundColor : `rgb(${props.bgColor[0]},${props.bgColor[1]},${props.bgColor[2]})`,
+        borderColor : props.error ? 'red' : '',
         width : `${props.width}%`
     }
     const cornerStyle = {
@@ -12,6 +13,8 @@ function GridSquare(props) {
     let clueStyle = {
         backgroundColor : `rgb(${props.bgColor[0]},${props.bgColor[1]},${props.bgColor[2]})`,
         width : `${props.width}%`,
+        borderColor : props.error ? 'red' : '',
+        borderWidth : props.error ? '5px' : '',
         opacity : props.opacity
     }
     function hideClue(event) {

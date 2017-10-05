@@ -4,6 +4,7 @@ function GridSquarePlay(props) {
     const style = {
         backgroundColor : `rgb(${props.bgColor[0]},${props.bgColor[1]},${props.bgColor[2]})`,
         width : `${props.width}%`,
+        borderColor : props.error ? 'red' : '',
         opacity: props.opacity
     }
     const cornerStyle = {

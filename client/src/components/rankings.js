@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PlayMenuModal from '../play_menu_modal';
 import PageTitle from './page_title';
 import axios from 'axios';
-import rankings_dummy_data from './rankings_dummy_data';
 
 class Rankings extends Component {
     constructor(props) {
@@ -10,11 +9,11 @@ class Rankings extends Component {
         this.state = {
             modalInfo : null,
             showModal : "noModal",
-            data: rankings_dummy_data
+            data: null
         }
-        this.BASE_URL = '/users';
+        this.URL_EXT = '/getRankings';
         this.QUERY_KEY = 'retrieve';
-        this.QUERY_VAL = 'recent10';
+        this.QUERY_VAL = 'getRankings';
         this.updateData = this.updateData.bind(this);
     }
 
@@ -32,29 +31,31 @@ class Rankings extends Component {
     }
 
     componentWillMount() {
-        // this.getData();
-        this.sortData("composite_solver_ranking")
+        this.getData();
+        // this.sortData("composite_solver_ranking")
+    }
+
+    getData() {
+        axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
+            console.log("Error Loading Rankings: ", err);
+        });
+    }
+
+    updateData(response){
+        console.log(response);
+        const receivedData = response.data.data;
+        console.log(receivedData);
+        this.setState({
+            data: receivedData
+        });
     }
 
     sortData(field) {
         const { data } = this.state;
         console.log("Data", data, "and Field", field)
-        data.sort(function(a,b) {return a[field] - b[field]});
+        data.sort(function(a,b) {return b[field] - a[field]});
         this.setState({
             data : [...data]
-        })
-    }
-
-    getData() {
-        axios.get(this.BASE_URL + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
-            console.log("Error getting 10 most recent puzzles: ", err);
-        });
-    }
-
-    updateData(response){
-        const receivedData = response.data.data
-        this.setState({
-            data: receivedData
         })
     }
 
@@ -69,7 +70,6 @@ class Rankings extends Component {
                         <td>{item.username}</td>
                         <td className="text-center">{item.composite_solver_ranking}</td>
                         <td className="text-center">{item.composite_creator_ranking}</td>
-                        <td className="text-center">{item.composite_gladiator_ranking}</td>
                     </tr>
                 )
             })
@@ -82,7 +82,6 @@ class Rankings extends Component {
                                 <th className="text-center">User</th>
                                 <th className="text-center" onClick={() => {this.sortData("composite_solver_ranking")}} >Solver Rank</th>
                                 <th className="text-center" onClick={() => {this.sortData("composite_creator_ranking")}}>Creator Rank</th>
-                                <th className="text-center" onClick={() => {this.sortData("composite_gladiator_ranking")}}>Gladiator Rank</th>
                             </tr>
                         </thead>
                         <tbody>
