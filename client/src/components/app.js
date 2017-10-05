@@ -25,75 +25,88 @@ class App extends Component {
             currentPath : "home",
             currentTitle : "",
             currentHeight : window.innerHeight,
-            currentWidth : window.innerWidth
+            currentWidth : window.innerWidth,
+            currentGameMode : 'menu',
+            clickHandlers : [null, null, null],
+            autoInfo : false
         }
         this.updateCurrentPath = this.updateCurrentPath.bind(this);
         this.updateDimensions = this.updateDimensions.bind(this);
+        this.toggleAutoInfo = this.toggleAutoInfo.bind(this);
     }
     componentWillMount() {
         window.addEventListener("resize", this.updateDimensions);
     }
     updateDimensions() {
-        console.log("Window is being resized");
-        console.log("Window height: ", window.innerHeight);
-        console.log("Window width: ", window.innerWidth);
+        // console.log("Window is being resized");
+        // console.log("Window height: ", window.innerHeight);
+        // console.log("Window width: ", window.innerWidth);
         this.setState({
             currentHeight: window.innerHeight,
             currentWidth : window.innerWidth
         })
     }
 
+    toggleAutoInfo() {
+        if (this.state.autoInfo) {
+            this.setState({ autoInfo: false })
+        } else {
+            this.setState({ autoInfo: true })
+        }
+    }
+
     callModal() {
-        this.setState({
-            showModal : "showModal"
-        })  
+        this.setState({ showModal : "showModal" })  
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            showModal: "noModal"
-        })
+        this.setState({ showModal: "noModal" })
     }
 
     close() {
-        this.setState({
-            showModal: "noModal"
-        })
+        this.setState({ showModal: "noModal" })
     }
 
-    updateCurrentPath(currentPath, currentTitle = "") {
+    updateCurrentPath(currentPath, currentTitle = "", currentGameMode = 'home', currentClickHandlers = [null, null, null]) {
         this.setState({
             currentPath : currentPath,
-            currentTitle : currentTitle
-        })
+            currentTitle : currentTitle,
+            currentGameMode : currentGameMode,
+            clickHandlers : currentClickHandlers
+        });
+        if (this.state.autoInfo) {
+            setTimeout(() => {
+                this.setState({ showModal: "showModal" })
+            }, 500)
+        }
     }
 
     render() {
-        const { currentHeight, currentWidth } = this.state;
+        const { currentHeight, currentWidth, currentPath, currentGameMode, currentTitle, clickHandlers, showModal, autoInfo } = this.state;
         return (
             <div>
-                <InfoModal showModal={this.state.showModal} closeModal={() => {this.close()}} currentPath={this.state.currentPath} />
-                <Header currentTitle={this.state.currentTitle} callModal={() => {this.callModal()}}/>
-                <div className="mainViewingWindow" style={{height: currentHeight-100, width: currentWidth, position: "relative"}}>
-                    <Route exact path="/" render={(props) => <Home {...props} updateCurrentPath={this.updateCurrentPath} />} />
-                    <Route path="/home" render={(props) => <Home {...props} updateCurrentPath={this.updateCurrentPath} />} />
-        
-                    <Route exact path="/play" component={PlayMenu} />
-                    <Route path="/play/word_guess/:game_id" render={(props) => <WordGuessPlay {...props} updateCurrentPath={this.updateCurrentPath} />} />
-                    <Route path="/play/speckle_spackle/:game_id" render={(props) => <SpeckleSpacklePlay {...props} updateCurrentPath={this.updateCurrentPath} />} />
-                    <Route path="/play/unblock_me/:game_id" render={(props) => <UnBlockPlay {...props} updateCurrentPath={this.updateCurrentPath} />} />
-        
-                    <Route exact path="/create" component={CreateMenu} />
-                    <Route path="/create/word_guess" render={() => <WordGuessApp updateCurrentPath={this.updateCurrentPath} />} />
-                    <Route path="/create/speckle_spackle" render={() => <SpeckleSpackleApp updateCurrentPath={this.updateCurrentPath} />} />
-                    <Route path="/create/unblock_me" render={() => <UnBlockApp updateCurrentPath={this.updateCurrentPath} />} />
-        
-                    <Route exact path="/rankings" component={Rankings} />
-        
-                    <Route path="/login" component={Login} />
-                    <Route path="/profile" component={Login} />
-                </div>
-                <Footer updateCurrentPath={this.updateCurrentPath}/>
+                <InfoModal toggleAutoInfo={this.toggleAutoInfo} autoInfo={autoInfo} showModal={showModal} closeModal={() => {this.close()}} currentPath={currentPath} />
+                <Header currentTitle={currentTitle} callModal={() => {this.callModal()}}/>
+                    <div className="mainViewingWindow" style={{height: currentHeight-100, width: currentWidth, position: "relative"}}>
+                        <Route exact path="/" render={(props) => <Home {...props} updateCurrentPath={this.updateCurrentPath} />} />
+                        <Route path="/home" render={(props) => <Home {...props} updateCurrentPath={this.updateCurrentPath} />} />
+            
+                        <Route exact path="/play" component={PlayMenu} />
+                        <Route path="/play/word_guess/:game_id" render={(props) => <WordGuessPlay {...props} updateCurrentPath={this.updateCurrentPath} />} />
+                        <Route path="/play/speckle_spackle/:game_id" render={(props) => <SpeckleSpacklePlay {...props} updateCurrentPath={this.updateCurrentPath} />} />
+                        <Route path="/play/unblock_me/:game_id" render={(props) => <UnBlockPlay {...props} updateCurrentPath={this.updateCurrentPath} />} />
+            
+                        <Route exact path="/create" component={CreateMenu} />
+                        <Route path="/create/word_guess" render={() => <WordGuessApp updateCurrentPath={this.updateCurrentPath} />} />
+                        <Route path="/create/speckle_spackle" render={() => <SpeckleSpackleApp updateCurrentPath={this.updateCurrentPath} />} />
+                        <Route path="/create/unblock_me" render={() => <UnBlockApp updateCurrentPath={this.updateCurrentPath} />} />
+            
+                        <Route exact path="/rankings" component={Rankings} />
+            
+                        <Route path="/login" component={Login} />
+                        <Route path="/profile" component={Login} />
+                    </div>
+                <Footer mode={currentGameMode} clickHandlers={clickHandlers} updateCurrentPath={this.updateCurrentPath}/>
             </div>
         );
     }

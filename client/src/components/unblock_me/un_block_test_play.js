@@ -61,10 +61,10 @@ export default class extends Component {
 
     //WHEN THE COMPONENT MOUNTS, SET BOARD WIDTH & ADJUST PIECE MAP TO PROPER SCALE
     componentDidMount(){
-        const gameBoardWidth = document.getElementsByClassName("gameBoardDiv")[0].clientHeight;
-        const gameBoardTop = document.getElementsByClassName("gameBoardDiv")[0].getBoundingClientRect().top;
-        const gameBoardBottom = gameBoardTop + gameBoardWidth;
-        const oneBoardUnit = document.getElementsByClassName("gameBoardDiv")[0].clientHeight/6;
+        const gameBoardWidth = window.innerWidth;
+        const gameBoardTop = 55;
+        const gameBoardBottom = window.innerWidth + 55;
+        const oneBoardUnit = window.innerWidth / 6;
         var correctedMap = [{y: 2*oneBoardUnit, x: 0, type: "unBlock_starterPiece", width: 2*oneBoardUnit, height: 1*oneBoardUnit}];
 
         this.state.pieceMap.map((piece, index)=>{
@@ -115,12 +115,12 @@ export default class extends Component {
     }
     handleDragging(ev) {
         //ev.preventDefault();
-        const pieceWidth = this.state.pieceMap[ev.target.id].width;
-        const pieceHeight = this.state.pieceMap[ev.target.id].height;
-        const thisPieceLeft = this.state.pieceMap[ev.target.id].x;
-        const thisPieceRight = this.state.pieceMap[ev.target.id].x + pieceWidth;
-        const thisPieceTop = this.state.pieceMap[ev.target.id].y;
-        const thisPieceBottom = this.state.pieceMap[ev.target.id].y + pieceHeight;
+        const pieceWidth = parseInt(ev.target.style.width);
+        const pieceHeight = parseInt(ev.target.style.height);
+        const thisPieceLeft = parseInt(ev.target.style.left);
+        const thisPieceRight = parseInt(ev.target.style.left) + pieceWidth;
+        const thisPieceTop = parseInt(ev.target.style.top);
+        const thisPieceBottom = parseInt(ev.target.style.top) + pieceHeight;
 
         var currentPosition = this.state.pieceMap[ev.target.id].x;
         var amountToMove = null;
@@ -155,9 +155,11 @@ export default class extends Component {
                 canMoveLeft: true,
             });
             this.state.pieceMap.map((piece, index) => {
+                console.log(piece.y)
                 if (index == ev.target.id) {
 
                 } else if (thisPieceTop + 1 < piece.y + piece.height && thisPieceBottom - 1 > piece.y && thisPieceRight > piece.x - 1 && thisPieceLeft < piece.x) {
+                    console.log("COLIDE")
                     pieceMap[ev.target.id].x = piece.x - pieceWidth;
                     this.setState({
                         pieceMap: [...pieceMap],
@@ -224,12 +226,12 @@ export default class extends Component {
 
     /////////////////////////////
     handleDraggingY(ev){
-        const pieceWidth = this.state.pieceMap[ev.target.id].width;
-        const pieceHeight = this.state.pieceMap[ev.target.id].height;
-        const thisPieceLeft = this.state.pieceMap[ev.target.id].x;
-        const thisPieceRight = this.state.pieceMap[ev.target.id].x + pieceWidth;
-        const thisPieceTop = this.state.pieceMap[ev.target.id].y;
-        const thisPieceBottom = this.state.pieceMap[ev.target.id].y + pieceHeight;
+        const pieceWidth = parseInt(ev.target.style.width);
+        const pieceHeight = parseInt(ev.target.style.height);
+        const thisPieceLeft = parseInt(ev.target.style.left);
+        const thisPieceRight = parseInt(ev.target.style.left) + pieceWidth;
+        const thisPieceTop = parseInt(ev.target.style.top);
+        const thisPieceBottom = parseInt(ev.target.style.top) + pieceHeight;
 
         var currentPosition = this.state.pieceMap[ev.target.id].y;
 
@@ -324,6 +326,10 @@ export default class extends Component {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     render() {
+        const gameBoardWidth = window.innerWidth;
+        const gameBoardTop = 55;
+        const gameBoardBottom = window.innerWidth + 55;
+        const oneBoardUnit = window.innerWidth / 6;
 
         var pieceArr = [];
         this.state.pieceMap.map((piece, index) => {
@@ -341,8 +347,8 @@ export default class extends Component {
                     >
                         <div key={index} id={index} className={pieceType + ' gamePiece'} style={
                             {
-                                width: width,
-                                height: height,
+                                width: width * oneBoardUnit,
+                                height: height * oneBoardUnit,
                                 top: yPos,
                                 left: xPos,
                             }
@@ -365,8 +371,8 @@ export default class extends Component {
                     >
                         <div key={index} id={index} className={pieceType + ' gamePiece'} style={
                             {
-                                width: width,
-                                height: height,
+                                width: width * oneBoardUnit,
+                                height: height * oneBoardUnit,
                                 top: yPos,
                                 left: xPos,
                             }

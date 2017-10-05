@@ -53,7 +53,7 @@ class WordGuessPlay extends Component {
         this.hiddenWord = gameInfo.hiddenWord
         this.numOfStartingWords = gameInfo.startingWords.length;
         this.queryID = receivedData.url_ext;
-        this.props.updateCurrentPath("word_guess_play", receivedData.puzzle_name);
+        this.props.updateCurrentPath("word_guess_play", receivedData.puzzle_name, 'play');
         this.setState({
             guessHistory : gameInfo.startingWords
         });
