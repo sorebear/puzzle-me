@@ -76,6 +76,7 @@ class SpeckleSpackleTestPlay extends Component {
     }
 
     close() {
+        setTimeout(()=> this.removeErrors(), 1800);
         this.setState({
             showModal: "noModal",
         })
@@ -117,9 +118,36 @@ class SpeckleSpackleTestPlay extends Component {
         const topLog = this.checkTopClues(gameInfo, outerGridSize);
         const bottomLog = this.checkBottomClues(gameInfo, outerGridSize);
         if (rowLog.length !== 0 || columnLog.length !== 0 || leftLog.length !== 0 || rightLog.length !== 0 || topLog.length !== 0 || bottomLog.length !== 0) {
+            let duplicate = false;
+            let missing = false;
+            let clue = false;
+            const arrayOfArrays = rowLog.concat(columnLog, leftLog, rightLog, topLog, bottomLog);
+            console.log(arrayOfArrays)
+            for (let i = 0; i < arrayOfArrays.length; i++) {
+                switch (arrayOfArrays[i].errorType) {
+                    case 'clue':
+                        clue = 'Not all clue conditions are met';
+                        break;
+                    case 'duplicate':
+                        duplicate = 'You have duplicate colors in rows or columns';
+                        console.log(document.getElementsByClassName(arrayOfArrays[i].location));
+                        const duplicateColors = document.getElementsByClassName(arrayOfArrays[i].location);
+                        for (let k = 1; k < duplicateColors.length-1; k++) {
+                            duplicateColors[k].style.borderColor = "red"
+                        }
+                        break;
+                    case 'missing':
+                        duplicate = 'You are missing colors in rows or columns';
+                        const missingColors = document.getElementsByClassName(arrayOfArrays[i].location);
+                        for (let k = 1; k < missingColors.length-1; k++) {
+                            missingColors[k].style.borderColor = "red"
+                        }
+                        break;
+                }
+            }
             this.setState({
                 showModal : "showModal",
-                modalInfo : [rowLog, columnLog, topLog, rightLog, bottomLog, leftLog]
+                modalInfo : [duplicate, missing, clue]
             })
         } else {
             this.winConditionMet();
@@ -133,6 +161,24 @@ class SpeckleSpackleTestPlay extends Component {
         })
     }
 
+    removeErrors() {
+        const { gameInfo } = this.state;
+        for (let i = 0; i < gameInfo.gameGrid.length; i++) {
+            gameInfo.gameGrid[i].error = false;
+        }
+        this.setState({
+            gameInfo : {...gameInfo}
+        })
+        const allSquares = document.querySelectorAll('div[name=square]')
+        for (let i = 0; i < allSquares.length; i++) {
+            allSquares[i].style.borderColor = 'lightgrey'
+        }
+        const allClues = document.querySelectorAll('div[name=clue]')
+        for (let i = 0; i < allClues.length; i++) {
+            allClues[i].style.borderColor = 'lightgrey'
+        }
+    }
+
     checkLeftClues(gameInfo, outerGridSize) {
         let leftLog = [];
         for (let i = outerGridSize, row = 1; i < (gameInfo.gameGrid.length - outerGridSize); i += outerGridSize, row++) {
@@ -143,7 +189,9 @@ class SpeckleSpackleTestPlay extends Component {
                     k++
                 }
                 if (gameInfo.gameGrid[i]["colorNum"] !== gameInfo.gameGrid[k]["colorNum"]) {
-                    leftLog.push(`A clue condition in row ${row} is not met.`)
+                    leftLog.push({errorType:'clue', location: `row${row}`})
+                    gameInfo.gameGrid[i].error = true;
+                    // gameInfo.gameGrid[k].error = true;
                 } 
             }
         }
@@ -160,7 +208,9 @@ class SpeckleSpackleTestPlay extends Component {
                     k--
                 }
                 if (gameInfo.gameGrid[i]["colorNum"] !== gameInfo.gameGrid[k]["colorNum"]) {
-                    rightLog.push(`A clue condition in row ${row} is not met.`)
+                    rightLog.push({errorType:'clue', location: `row${row}`});
+                    gameInfo.gameGrid[i].error = true;
+                    // gameInfo.gameGrid[k].error = true;
                 } 
             }
         }
@@ -177,7 +227,9 @@ class SpeckleSpackleTestPlay extends Component {
                     k += outerGridSize;
                 }
                 if (gameInfo.gameGrid[i]["colorNum"] !== gameInfo.gameGrid[k]["colorNum"]) {
-                    topLog.push(`A clue condition in column ${i} is not met.`)
+                    topLog.push({errorType:'clue', location: `column${i}`})
+                    gameInfo.gameGrid[i].error = true;
+                    // gameInfo.gameGrid[k].error = true;
                 } 
             }
         }
@@ -195,7 +247,9 @@ class SpeckleSpackleTestPlay extends Component {
                     k -= outerGridSize;
                 }
                 if (gameInfo.gameGrid[i]["colorNum"] !== gameInfo.gameGrid[k]["colorNum"]) {
-                    bottomLog.push(`A clue condition in column ${column} is not met.`)
+                    bottomLog.push({errorType:'clue', location: `column${column}`})
+                    gameInfo.gameGrid[i].error = true;
+                    // gameInfo.gameGrid[k].error = true;
                 } 
             }
         }
@@ -211,14 +265,14 @@ class SpeckleSpackleTestPlay extends Component {
                 if (gameGrid[k].colorNum !== "color0") {
                     const indexOfColor = colorArray.indexOf(gameGrid[k].colorNum)
                     if (indexOfColor === -1) {
-                        rowLog.push(`In Row ${i} there was a duplicate of ${gameGrid[k].colorNum}`)
+                        rowLog.push({errorType:'duplicate', location: `row${i}`})
                     } else {
                         colorArray.splice(indexOfColor, 1);
                     }
                 }
             }
             if (colorArray.length > 0) {
-                rowLog.push(`In Row ${i}, you are missing ${colorArray.length} color(s)`)
+                rowLog.push({errorType:'missing', location: `row${i}`})
             } 
         }
         return rowLog;
@@ -234,14 +288,14 @@ class SpeckleSpackleTestPlay extends Component {
                 if (gameGrid[k].colorNum !== "color0") {
                     const indexOfColor = colorArray.indexOf(gameGrid[k].colorNum)
                     if (indexOfColor === -1) {
-                        columnLog.push(`In Column ${i} there was a duplicate of ${gameGrid[k].colorNum}`)
+                        columnLog.push({errorType:'duplicate', location: `column${i}`})
                     } else {
                         colorArray.splice(indexOfColor, 1);
                     }
                 }
             }
             if (colorArray.length > 0) {
-                columnLog.push(`In Column ${i}, you are missing ${colorArray.length} color(s)`)
+                columnLog.push({errorType:'missing', location: `column${i}`})
             } 
         }
         return columnLog;
@@ -249,7 +303,7 @@ class SpeckleSpackleTestPlay extends Component {
 
 
     render() {
-        const { gameInfo, timer } = this.state
+        const { timer, gameInfo } = this.state
         return (
             <div className="pageContainer">
                 <PlayCheckModal info={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => {this.close()}} />
@@ -262,7 +316,7 @@ class SpeckleSpackleTestPlay extends Component {
                 </div>
                 <div className="gutter">
                     <div>
-                        <button onClick={this.evaluateAnswer} className="btn btn-outline-primary justify-content-center align-items-center">Check</button>
+                        {/* <button onClick={this.evaluateAnswer} className="btn btn-outline-primary justify-content-center align-items-center">Check</button> */}
                     </div>
                 </div>
             </div>

@@ -14,7 +14,7 @@ class Footer extends Component {
     }
     toggleMenu() {
         if (this.state.menu === '0') {
-            this.setState({menu : '-90%'})
+            this.setState({menu : '-88%'})
         } else {
             this.setState({menu : '0'})
         }
@@ -55,20 +55,21 @@ class Footer extends Component {
                         </div>
                     </li>
                     
-                    <ul className="nav justify-content-between align-items-center footer px-3" style={{width: "100%", right: `${(this.props.mode === 'create' ? menu : '-150%')}`}}>
+                    <ul className="nav justify-content-between align-items-center footer px-3" style={{width: "100%", right: `${(this.props.mode === 'create' ? menu : '-125%')}`}}>
                         <i onClick={this.toggleMenu} className={`icon-style fa fa-arrow-circle-o-${menu === '0' ? 'right' : 'left'}`} style={{color: "white"}}></i>
                         <button className="btn btn-outline-secondary" onClick={this.props.clickHandlers[0]}>Test Play</button>
                         <i className="icon-style fa fa-arrow-circle-o-right" style={{color: "#222"}}></i>
                     </ul>
 
-                    <ul className="nav justify-content-between align-items-center footer px-3" style={{width: "100%", right: `${(this.props.mode === 'testplay' ? menu : '150%')}`}}>
+                    <ul className="nav justify-content-between align-items-center footer px-3" style={{width: "100%", right: `${(this.props.mode === 'testplay' ? menu : '125%')}`}}>
                         <i onClick={this.toggleMenu} className={`icon-style fa fa-arrow-circle-o-${menu === '0' ? 'right' : 'left'}`} style={{color: "white"}}></i>
+                        <button onClick={this.props.clickHandlers[1]} className="btn btn-outline-secondary">Edit</button>
                         <button onClick={this.props.clickHandlers[2]} className="btn btn-outline-secondary">Submit</button>
-                        <button onClick={this.props.clickHandlers[1]} className="btn btn-outline-secondary">Back To Edit</button>
+                        {/* <button onClick={this.props.clickHandlers[3]} className={`btn btn-outline-secondary ${clickHandlers[3] ? '' : 'd-none'}`}>Check</button> */}
                         <i className="icon-style fa fa-arrow-circle-o-right" style={{color: "#222"}}></i>
                     </ul>
 
-                    <ul className="nav justify-content-between align-items-center footer px-3" style={{width: "100%", right: `${(this.props.mode === 'play' ? menu : '-150%')}`}}>
+                    <ul className="nav justify-content-between align-items-center footer px-3" style={{width: "100%", right: `${(this.props.mode === 'play' ? menu : '-125%')}`}}>
                         <i onClick={this.toggleMenu} className={`icon-style fa fa-arrow-circle-o-${menu === '0' ? 'right' : 'left'}`} style={{color: "white"}}></i>
                         <button onClick={this.props.clickHandlers[0]} className={`btn btn-outline-secondary ${this.props.clickHandlers[0] ? '' : 'd-none'}`}>Check Answer</button>
                         <i className="icon-style fa fa-arrow-circle-o-right" style={{color: "#222"}}></i>
