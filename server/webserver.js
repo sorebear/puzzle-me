@@ -166,7 +166,7 @@ function calculateSolverRatingsForUser(user_id, res, callback){
             userData[entry.puzzle_id] = entry;
         }
         //TODO: really need to make this only check the puzzles that the user has completed, or
-        do a total calculation periodically and then draw from that.
+        //do a total calculation periodically and then draw from that.
         calculateAvgTimeForPuzzleTypeAndSize(response=>{
             if(response.err){
                 respondWithError(res, response.err);
@@ -243,13 +243,15 @@ webserver.post('/login', function(req, res){
     //console.log("We received facebook data: ", req.body);
     //set the session cookie to have the facebook user id.
     var facebook_uid =  req.body.response.authResponse.userID;
+    console.log('session: ',req.session);
     req.session.userid = facebook_uid;
     //check if the user is in the database, if not add them to it
     var query = `SELECT * FROM users WHERE facebook_u_id='${facebook_uid}'`;
+    console.log("query: "+query);
     pool.query(query, (err,rows,fields) => {
         console.log("Here are the rows: ", rows);
         if(rows.length === 0){
-            query = `INSERT INTO users (facebook_u_id) VALUES (${facebook_uid})`;
+            query = `INSERT INTO users SET facebook_u_id='${facebook_uid}', account_created = NOW()`;
             pool.query(query, function(error, results){
                 if(error) console.log("Error inserting into users table: ", error);
                 else console.log("results.affectedRows is: ", results.affectedRows);
