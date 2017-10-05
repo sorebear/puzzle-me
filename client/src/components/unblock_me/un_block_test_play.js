@@ -42,8 +42,6 @@ export default class extends Component {
 
 //GETS CALLED FROM STATE TO CREATE PIECE MAP FROM PROPS OBJ
         function createPieceMap(props){
-            console.log(props)
-
             var pieceMap = [];
 
             props.pieceStack.map((piece, index)=>{
@@ -65,7 +63,7 @@ export default class extends Component {
         const gameBoardTop = 55;
         const gameBoardBottom = window.innerWidth + 55;
         const oneBoardUnit = window.innerWidth / 6;
-        var correctedMap = [{y: 2*oneBoardUnit, x: 0, type: "unBlock_starterPiece", width: 2*oneBoardUnit, height: 1*oneBoardUnit}];
+        var correctedMap = [{y: 2*oneBoardUnit, x: 0*oneBoardUnit, type: "unBlock_starterPiece", width: 2, height: 1}];
 
         this.state.pieceMap.map((piece, index)=>{
             correctedMap.push({x: piece.x*oneBoardUnit, y: piece.y*oneBoardUnit + gameBoardTop, type: piece.type, width: piece.width*oneBoardUnit, height: piece.height*oneBoardUnit})
@@ -126,7 +124,6 @@ export default class extends Component {
         var amountToMove = null;
         if(ev.type == 'touchmove') {
             amountToMove = ev.touches[0].clientX - this.state.startPos;
-            console.log(amountToMove)
         }else if(ev.type == 'mousemove'){
             amountToMove = ev.clientX - this.state.startPos;
         }
@@ -155,11 +152,9 @@ export default class extends Component {
                 canMoveLeft: true,
             });
             this.state.pieceMap.map((piece, index) => {
-                console.log(piece.y)
                 if (index == ev.target.id) {
-
-                } else if (thisPieceTop + 1 < piece.y + piece.height && thisPieceBottom - 1 > piece.y && thisPieceRight > piece.x - 1 && thisPieceLeft < piece.x) {
-                    console.log("COLIDE")
+                } else if (thisPieceTop + 1 < piece.y + piece.height*this.state.oneBoardUnit && thisPieceBottom - 1 > piece.y && thisPieceRight > piece.x - 1 && thisPieceLeft < piece.x) {
+                    console.log("COLLY")
                     pieceMap[ev.target.id].x = piece.x - pieceWidth;
                     this.setState({
                         pieceMap: [...pieceMap],
@@ -194,8 +189,8 @@ export default class extends Component {
             this.state.pieceMap.map((piece, index) => {
                 if (index == ev.target.id) {
 
-                } else if (thisPieceTop + 1 < piece.y + piece.height && thisPieceBottom - 1 > piece.y && thisPieceLeft < piece.x + piece.width + 1&& thisPieceRight > piece.x + piece.width) {
-                    pieceMap[ev.target.id].x = piece.x + piece.width;
+                } else if (thisPieceTop + 1 < piece.y + piece.height*this.state.oneBoardUnit && thisPieceBottom - 1 > piece.y && thisPieceLeft < piece.x + piece.width*this.state.oneBoardUnit + 1 && thisPieceRight > piece.x + piece.width*this.state.oneBoardUnit) {
+                    pieceMap[ev.target.id].x = piece.x + piece.width*this.state.oneBoardUnit;
                     this.setState({
                         pieceMap: this.state.pieceMap,
                         canMoveLeft: false,
@@ -250,7 +245,7 @@ export default class extends Component {
             });
             this.state.pieceMap.map((piece, index)=> {
                 if(index == ev.target.id){
-                }else if(thisPieceLeft < piece.x + piece.width && thisPieceRight - 1 > piece.x && thisPieceBottom > piece.y - 1 && this.state.pieceMap[ev.target.id].y < piece.y) {
+                }else if(thisPieceLeft < piece.x + piece.width*this.state.oneBoardUnit && thisPieceRight - 1 > piece.x && thisPieceBottom > piece.y - 1 && thisPieceTop < piece.y) {
                     pieceMap[ev.target.id].y = piece.y - pieceHeight;
                     this.setState({
                         pieceMap: [...pieceMap],
@@ -284,8 +279,8 @@ export default class extends Component {
             this.state.pieceMap.map((piece, index)=> {
                 if(index == ev.target.id){
 
-                }else if (thisPieceLeft < piece.x + piece.width && thisPieceRight - 1 > piece.x && thisPieceTop < piece.y + piece.height + 1 && thisPieceBottom > piece.y) {
-                    pieceMap[ev.target.id].y = piece.y + piece.height;
+                }else if (thisPieceLeft < piece.x + piece.width*this.state.oneBoardUnit && thisPieceRight - 1 > piece.x && thisPieceTop < piece.y + piece.height*this.state.oneBoardUnit + 1 && thisPieceBottom > piece.y) {
+                    pieceMap[ev.target.id].y = piece.y + piece.height*this.state.oneBoardUnit;
                     this.setState({
                         pieceMap: [...pieceMap],
                         canMoveUp: false,
@@ -396,8 +391,8 @@ export default class extends Component {
                         {
                             top: this.state.pieceMap[0].y,
                             left: this.state.pieceMap[0].x,
-                            width: this.state.pieceMap[0].width,
-                            height: this.state.pieceMap[0].height,
+                            width: this.state.pieceMap[0].width * oneBoardUnit,
+                            height: this.state.pieceMap[0].height * oneBoardUnit,
                         }
                     }
                     >
