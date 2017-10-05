@@ -52,6 +52,18 @@ webserver.get('/puzzles', function(req, res){
     }
 });
 
+webserver.get('/getPuzzlesByUser', function(req, res){
+    var user_id = req.body.user_id;
+    var query = `SELECT url_ext FROM puzzles WHERE creator_id = ${user_id}`;
+    pool.query(query, (err, rows, fields) => {
+        if(err) {
+            respondWithError(res, err);
+        } else {
+            var query = `SELECT  `
+        }
+    });     
+});
+
 function getGamePlayInfo(res, url_ext){
     console.log("Inside of getGamePlayInfo function");
     var query = `SELECT * FROM puzzles WHERE url_ext='${url_ext}'`
@@ -175,7 +187,7 @@ function calculateSolverRatingsForUser(user_id, res, callback){
                     console.log(query);
                     pool.query(query, (err, rows, fields) => {
                         if(!err){
-                            res.end(JSON.stringify({success: true, solver_score: totalPoints}));
+                            res.end(JSON.stringify({success: true, solver_score: totalPoints>>0}));
                         } else {
                             respondWithError(res, response.err);
                         }
