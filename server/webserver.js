@@ -32,8 +32,6 @@ var allowCrossDomain = function(req, res, next) {
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
   res.header('Access-Control-Allow-Credentials',true);
-  //res.sendStatus(200);
-
   next();
 };
 
@@ -79,17 +77,36 @@ webserver.get('/puzzles', function(req, res){
         console.log("Query key puzzles is not present");
     }
 });
+function getPuzzlesByUser(user_id, requesting_own_data, callback){
+    if(!requesting_own_data){
+        var subquery += " AND p.completely_built = 'Yes'";
+        var queryFields = "p.completely_built, ";
+        ${user_id}
+    }
+    var query = `SELECT p.puzzle_name, p.url_ext, p.type, p.size, ${queryFields}
+        p.avg_time_to_complete, p.likes, p.dislikes, p.date_created, p.total_plays
+        FROM puzzles WHERE creator_id = ? ${subquery}`;
 
-webserver.get('/getPuzzlesByUser', function(req, res){
-    var user_id = req.body.user_id;
-    var query = `SELECT url_ext FROM puzzles WHERE creator_id = ${user_id}`;
-    pool.query(query, (err, rows, fields) => {
+    pool.query(query, [user_id], (err, rows, fields) => {
         if(err) {
             respondWithError(res, err);
         } else {
-            var query = `SELECT  `
+            callback(rows);
         }
-    });     
+    });  
+}
+webserver.get('/getPuzzlesByUser', function(req, res){
+
+    var user_id = req.body.user_id || req.session.userid || false;
+
+    if(user_id!==false){
+        getUserIDFromFacebookID(user_id, simple_user_id =>{
+            getPuzzlesByUser(simple_user_id, puzzleData =>{
+                res.end(JSON.stringify({success: true, data: rows}));
+            });      
+        });
+    }
+   
 });
 
 function getGamePlayInfo(res, url_ext){
@@ -157,8 +174,11 @@ webserver.get('/getRankings', function(req, res){
     console.log("req.query.retrieve is: ", req.query.retrieve);
     if(req.query.retrieve){
         switch(req.query.retrieve) {
-            case 'getRankings':
+            case 'user':
                 getUserRankings(res);
+                break;
+            case 'puzzle':
+                getPuzzleRankings(res);
                 break;
             default:
                 console.log("unknown query value for puzzles key");
