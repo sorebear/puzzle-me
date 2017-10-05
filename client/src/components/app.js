@@ -4,7 +4,7 @@ import InfoModal from './info_modal/info_modal';
 
 import Header from '../header';
 import Footer from '../footer';
-import Home from './home';
+import Home from './home_menu';
 import CreateMenu from './create_menu';
 import PlayMenu from './play_menu';
 import SpeckleSpackleApp from './speckle_spackle/speckle_spackle_app';
@@ -74,7 +74,7 @@ class App extends Component {
             currentGameMode : currentGameMode,
             clickHandlers : currentClickHandlers
         });
-        if (this.state.autoInfo) {
+        if (this.state.autoInfo && (currentPath !== "play_menu" || currentPath !== "rankings", currentPath !== "profile")) {
             setTimeout(() => {
                 this.setState({ showModal: "showModal" })
             }, 500)

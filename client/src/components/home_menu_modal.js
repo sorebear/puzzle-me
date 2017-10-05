@@ -35,13 +35,13 @@ class InfoModal extends Component {
         return (
             <div className={this.props.showModal}>
                 <div className={this.props.showModal} onClick={this.props.closeModal}></div>
-                <div className="card px-4 pt-4 text-center">
+                <div className="card px-5 pt-5 text-center">
                     <div className="card-body pb-1">
-                        <h5 className="card-title">{infoObjectValue.name}</h5>
+                        <h4 className="card-title">{infoObjectValue.name}</h4>
                         <img src={infoObjectValue.tutorial[infoIndex].animation} style={{width: "100%", maxWidth: "300px"}}/>
                         <p className="mt-2">{infoObjectValue.tutorial[infoIndex].text}</p>
                         <button type="button" onClick={this.props.closeModal} className="m-2 btn btn-outline-danger">Close</button>
-                        <button type="button" onClick={this.incrementInfoIndex} className={`m-2 btn btn-outline-primary ${infoObjectValue.tutorial.length === 1 ? 'd-none' : ''}`}>Next</button>
+                        <button type="button" onClick={this.incrementInfoIndex} className="m-2 btn btn-outline-primary">Next</button>
                         <div className="py-2">
                             <i onClick={this.props.toggleAutoInfo} className={`fa text-${this.props.autoInfo ? 'primary fa-check' : 'danger fa-times'}`}>
                                 {this.props.autoInfo ? ' Auto-Info Enabled' : ' Auto-Info Disabled'}

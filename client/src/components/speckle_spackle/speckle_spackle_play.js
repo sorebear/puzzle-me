@@ -146,7 +146,7 @@ class SpeckleSpacklePlay extends Component {
                         }
                         break;
                     case 'missing':
-                        duplicate = 'You are missing colors in rows or columns';
+                        missing = 'You are missing colors in rows or columns';
                         const missingColors = document.getElementsByClassName(arrayOfArrays[i].location);
                         for (let k = 1; k < missingColors.length-1; k++) {
                             missingColors[k].style.borderColor = "red"

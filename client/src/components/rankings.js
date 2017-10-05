@@ -9,6 +9,7 @@ class Rankings extends Component {
         this.state = {
             modalInfo : null,
             showModal : "noModal",
+            sortField : null,
             data: null
         }
         this.URL_EXT = '/getRankings';
@@ -32,7 +33,6 @@ class Rankings extends Component {
 
     componentWillMount() {
         this.getData();
-        // this.sortData("composite_solver_ranking")
     }
 
     getData() {
@@ -48,19 +48,33 @@ class Rankings extends Component {
         this.setState({
             data: receivedData
         });
+        this.sortData("composite_solver_ranking")
     }
 
     sortData(field) {
+        if (field === this.state.sortField) {
+            this.sortDataReverse(field);
+            return;
+        }
         const { data } = this.state;
-        console.log("Data", data, "and Field", field)
+        data.sort(function(a,b) {return a[field] - b[field]});
+        this.setState({
+            data : [...data],
+            sortField : field
+        })
+    }
+
+    sortDataReverse(field) {
+        const { data } = this.state;
         data.sort(function(a,b) {return b[field] - a[field]});
         this.setState({
-            data : [...data]
+            data : [...data],
+            sortField : field
         })
     }
 
     render() {
-        const { data } = this.state
+        const { data, sortField } = this.state
         if (data === null) {
             return <h1>Loading...</h1>
         } else {
@@ -80,8 +94,8 @@ class Rankings extends Component {
                         <thead>
                             <tr>
                                 <th className="text-center">User</th>
-                                <th className="text-center" onClick={() => {this.sortData("composite_solver_ranking")}} >Solver Rank</th>
-                                <th className="text-center" onClick={() => {this.sortData("composite_creator_ranking")}}>Creator Rank</th>
+                                <th className="text-center" onClick={() => {this.sortData("composite_solver_ranking")}} style={{backgroundColor: (sortField === 'composite_solver_ranking' ? 'grey' : '') }}>Solver Rank</th>
+                                <th className="text-center" onClick={() => {this.sortData("composite_creator_ranking")}} style={{backgroundColor: (sortField === 'composite_creator_ranking' ? 'grey' : '') }}>Creator Rank</th>
                             </tr>
                         </thead>
                         <tbody>

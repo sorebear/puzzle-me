@@ -1,3 +1,4 @@
+import homeMenu from './homeMenu.gif'
 import ss_threeColors from './ss-threeColors.gif';
 import ss_eachPerRowCol from './ss-eachPerRowCol.gif';
 import ss_clueMatch from './ss-clueMatch.gif'
@@ -14,11 +15,11 @@ import wg_hiddenWord from './wg-hiddenWord.gif';
 
 const InfoObject = {
     home : {
-        name: 'Home',
+        name: 'Welcome To PuzzleMe!',
         tutorial : [
             {
-                animation : null,
-                text: `Welcome To PuzzleMe`
+                animation : homeMenu,
+                text: `You can explore PuzzleMe through the footer menu. Or learn to play our games by clicking a puzzle!`
             }
         ]
     },
@@ -27,7 +28,7 @@ const InfoObject = {
         tutorial : [
             {
                 animation : null,
-                text: `Welcome To Play Menu`
+                text: `Browse all created puzzles. When you find one that looks intriguing, click on it to play!`
             }
         ]
     },
@@ -36,7 +37,7 @@ const InfoObject = {
         tutorial : [
             {
                 animation : null,
-                text: `Welcome To PuzzleMe`
+                text: `Click on a puzzle style to start creating! Don't worry we'll have an info modal in each one to help guide you in your creation!`
             }
         ]
     },
@@ -45,7 +46,7 @@ const InfoObject = {
         tutorial : [
             {
                 animation : null,
-                text: `Welcome To PuzzleMe`
+                text: `Browse through the current rankings. You can click the table headers to adjust the sorting.`
             }
         ]
     },
@@ -59,7 +60,7 @@ const InfoObject = {
         ]
     },
     speckle_spackle_play : {
-        name: 'Learn Speckle Spackle',
+        name: 'Play Speckle Spackle',
         tutorial : [
             {
                 animation : ss_threeColors,
@@ -84,7 +85,7 @@ const InfoObject = {
         ]
     },
     unblock_me_play : {
-        name: 'Playing Unblock Me',
+        name: 'Play Unblock Me',
         tutorial : [
             {
                 animation : um_howToWin,
@@ -105,7 +106,7 @@ const InfoObject = {
         ]
     },
     word_guess_play : {
-        name : 'Playing Word Guess',
+        name : 'Play Word Guess',
         tutorial : [
             {
                 animation : wg_hiddenWord,
