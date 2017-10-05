@@ -19,7 +19,7 @@ export default class extends Component{
 
             page: 'profile',
         }
-        this.URL_EXT = 'http://localhost:4000/getProfile';
+        this.URL_EXT = '/getProfile';
         this.QUERY_KEY = 'retrieve';
         this.QUERY_VAL = 'getProfile';
         this.updateData = this.updateData.bind(this);
@@ -108,7 +108,7 @@ export default class extends Component{
             )
         } else if(this.state.page === 'completed'){
             return(
-                <CompletedPuzzles/>
+                <CompletedPuzzles user_id={this.state.user_id}/>
             )
         }
     }

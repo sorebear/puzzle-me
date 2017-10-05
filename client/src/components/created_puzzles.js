@@ -29,7 +29,6 @@ export default class extends Component {
     }
 
     handleData(response) {
-        console.log("RESPINSE", response)
         const fetchedData = response
         console.log(fetchedData);
         this.setState({
@@ -44,7 +43,6 @@ export default class extends Component {
             return <h1>Loading...</h1>
         } else {
             const list = data.map((item, index) => {
-                console.log(item)
                 return (
                     <tr key={index} onClick={() => {
                         this.callModal(item)
