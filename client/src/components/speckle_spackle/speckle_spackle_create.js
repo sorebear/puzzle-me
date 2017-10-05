@@ -56,6 +56,7 @@ class SpeckleSpackleCreate extends Component {
                             name : 'clue',
                             className : `row${rowCounter} column${columnCounter}`,
                             colorNum : 'color0',
+                            error : false,
                             opacity : 1
                         }
                     }
@@ -65,6 +66,7 @@ class SpeckleSpackleCreate extends Component {
                         name : 'square',
                         className : `row${rowCounter} column${columnCounter}`, 
                         colorNum : 'color0',
+                        error : false,
                         opacity : 1
                     }
                 }

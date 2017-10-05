@@ -39,6 +39,7 @@ class GameGrid extends Component {
                     className={item.className} 
                     width={Math.floor(100 / (gridSize + 2))} 
                     gameGrid = {[...gameGrid]}
+                    error={item.error}
                     opacity={item.opacity}
                 />
             )
