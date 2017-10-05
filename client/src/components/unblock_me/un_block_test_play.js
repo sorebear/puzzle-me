@@ -43,7 +43,7 @@ export default class extends Component {
 //GETS CALLED FROM STATE TO CREATE PIECE MAP FROM PROPS OBJ
         function createPieceMap(props){
             var pieceMap = [];
-
+            console.log("CREATED STACK", props.pieceStack)
             props.pieceStack.map((piece, index)=>{
                 var yPos = piece.yPos;
                 var xPos = piece.xPos;
@@ -51,7 +51,6 @@ export default class extends Component {
                 var pieceWidth = piece.width;
                 var pieceHeight = piece.height;
                 pieceMap.push({y: yPos, x: xPos, type: type, width: pieceWidth, height: pieceHeight})
-
             });
             return pieceMap;
         }
