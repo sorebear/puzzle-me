@@ -13,9 +13,7 @@ export default class extends Component {
             data: null,
         }
 
-        this.URL_EXT = '/getCreatedPuzzles';
-        this.QUERY_KEY = 'retrieve';
-        this.QUERY_VAL = 'getCreatedPuzzles';
+        this.URL_EXT = '/getPuzzlesByUser';
         this.handleData = this.handleData.bind(this);
     }
 
@@ -24,7 +22,9 @@ export default class extends Component {
     }
 
     getData() {
-        Axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL + '&' + 'user_id' + '=' + this.state.user_id).then(this.handleData).catch(err => {
+
+        var userRequest = this.state.user_id ? {'user_id' : this.state.user_id} : {};
+        Axios.post(SERVER_BASE_ADDRESS + this.URL_EXT , userRequest).then(this.handleData).catch(err => {
             console.log("Error getting created puzzles: ", err);
         });
     }
