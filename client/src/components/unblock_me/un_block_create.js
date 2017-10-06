@@ -185,11 +185,13 @@ export default class CreationStation extends Component {
     }
 
     instantiateGame(ev) {
+        this.props.updateCurrentPath("word_guess_create", '', 'testplay', [this.instantiateGame, this.backToCreate]);
         this.setState({
             mode: "play",
         })
     }
     backToCreate(){
+        this.props.updateCurrentPath("word_guess_create", '', 'create', [this.instantiateGame, this.backToCreate]);
         this.setState({
             mode: "create"
         })
@@ -309,9 +311,6 @@ export default class CreationStation extends Component {
             return (
                 <div className="container gameArea">
                     <GameBoard pieceStack={playableStack}/>
-                    <div className="d-flex justify-content-center">
-                        <button className="btn btn-outline-danger" style={{position:"fixed", bottom:"50px"}} onClick={this.backToCreate}>Continue Editing</button>
-                    </div>
                 </div>
             )
         }

@@ -87,7 +87,7 @@ class App extends Component {
         return (
             <div>
                 <InfoModal toggleAutoInfo={this.toggleAutoInfo} autoInfo={autoInfo} showModal={showModal} closeModal={() => {this.close()}} currentPath={currentPath} />
-                <Header currentTitle={currentTitle} callModal={() => {this.callModal()}}/>
+                <Header updateCurrentPath={this.updateCurrentPath} currentTitle={currentTitle} callModal={() => {this.callModal()}}/>
                     <div className="mainViewingWindow" style={{height: currentHeight-100, width: currentWidth, position: "relative"}}>
                         <Route exact path="/" render={(props) => <Home {...props} toggleAutoInfo={this.toggleAutoInfo} autoInfo={autoInfo} updateCurrentPath={this.updateCurrentPath} />} />
                         <Route path="/home" render={(props) => <Home {...props} toggleAutoInfo={this.toggleAutoInfo} autoInfo={autoInfo} updateCurrentPath={this.updateCurrentPath} />} />

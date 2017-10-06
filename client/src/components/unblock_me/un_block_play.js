@@ -3,7 +3,7 @@ import Draggable, { DraggableCore } from 'react-draggable';
 import './un_block_style.css';
 import Axios from 'axios';
 
-Axios.defaults.withCredentials = true;
+Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
 
 export default class extends Component {
     constructor(props) {
