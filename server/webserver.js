@@ -77,7 +77,7 @@ webserver.get('/puzzles', function(req, res){
         console.log("Query key puzzles is not present");
     }
 });
-function getPuzzlesByUser(user_id, requesting_own_data, callback){
+function getCreatedPuzzlesByUser(user_id, requesting_own_data, callback){
     var subquery = '';
     var queryFields = '';
     if(!requesting_own_data){
@@ -87,6 +87,31 @@ function getPuzzlesByUser(user_id, requesting_own_data, callback){
     var query = `SELECT puzzle_name, url_ext, type, size, ${queryFields}
         avg_time_to_complete, likes, dislikes, UNIX_TIMESTAMP(date_created) as date_created, total_plays
         FROM puzzles WHERE creator_id = ? ${subquery}`;
+
+    let result = pool.query(query, [user_id], (err, rows, fields) => {
+        console.log(result.sql);
+        if(err) {
+            callback(false, err);
+        } else {
+            callback(rows);
+        }
+    });  
+}
+function getSolvedPuzzlesByUser(user_id, requesting_own_data, callback){
+    var subquery = '';
+    var queryFields = '';
+    if(!requesting_own_data){
+        //put private options here
+    }
+    var query = `SELECT pst.completionTime, UNIX_TIMESTAMP(pst.completionRegistered) AS completionRegistered,
+        p.puzzle_name, p.type, p.size, p.avg_time_to_complete,
+        u.username AS creator_name, u.facebook_u_id AS creator_id
+        FROM puzzleSolutionTimes AS pst
+        JOIN puzzles AS p 
+            ON pst.puzzle_id = p.p_id
+        JOIN users AS u 
+            ON u.u_id = p.creator_id
+        WHERE pst.user_id = ?`;
 
     let result = pool.query(query, [user_id], (err, rows, fields) => {
         console.log(result.sql);
@@ -108,14 +133,28 @@ webserver.post('/getPuzzlesByUser', function(req, res){
     if(user_id!==false){
         getUserIDFromFacebookID(user_id, simple_user_id =>{
             console.log('LINE 109 user id:',user_id,simple_user_id);
-            getPuzzlesByUser(simple_user_id, get_own_data, (puzzleData,err) =>{
-                if(puzzleData){
-                    res.end(JSON.stringify({success: true, data: puzzleData}));
-                } else {
-                    respondWithError(res, err);
+            switch(req.body.type){
+                case 'solved':
+                        getSolvedPuzzlesByUser(simple_user_id, get_own_data, (puzzleData,err) =>{
+                        if(puzzleData){
+                            res.end(JSON.stringify({success: true, data: puzzleData}));
+                        } else {
+                            respondWithError(res, err);
+                        }
+                        
+                    });
+                    break;
+                case 'created':
+                default:
+                    getCreatedPuzzlesByUser(simple_user_id, get_own_data, (puzzleData,err) =>{
+                        if(puzzleData){
+                            res.end(JSON.stringify({success: true, data: puzzleData}));
+                        } else {
+                            respondWithError(res, err);
+                        }
+                        
+                    });
                 }
-                
-            });      
         });
     } else {
         requireUserLogin(res);
@@ -300,7 +339,6 @@ webserver.get('/getCreatedPuzzles', function(req, res){
         } else {
             console.log("Query key puzzles is not present");
         }
-        getPuzzlesByUser(user_id, requesting_own_data, callback)
     });
 })
 
