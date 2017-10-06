@@ -3,7 +3,7 @@ import PlayMenuModal from '../play_menu_modal';
 import PageTitle from './page_title';
 import Axios from 'axios';
 
-Axios.defaults.withCredentials = true;
+Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000';
 
 class Rankings extends Component {
     constructor(props) {
@@ -16,7 +16,7 @@ class Rankings extends Component {
         }
         this.URL_EXT = '/getRankings';
         this.QUERY_KEY = 'retrieve';
-        this.QUERY_VAL = 'getRankings';
+        this.QUERY_VAL = 'user';
         this.updateData = this.updateData.bind(this);
     }
 
@@ -38,6 +38,7 @@ class Rankings extends Component {
     }
 
     getData() {
+        console.log("I'm getting Data!")
         Axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
             console.log("Error Loading Rankings: ", err);
         });

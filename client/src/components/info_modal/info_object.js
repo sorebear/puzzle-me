@@ -33,6 +33,15 @@ const InfoObject = {
             }
         ]
     },
+    login : {
+        name: 'Login',
+        tutorial : [
+            {
+                animation : null,
+                text: `Please sign in with Facebook to enjoy our app!`
+            }
+        ]
+    },
     play_menu : {
         name: 'Play Menu',
         tutorial : [

@@ -7,7 +7,7 @@ export default (props) => {
             <div className="col-3 text-left">
                 <li className="nav-item align-self-center" style={{zIndex: 2}}>
                     <NavLink to="/login">
-                        <div style={{color: "white"}}><span style={{color: "rgb(217,83,79)"}}>puzzle</span>me</div>
+                        <div onClick={() => props.updateCurrentPath('login')} style={{color: "white"}}><span style={{color: "rgb(217,83,79)"}}>puzzle</span>me</div>
                     </NavLink>
                 </li>
             </div>

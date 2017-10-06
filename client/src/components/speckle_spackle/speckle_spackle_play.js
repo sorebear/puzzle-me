@@ -4,7 +4,7 @@ import PlayCheckModal from './play_check_modal';
 import Axios from 'axios';
 import './speckle_spackle_style.css';
 
-Axios.defaults.withCredentials = true;
+Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
 
 class SpeckleSpacklePlay extends Component {
     constructor(props) {
