@@ -5,21 +5,44 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
 // const cookieParser = require('cookie-parser');
-const cookieSession = require('cookie-session');
+//const cookieSession = require('cookie-session');
+const cookieSession = require('express-session');
 const webserver = express();
 const generatePuzzleID = require('./helperFunctions.js');
+
+const baselinePointsPerPuzzle = 100;
 
 const PORT = process.env.PORT || 4000;
 
 
 //webserver.use(cookieParser('testsecret'));
 webserver.set('trust proxy', 1);
-webserver.use(cookieSession({
-    name: 'puzme',
-    keys: ['testsecret']
-}));
+webserver.use(cookieSession({ 
+    //path: '/', 
+    domain: 'localhost:3000',
+    httpOnly: false, 
+    secure: false, 
+    maxAge: null , 
+    secret: 'puzme', 
+    resave: true,
+    saveUninitialized: true
+}))
+var allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+  res.header('Access-Control-Allow-Credentials',true);
+  next();
+};
+
+webserver.use(allowCrossDomain);
+// webserver.use(cookieSession({
+//     name: 'puzme',
+//     keys: ['testsecret']
+// }));
+
 // Andy put this here for dev purposes, will allow Cross-Origin requests, but will most likely need to remove for production
-webserver.use(cors());
+//webserver.use(cors());
 
 
 webserver.use(bodyParser.urlencoded({ extended: false }))
@@ -29,6 +52,11 @@ webserver.use(express.static(path.resolve(__dirname, '..', 'client', 'dist')));
 const pool = mysql.createPool(credentials);
 pool.getConnection(function(err, conn){
    if(err) console.log("Error connecting to MySQL database");
+});
+
+webserver.post('/test', function(req, res){
+    console.log('test: ',req.session);
+    res.end("<pre>"+JSON.stringify(req.session)+'</pre>');
 });
 
 webserver.get('/puzzles', function(req, res){
@@ -49,6 +77,50 @@ webserver.get('/puzzles', function(req, res){
         console.log("Query key puzzles is not present");
     }
 });
+function getPuzzlesByUser(user_id, requesting_own_data, callback){
+    var subquery = '';
+    var queryFields = '';
+    if(!requesting_own_data){
+        subquery = " AND completely_built = 'Yes'";
+        queryFields = "completely_built, ";
+    }
+    var query = `SELECT puzzle_name, url_ext, type, size, ${queryFields}
+        avg_time_to_complete, likes, dislikes, UNIX_TIMESTAMP(date_created) as date_created, total_plays
+        FROM puzzles WHERE creator_id = ? ${subquery}`;
+
+    let result = pool.query(query, [user_id], (err, rows, fields) => {
+        console.log(result.sql);
+        if(err) {
+            callback(false, err);
+        } else {
+            callback(rows);
+        }
+    });  
+}
+webserver.post('/getPuzzlesByUser', function(req, res){
+    if(req.body.user_id){
+        var user_id = req.body.user_id;
+        var get_own_data = true;
+    } else {
+        user_id = req.session.userid
+        get_own_data = false;
+    }
+    console.log('checking for ',req.body.user_id,req.session);
+    if(user_id!==false){
+        getUserIDFromFacebookID(user_id, simple_user_id =>{
+            console.log('LINE 109 user id:',user_id,simple_user_id);
+            getPuzzlesByUser(simple_user_id, get_own_data, (puzzleData,err) =>{
+                if(puzzleData){
+                    res.end(JSON.stringify({success: true, data: puzzleData}));
+                } else {
+                    respondWithError(res, err);
+                }
+                
+            });      
+        });
+    }
+   
+});
 
 function getGamePlayInfo(res, url_ext){
     console.log("Inside of getGamePlayInfo function");
@@ -64,14 +136,30 @@ function respondWithError(res, err){
     res.end(JSON.stringify({success: false, errors: err}));
 }
 
+function getUserIDFromFacebookID(fb_id, callback){
+    var query = `SELECT u_id FROM users WHERE facebook_u_id=?`
+    console.log("QUERY is: ", query);
+    pool.query(query,[fb_id], (err, rows, fields) => {
+        if(err) {
+            callback(false, err);
+        } else {
+            if(rows.length){
+                callback(rows[0].u_id);
+            } else {
+                callback(false, 'no user id');
+            }
+        }
+    });       
+}
+
 function getPuzzleInfoFromPuzzleURL(url_ext, callback){
     var query = `SELECT * FROM puzzles WHERE url_ext='${url_ext}'`
     console.log("QUERY is: ", query);
     pool.query(query, (err, rows, fields) => {
         if(err) {
-            respondWithError(res, err);
+            callback(false, err);
         } else {
-            callback(rows[0]);
+            callback(rows[0].u_id);
         }
     });    
 }
@@ -89,7 +177,6 @@ function getMostRecent10Puzzles(res){
 
 function getPuzzleCompletionsByUser(user_id, puzzle_id, callback){
     var query = `SELECT * FROM puzzleSolutionTimes WHERE user_id='${user_id}' AND puzzle_id='${puzzle_id}'`;
-    console.log('query = ',query);
     pool.query(query, (err, rows, fields) => {
         if(err) {
             respondWithError(res, err);
@@ -134,8 +221,11 @@ webserver.get('/getRankings', function(req, res){
     console.log("req.query.retrieve is: ", req.query.retrieve);
     if(req.query.retrieve){
         switch(req.query.retrieve) {
-            case 'getRankings':
+            case 'user':
                 getUserRankings(res);
+                break;
+            case 'puzzle':
+                getPuzzleRankings(res);
                 break;
             default:
                 console.log("unknown query value for puzzles key");
@@ -156,6 +246,12 @@ function getUserRankings(res){
             res.json({"Success": true, "data": rows});
         }
     });
+}
+
+function checkUserLoggedIn(user_id, res){
+    if(user_id===undefined){
+        res.end(JSON.stringify({success: false, errors: ['user not logged in']}));
+    }
 }
 
 webserver.get('/getCreatedPuzzles', function(req, res){
@@ -258,13 +354,79 @@ function calculatePuzzleRatings(res,callback){
             });
             combinedQuery+= `
             ELSE avg_time_to_complete END`;
-            console.log(combinedQuery);
             pool.query(combinedQuery, (err, rows, fields) =>{
                 callback(rows);
             })
             
         }
     }); 
+}
+
+function calculateAvgTimeForPuzzleTypeAndSize(callback){
+    let query = `SELECT p.p_id AS puzzle_id, AVG(pST.completionTime) as averagePuzzleTime, p.type, p.size FROM 
+   puzzleSolutionTimes AS pST
+ JOIN puzzles AS p 
+   ON p.p_id = pST.puzzle_id
+   WHERE status='enabled' AND firstCompletion=1
+   GROUP BY p.type, p.size`;
+   pool.query(query, (err, rows, fields) => {
+        var data = {};
+        rows.forEach((row=>{
+            data[row.puzzle_id] = row;
+        }));
+        callback({err, data});
+   });   
+}
+
+function calculateSolverRatingsForUser(user_id, res, callback){
+    let query = `SELECT p.p_id AS puzzle_id, pST.completionTime as puzzleTime, p.type, p.size FROM 
+   puzzleSolutionTimes AS pST
+ JOIN puzzles AS p 
+   ON p.p_id = pST.puzzle_id
+   WHERE status='enabled' AND firstCompletion=1 AND user_id = ${user_id}`;
+
+   pool.query(query, (err, rows, fields) => {
+        var userData = {};
+        for( let entry of rows){
+            userData[entry.puzzle_id] = entry;
+        }
+        //TODO: really need to make this only check the puzzles that the user has completed, or
+        //do a total calculation periodically and then draw from that.
+        calculateAvgTimeForPuzzleTypeAndSize(response=>{
+            if(response.err){
+                respondWithError(res, response.err);
+            } else {
+                let totalPoints = 0;
+                for(let id in userData){
+                    if(response.data[id]!==undefined){
+                        userData[id].globalAverageTime = response.data[id].averagePuzzleTime;
+                        console.log('user time: '+userData[id].puzzleTime);
+                        console.log('global time: '+userData[id].globalAverageTime);
+                        let mult = 1 + (1 - (userData[id].puzzleTime / userData[id].globalAverageTime));
+                        let points = baselinePointsPerPuzzle * mult;
+                        console.log('points: '+points);
+                        userData[id].points = points;
+                        totalPoints+=points;                  
+                    }
+                    let query = `UPDATE users SET composite_solver_ranking = ${totalPoints} WHERE u_id = ${user_id}`;
+                    console.log(query);
+                    pool.query(query, (err, rows, fields) => {
+                        if(!err){
+                            res.end(JSON.stringify({success: true, solver_score: totalPoints>>0}));
+                        } else {
+                            respondWithError(res, response.err);
+                        }
+                    });                       
+                }
+            }
+        });
+   });   
+
+    /*SELECT AVG(pST.completionTime) as averagePuzzleTime, p.type, p.size FROM 
+   puzzleSolutionTimes AS pST
+ JOIN puzzles AS p 
+   ON p.p_id = pST.puzzle_id
+   GROUP BY p.type, p.size*/
 }
 
 // webserver.post('/login', function(req, res){
@@ -297,54 +459,80 @@ webserver.get('/calculateRatings', function(req, res){
         res.end(JSON.stringify(data));
     })
 });
-
+webserver.post('/calculateSolverRatings', function(req, res){
+    calculateSolverRatingsForUser(req.body.userID,res, data =>{
+        res.end(JSON.stringify(data));
+    })
+});
 webserver.post('/login', function(req, res){
     //console.log("We received facebook data: ", req.body);
     //set the session cookie to have the facebook user id.
     var facebook_uid =  req.body.response.authResponse.userID;
     req.session.userid = facebook_uid;
     //check if the user is in the database, if not add them to it
-    var query = `SELECT * FROM users WHERE facebook_u_id='${facebook_uid}'`;
-    pool.query(query, (err,rows,fields) => {
+    var query = `SELECT * FROM users WHERE facebook_u_id=?`;
+    console.log("query: "+query);
+    var result = pool.query(query, [facebook_uid],(err,rows,fields) => {
+        console.log("QUERY"+result.sql);
         console.log("Here are the rows: ", rows);
-        if(rows.length === 0){
-            query = `INSERT INTO users (facebook_u_id) VALUES (${facebook_uid})`;
-            pool.query(query, function(error, results){
-                if(error) console.log("Error inserting into users table: ", error);
-                else console.log("results.affectedRows is: ", results.affectedRows);
-            });
+        if(err){
+            respondWithError(res, err);
         }
+        else{
+            if(rows.length === 0){
+                query = `INSERT INTO users SET facebook_u_id=?, username=?, account_created = NOW()`;
+                pool.query(query,[facebook_uid,req.body.response.username], function(error, results){
+                    if(error) {
+                        respondWithError(res, err);
+                    }
+                    else {
+                        res.end(JSON.stringify({success: true, action: 'created'}));
+                    }
+
+                });
+            }
+            else 
+            {
+                res.end(JSON.stringify({success: true, action: 'login'}));
+            }
+        } 
     });
-    res.end("Successful Login");
+    
 });
 
 webserver.post('/savepuzzle', function(req, res){
     // console.log("req.query.retrieve is: ", req.query.retrieve);
     // console.log("data: "+JSON.stringify(req.body));
+    console.log("TEST");
     let data = req.body;
-    const HARDCODED_ID = 4;
-    const HARDCODED_COMPLETE = 'yes';
-    const code = generatePuzzleID();
-	let query = `INSERT INTO puzzles SET 
-		puzzle_name = '${data.puzzle_name}',
-		creator_id =  '${HARDCODED_ID}',
-		type = '${data.type}',
-		size = '${data.size}',
-		puzzle_object = '${JSON.stringify(data.puzzle_object)}',
-		completely_built = '${HARDCODED_COMPLETE}',
-		url_ext = '${code}',
-		competitive_mode_enabled = 'No',
-		avg_time_to_complete = 0,
-		likes = 0,
-		dislikes = 0,
-		date_created = NOW(),
-		total_plays = 0
-    `;
-    
-    pool.query(query, (err, rows, fields) => {
-        if(err) console.log(err);
-        else res.end(JSON.stringify({success: true, queryID: code}));
-    });
+    console.log("******* SESSION: ",req.session);
+    //res.end(JSON.stringify(req.session)); return;
+    //console.log('user session',req.session);
+    getUserIDFromFacebookID(req.session.userid, user_id => {
+        checkUserLoggedIn(user_id, res);
+        const HARDCODED_COMPLETE = 'yes';
+        const code = generatePuzzleID();
+    	let query = `INSERT INTO puzzles SET 
+    		puzzle_name = '${data.puzzle_name}',
+    		creator_id =  '${user_id}',
+    		type = '${data.type}',
+    		size = '${data.size}',
+    		puzzle_object = '${JSON.stringify(data.puzzle_object)}',
+    		completely_built = '${HARDCODED_COMPLETE}',
+    		url_ext = '${code}',
+    		competitive_mode_enabled = 'No',
+    		avg_time_to_complete = 0,
+    		likes = 0,
+    		dislikes = 0,
+    		date_created = NOW(),
+    		total_plays = 0
+        `;  
+        //console.log("query",query);
+        pool.query(query, (err, rows, fields) => {
+            if(err) console.log(err);
+            else res.end(JSON.stringify({success: true, queryID: code}));
+        });
+    })
 });
 webserver.post('/puzzleComplete', function(req, res){
     let data = req.body;
@@ -354,31 +542,39 @@ webserver.post('/puzzleComplete', function(req, res){
     // console.log(req.body);
     getPuzzleInfoFromPuzzleURL(data.queryID, puzzleData =>{
         console.log(puzzleData);
-        getPuzzleCompletionsByUser(user_id, puzzleData.p_id, completionData=>{
-            if(completionData.length>0){
-                var first_puzzle = 0;
-            } else {
-                first_puzzle = 1;
-            }
-             let query = `INSERT INTO puzzleSolutionTimes SET 
-                user_id = '${HARDCODED_ID}',
-                puzzle_id = '${puzzleData.p_id}',
-                completionTime = '${data.completionTime}',
-                completionRegistered = NOW(),
-                status = 'enabled',
-                firstCompletion = ${first_puzzle}
-            `;
-            
-            pool.query(query, (err, rows, fields) => {
-                if(err){
-                    console.log(err);
+        getUserIDFromFacebookID(req.session.userid, user_id => {
+            checkUserLoggedIn(user_id, res);
+            getPuzzleCompletionsByUser(user_id, puzzleData.p_id, (completionData)=>{
+                if(completionData.length>0){
+                    var first_puzzle = 0;
+                } else {
+                    first_puzzle = 1;
                 }
-                else {
-                    res.end(JSON.stringify({success: true}))   
-                } ;
-            });
-        })
-      
+                if(puzzleData.avg_time_to_complete !== 0 && data.completionTime > puzzleData.avg_time_to_complete*2){
+                    var status = 'outOfRange';
+                } else {
+                    status = 'enabled'
+                }
+                //need to put a check here to validate times that are beyond the expected norm
+                 let query = `INSERT INTO puzzleSolutionTimes SET 
+                    user_id = '${user_id}',
+                    puzzle_id = '${puzzleData.p_id}',
+                    completionTime = '${data.completionTime}',
+                    completionRegistered = NOW(),
+                    status = '${status}',
+                    firstCompletion = ${first_puzzle}
+                `;
+                
+                pool.query(query, (err, rows, fields) => {
+                    if(err){
+                        console.log(err);
+                    }
+                    else {
+                        res.end(JSON.stringify({success: true}))   
+                    } ;
+                });
+            })
+        });
     });
 });
 webserver.get('*', function(req, res){
