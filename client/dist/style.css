@@ -58,9 +58,9 @@ body {
     position: fixed;
     width: fit-content;
     max-width: 90vw;
-    top: 48%;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -52%);
+    transform: translate(-50%, -50%);
     transition: .75s;
     z-index: 101;
 }

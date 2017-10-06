@@ -2,7 +2,7 @@ var credentials = {
     user: 'username',
     password: 'password',
     host: 'localhost',
-    port: 0000,
+    port: 3000,
     database: 'database'
 };
 
