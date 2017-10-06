@@ -4,7 +4,9 @@ import PageTitle from './page_title';
 import speckle_spackle from './imgs/speckle_spackle.png';
 import word_guess from './imgs/word_guess.png';
 import unblock_me from './imgs/unblock_me.png';
-import axios from 'axios';
+import Axios from 'axios';
+
+Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
 
 class PlayMenu extends Component {
     constructor(props) {
@@ -30,14 +32,13 @@ class PlayMenu extends Component {
     }
 
     getData() {
-        axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
+        Axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
             console.log("Error getting 10 most recent puzzles: ", err);
         });
     }
 
     updateData(response){
         const receivedData = response.data.data;
-        console.log(receivedData);
         this.setState({
             data: receivedData
         });
@@ -68,15 +69,6 @@ class PlayMenu extends Component {
                         <td className="align-middle">{item.puzzle_name.length > 10 ? `${item.puzzle_name.substr(0,7)}...` : item.puzzle_name}</td>
                         <td><img src={this.gameTypes[item.type]} style={{height: "48px"}} /></td>
                         <td className="align-middle">{item.size}</td>
-                        {/* <td className="align-middle">
-                            <span style={{color: "rgb(92,184,92)"}}>
-                                {item.likes} <i className="fa fa-thumbs-o-up"></i> 
-                            </span> 
-                            &nbsp;
-                            <span style={{color: "rgb(217,83,79)"}}>
-                                {item.dislikes} <i className="fa fa-thumbs-o-down"></i>
-                            </span>
-                        </td> */}
                         <td className="align-middle">{item.date_created.substr(0, 10)}</td>
                     </tr>
                 )
@@ -92,7 +84,6 @@ class PlayMenu extends Component {
                                 <th>Name</th>
                                 <th>Type</th>
                                 <th>Size</th>
-                                {/* <th>Rating</th> */}
                                 <th>Created</th>
                             </tr>
                         </thead>

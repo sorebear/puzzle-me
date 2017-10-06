@@ -5,6 +5,7 @@ import CreateCheckModal from './create_check_modal';
 import SubmitModal from '../common_components/submit_modal';
 import Axios from 'axios';
 
+Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
 
 class WordGuessingApp extends Component {
     constructor (props) {
@@ -49,7 +50,10 @@ class WordGuessingApp extends Component {
             puzzle_name : this.state.puzzle_name,
             type : "word_guess",
             size : `${this.state.gameInfo.hiddenWord.length}-Letter`,
-            puzzle_object : this.state.gameInfo
+            puzzle_object : this.state.gameInfo,
+            headers: {
+                'Access-Control-Allow-Origin': 'http://localhost:4000'
+            }
         }).then(this.successfulSubmit).catch(err => {
             console.log("Error Submitting Puzzle: ", err);
         });

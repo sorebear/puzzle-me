@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import PageTitle from './page_title';
 import './profile_style.css';
-import axios from 'axios';
+import Axios from 'axios';
 
+Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
 
 export default class extends Component {
     constructor(props) {
@@ -12,9 +13,8 @@ export default class extends Component {
             data: null,
         }
 
-        this.URL_EXT = 'http://localhost:4000/getCreatedPuzzles';
-        this.QUERY_KEY = 'retrieve';
-        this.QUERY_VAL = 'getCreatedPuzzles';
+        this.URL_EXT = '/getPuzzlesByUser';
+
         this.handleData = this.handleData.bind(this);
     }
 
@@ -23,7 +23,9 @@ export default class extends Component {
     }
 
     getData() {
-        axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL + '&' + 'user_id' + '=' + this.state.user_id).then(this.handleData).catch(err => {
+
+        var userRequest = this.state.user_id ? {'user_id' : this.state.user_id} : {};
+        Axios.post(SERVER_BASE_ADDRESS + this.URL_EXT , userRequest).then(this.handleData).catch(err => {
             console.log("Error getting created puzzles: ", err);
         });
     }

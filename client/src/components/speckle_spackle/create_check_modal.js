@@ -1,9 +1,10 @@
 import React from 'react';
 
 function CreateCheckModal(props) {
+    console.log(props);
     if (props.showModal === "noModal") {
         return <div></div>
-    } else if (props.info[0].length === 0 && props.info[1].length ===0 ) {
+    } else if (!props.info[0] && !props.info[1] && !props.info[2]) {
         return (
             <div className={props.showModal}>
                 <div onClick={props.closeModal}></div>
@@ -20,11 +21,10 @@ function CreateCheckModal(props) {
             </div>
         )
     } else {
-        const rowIssues = props.info[0].map((item, index) => {
-            return <li key={index} className="list-group-item">{item}</li>
-        });
-        const columnIssues = props.info[1].map((item, index) => {
-            return <li key={index} className="list-group-item">{item}</li>
+        const issues = props.info.map((item, index) => {
+            if (item) {
+                return <li key={index} className="list-group-item">{item}</li>
+            }
         });
         return (
             <div className={props.showModal}>
@@ -33,10 +33,9 @@ function CreateCheckModal(props) {
                     <div className="card-body">
                         <h4 className="card-title">Invalid Puzzle</h4>
                         <div className="card-text">  
-                            <ul className="list-group">{rowIssues}</ul>
-                            <ul className="list-group">{columnIssues}</ul>
+                            <ul className="list-group">{issues}</ul>
                         </div>
-                        <button type="button" onClick={props.closeModal} className="m-2 btn btn-outline-danger">Cancel</button>
+                        <button type="button" onClick={props.closeModal} className="m-2 btn btn-outline-danger">Close</button>
                     </div>
                 </div>
             </div>

@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import PageTitle from './page_title';
 import './profile_style.css';
-import axios from 'axios';
+import Axios from 'axios';
 
+Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
 
 export default class extends Component {
     constructor(props) {
@@ -28,7 +29,7 @@ export default class extends Component {
     }
 
     getData() {
-        axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL + '&' + 'user_id' + '=' + this.state.user_id).then(this.handleData).catch(err => {
+        Axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL + '&' + 'user_id' + '=' + this.state.user_id).then(this.handleData).catch(err => {
             console.log("Error getting created puzzles: ", err);
         });
     }
@@ -40,7 +41,7 @@ export default class extends Component {
         });
 
         fetchedData.map((item, index)=>{
-            axios.get(this.URL_EXT_B + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL_B + '&' + 'p_id' + '=' + item.puzzle_id).then(this.handlePuzzleData).catch(err => {
+            Axios.get(this.URL_EXT_B + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL_B + '&' + 'p_id' + '=' + item.puzzle_id).then(this.handlePuzzleData).catch(err => {
                 console.log("Error getting created puzzles: ", err);
             });
         })

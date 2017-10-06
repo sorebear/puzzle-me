@@ -6,6 +6,8 @@ import SubmitModal from '../common_components/submit_modal';
 import Axios from 'axios';
 import './speckle_spackle_style.css';
 
+Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
+
 class SpeckleSpackleApp extends Component {
     constructor(props) {
         super(props);
@@ -52,7 +54,7 @@ class SpeckleSpackleApp extends Component {
             puzzle_name : this.state.puzzle_name,
             type : "speckle_spackle",
             size : `${this.state.gameInfo.gridSize}x${this.state.gameInfo.gridSize}`,
-            puzzle_object : this.state.gameInfo
+            puzzle_object : this.state.gameInfo,
         }).then(this.successfulSubmit).catch(err => {
             console.log("Error Loading Puzzle: ", err);
         });
@@ -85,10 +87,29 @@ class SpeckleSpackleApp extends Component {
     }
 
     close() {
+        setTimeout(()=> this.removeErrors(), 1800);
         this.setState({
             showModal: "noModal",
             showSubmitModal: "noModal"
         })
+    }
+
+    removeErrors() {
+        const { gameInfo } = this.state;
+        for (let i = 0; i < gameInfo.gameGrid.length; i++) {
+            gameInfo.gameGrid[i].error = false;
+        }
+        this.setState({
+            gameInfo : {...gameInfo}
+        })
+        const allSquares = document.querySelectorAll('div[name=square]')
+        for (let i = 0; i < allSquares.length; i++) {
+            allSquares[i].style.borderColor = 'lightgrey'
+        }
+        const allClues = document.querySelectorAll('div[name=clue]')
+        for (let i = 0; i < allClues.length; i++) {
+            allClues[i].style.borderColor = 'lightgrey'
+        }
     }
     
     changeVisibility() {
@@ -110,54 +131,83 @@ class SpeckleSpackleApp extends Component {
     }
 
     checkPuzzleValidty(newGameInfo) {
-        const rowLog = this.isEachColorInEveryRowOnce({...newGameInfo}, ['color1', 'color2', 'color3']);
-        const columnLog = this.isEachColorInEveryColumnOnce({...newGameInfo}, ['color1', 'color2', 'color3']);
+        if (newGameInfo.gameGrid === []) { return }
+        const rowLog = this.isEachColorInEveryRowOnce(newGameInfo);
+        const columnLog = this.isEachColorInEveryColumnOnce(newGameInfo);
+        let duplicate = false;
+        let missing = false;
+        let clue = false;
+        const arrayOfArrays = rowLog.concat(columnLog);
+        console.log(arrayOfArrays)
+        for (let i = 0; i < arrayOfArrays.length; i++) {
+            switch (arrayOfArrays[i].errorType) {
+                case 'clue':
+                    clue = 'Not all clue conditions are met';
+                    break;
+                case 'duplicate':
+                    duplicate = 'You have duplicate colors in rows or columns';
+                    console.log(document.getElementsByClassName(arrayOfArrays[i].location));
+                    const duplicateColors = document.getElementsByClassName(arrayOfArrays[i].location);
+                    for (let k = 1; k < duplicateColors.length-1; k++) {
+                        duplicateColors[k].style.borderColor = "red"
+                    }
+                    break;
+                case 'missing':
+                    missing = 'You are missing colors in rows or columns';
+                    const missingColors = document.getElementsByClassName(arrayOfArrays[i].location);
+                    for (let k = 1; k < missingColors.length-1; k++) {
+                        missingColors[k].style.borderColor = "red"
+                    }
+                    break;
+            }
+        }
         this.setState({
             showModal : "showModal",
-            modalInfo : [rowLog, columnLog]
+            modalInfo : [duplicate, missing, clue]
         })
     }
 
-    isEachColorInEveryRowOnce(gameInfo, colorArr) {
+    isEachColorInEveryRowOnce(newGameInfo) {
         let rowLog = [];
-        const { gameGrid, gridSize } = gameInfo;
+        const { gameGrid, gridSize } = newGameInfo;
+        console.log(gameGrid, gridSize)
         for (let i = 1; i <= gridSize; i++) {
-            let colorArray = [...colorArr];
+            let colorArray = ["color1", "color2", "color3"];
             for (let k = i * (gridSize + 2) + 1; k <= i * (gridSize + 2) + gridSize; k++) {
                 if (gameGrid[k].colorNum !== "color0") {
                     const indexOfColor = colorArray.indexOf(gameGrid[k].colorNum)
                     if (indexOfColor === -1) {
-                        rowLog.push(`In Row ${i} there was a duplicate of ${gameGrid[k].colorNum}`)
+                        rowLog.push({errorType:'duplicate', location: `row${i}`})
                     } else {
                         colorArray.splice(indexOfColor, 1);
                     }
                 }
             }
             if (colorArray.length > 0) {
-                rowLog.push(`In Row ${i}, you are missing ${colorArray.length} color(s)`)
+                rowLog.push({errorType:'missing', location: `row${i}`})
             } 
         }
         return rowLog;
     }
     
-    isEachColorInEveryColumnOnce(gameInfo, colorArr) {
+    isEachColorInEveryColumnOnce(newGameInfo) {
         let columnLog = [];
-        const { gameGrid, gridSize } = gameInfo;
+        const { gameGrid, gridSize } = newGameInfo;
         const outerGrid = gridSize + 2;
         for (let i = 1; i <= gridSize; i++) {
-            let colorArray = [...colorArr]
+            let colorArray = ["color1","color2","color3"]
             for (let k = i + outerGrid; k <= i + (gridSize * outerGrid); k += outerGrid) {
                 if (gameGrid[k].colorNum !== "color0") {
                     const indexOfColor = colorArray.indexOf(gameGrid[k].colorNum)
                     if (indexOfColor === -1) {
-                        columnLog.push(`In Column ${i} there was a duplicate of ${gameGrid[k].colorNum}`)
+                        columnLog.push({errorType:'duplicate', location: `column${i}`})
                     } else {
                         colorArray.splice(indexOfColor, 1);
                     }
                 }
             }
             if (colorArray.length > 0) {
-                columnLog.push(`In Column ${i}, you are missing ${colorArray.length} color(s)`)
+                columnLog.push({errorType:'missing', location: `column${i}`})
             } 
         }
         return columnLog;

@@ -6,8 +6,8 @@ export default (props) => {
         <ul className="nav header align-items-center">
             <div className="col-3 text-left">
                 <li className="nav-item align-self-center" style={{zIndex: 2}}>
-                    <NavLink to="/">
-                        <div style={{color: "white"}}><span style={{color: "rgb(217,83,79)"}}>puzzle</span>me</div>
+                    <NavLink to="/login">
+                        <div onClick={() => props.updateCurrentPath('login')} style={{color: "white"}}><span style={{color: "rgb(217,83,79)"}}>puzzle</span>me</div>
                     </NavLink>
                 </li>
             </div>
