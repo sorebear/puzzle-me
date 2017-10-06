@@ -22,9 +22,9 @@
     "/getProfile": {
       "target": "http://localhost:4000"
     },
-//    "/getSolvedPuzzles": {
-//      "target": "http://localhost:4000"
-//    },
+   "/getSolvedPuzzles": {
+     "target": "http://localhost:4000"
+   },
     "/getCreatedPuzzles": {
       "target": "http://localhost:4000"
     }

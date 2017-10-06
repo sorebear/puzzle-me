@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import PageTitle from './page_title';
 import './login_style.css';
-import axios from 'axios';
+import Axios from 'axios';
+
+Axios.defaults.withCredentials = true;
 
 class Login extends Component{
     constructor(props){
@@ -40,12 +42,18 @@ class Login extends Component{
                 console.log(this);
                 response.username = user_name;
                 console.log(response);
-                axios.post('/login', {response}).then(function(response){
+                axios.post('/login', {
+                    response: reponse,
+                    headers: {
+                        'Access-Control-Allow-Origin': 'http://localhost:4000'
+                    }
+                }).then(function(response){
                     // console.log("The Complete Response", JSON.parse(response.config) );
                     const receivedData = JSON.parse(response.config.data)
                     console.log("Received Data: ", receivedData);
                     const token = receivedData.response.authResponse.accessToken;
                     console.log("User Access Token: ", token)
+                    
                     // window.location = this.HOME_ADDRESS;
                 });
             }

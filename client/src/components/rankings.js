@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PlayMenuModal from '../play_menu_modal';
 import PageTitle from './page_title';
-import axios from 'axios';
+import Axios from 'axios';
+
+Axios.defaults.withCredentials = true;
 
 class Rankings extends Component {
     constructor(props) {
@@ -36,7 +38,7 @@ class Rankings extends Component {
     }
 
     getData() {
-        axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
+        Axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
             console.log("Error Loading Rankings: ", err);
         });
     }

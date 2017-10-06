@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import GameGridPlay from './game_grid_play';
 import PlayCheckModal from './play_check_modal';
-import axios from 'axios';
+import Axios from 'axios';
 import './speckle_spackle_style.css';
+
+Axios.defaults.withCredentials = true;
 
 class SpeckleSpacklePlay extends Component {
     constructor(props) {
@@ -45,7 +47,7 @@ class SpeckleSpacklePlay extends Component {
     }
 
     getData() {
-        axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
+        Axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
             console.log("Error Loading Puzzle: ", err);
         });
     }
@@ -172,10 +174,10 @@ class SpeckleSpacklePlay extends Component {
     }
 
     submitCompletion(req, res) {
-        axios.post(this.POST_URL_EXT, {
+        Axios.post(this.POST_URL_EXT, {
             //Calculate the completion time by the number of user guesses x 10
             completionTime : this.state.timer,
-            queryID : this.queryID
+            queryID : this.queryID,
         }).then(this.successfulSubmit).catch(this.failedSubmit);
     }
 

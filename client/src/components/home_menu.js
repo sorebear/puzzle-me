@@ -38,10 +38,11 @@ class HomePage extends Component {
     }
 
     render() {
+        console.log("Home Menu Props: ", this.props);
         const { showModal, modalInfo } = this.state;
         return (
             <div>
-                <InfoModal showModal={showModal} closeModal={() => {this.close()}} currentPath={modalInfo} />
+                <InfoModal toggleAutoInfo={this.props.toggleAutoInfo} autoInfo={this.props.autoInfo} showModal={showModal} closeModal={() => {this.close()}} currentPath={modalInfo} />
                 <PageTitle backgroundImg="sunset" color="white" text="PUZZLE ME" subText=""/>
                 <div style={{margin : "auto"}} className="row">
                     <h4 className="my-2 text-center w-100">Learn To Play...</h4>
