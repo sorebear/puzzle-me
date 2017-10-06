@@ -79,30 +79,41 @@ webserver.get('/puzzles', function(req, res){
 });
 function getPuzzlesByUser(user_id, requesting_own_data, callback){
     if(!requesting_own_data){
-        var subquery += " AND p.completely_built = 'Yes'";
-        var queryFields = "p.completely_built, ";
-        ${user_id}
+        var subquery = " AND completely_built = 'Yes'";
+        var queryFields = "completely_built, ";
     }
-    var query = `SELECT p.puzzle_name, p.url_ext, p.type, p.size, ${queryFields}
-        p.avg_time_to_complete, p.likes, p.dislikes, p.date_created, p.total_plays
+    var query = `SELECT puzzle_name, url_ext, type, size, ${queryFields}
+        avg_time_to_complete, likes, dislikes, UNIX_TIMESTAMP(date_created) as date_created, total_plays
         FROM puzzles WHERE creator_id = ? ${subquery}`;
 
-    pool.query(query, [user_id], (err, rows, fields) => {
+    let result = pool.query(query, [user_id], (err, rows, fields) => {
+        console.log(result.sql);
         if(err) {
-            respondWithError(res, err);
+            callback(false, err);
         } else {
             callback(rows);
         }
     });  
 }
-webserver.get('/getPuzzlesByUser', function(req, res){
-
-    var user_id = req.body.user_id || req.session.userid || false;
-
+webserver.post('/getPuzzlesByUser', function(req, res){
+    if(req.body.user_id){
+        var user_id = req.body.user_id;
+        var get_own_data = true;
+    } else {
+        user_id = req.session.userid
+        get_own_data = false;
+    }
+    console.log('checking for ',req.body.user_id,req.session);
     if(user_id!==false){
         getUserIDFromFacebookID(user_id, simple_user_id =>{
-            getPuzzlesByUser(simple_user_id, puzzleData =>{
-                res.end(JSON.stringify({success: true, data: rows}));
+            console.log('LINE 109 user id:',user_id,simple_user_id);
+            getPuzzlesByUser(simple_user_id, get_own_data, (puzzleData,err) =>{
+                if(puzzleData){
+                    res.end(JSON.stringify({success: true, data: puzzleData}));
+                } else {
+                    respondWithError(res, err);
+                }
+                
             });      
         });
     }
@@ -130,7 +141,11 @@ function getUserIDFromFacebookID(fb_id, callback){
         if(err) {
             callback(false, err);
         } else {
-            callback(rows[0]);
+            if(rows.length){
+                callback(rows[0].u_id);
+            } else {
+                callback(false, 'no user id');
+            }
         }
     });       
 }
@@ -142,7 +157,7 @@ function getPuzzleInfoFromPuzzleURL(url_ext, callback){
         if(err) {
             callback(false, err);
         } else {
-            callback(rows[0]);
+            callback(rows[0].u_id);
         }
     });    
 }
@@ -425,7 +440,7 @@ webserver.post('/puzzleComplete', function(req, res){
                 }
                 //need to put a check here to validate times that are beyond the expected norm
                  let query = `INSERT INTO puzzleSolutionTimes SET 
-                    user_id = '${HARDCODED_ID}',
+                    user_id = '${user_id}',
                     puzzle_id = '${puzzleData.p_id}',
                     completionTime = '${data.completionTime}',
                     completionRegistered = NOW(),
