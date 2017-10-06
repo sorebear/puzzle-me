@@ -13,7 +13,7 @@ export default class extends Component {
             data: null,
         }
 
-        this.URL_EXT = 'http://localhost:4000/getCreatedPuzzles';
+        this.URL_EXT = '/getCreatedPuzzles';
         this.QUERY_KEY = 'retrieve';
         this.QUERY_VAL = 'getCreatedPuzzles';
         this.handleData = this.handleData.bind(this);

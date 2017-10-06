@@ -19,7 +19,7 @@ export default class extends Component {
         this.QUERY_VAL = 'getSolvedPuzzles';
         this.handleData = this.handleData.bind(this);
 
-        this.URL_EXT_B = 'http://localhost:4000/getPuzzleFromId';
+        this.URL_EXT_B = '/getPuzzleFromId';
         this.QUERY_VAL_B = 'getPuzzleFromId'
         this.handlePuzzleData = this.handlePuzzleData.bind(this);
     }
