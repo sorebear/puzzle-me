@@ -8,6 +8,7 @@ import CreatedPuzzles from './created_puzzles';
 
 
 Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
+Axios.defaults.withCredentials = true;
 
 export default class extends Component{
     constructor(props) {
