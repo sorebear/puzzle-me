@@ -44,7 +44,7 @@ div[name=square] {
     box-sizing: border-box;
     display: inline-block;
     border-radius: 7%;
-    transition: .3s;
+    transition: .1s;
 }
 
 div[name=square]:hover {

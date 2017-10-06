@@ -6,6 +6,7 @@ import './speckle_spackle_style.css';
 
 Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
 Axios.defaults.withCredentials = true;
+
 class SpeckleSpacklePlay extends Component {
     constructor(props) {
         super(props);
@@ -185,7 +186,10 @@ class SpeckleSpacklePlay extends Component {
     successfulSubmit() {
         this.setState({
             showModal : "showModal",
-            modalInfo : [this.state.timer]
+            modalInfo : [this.state.timer],
+            headers: {
+                'Access-Control-Allow-Origin': 'http://localhost:4000'
+            }
         })
         clearInterval(this.timeInt);
     }
@@ -195,7 +199,10 @@ class SpeckleSpacklePlay extends Component {
         this.setState({
             error_handler : "Unfortunately, there was an issue submitting your score.",
             modalInfo : [this.state.timer],
-            showModal : "showModal"
+            showModal : "showModal",
+            headers: {
+                'Access-Control-Allow-Origin': 'http://localhost:4000'
+            }
         })
         clearInterval(this.timeInt);
     }

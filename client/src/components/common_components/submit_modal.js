@@ -11,8 +11,8 @@ class SubmitModal extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleInput(event) {
-        console.log(event.target.value);
         const newValue = event.target.value;
+        this.props.updatePuzzleName(newValue)
         this.setState({
             input : newValue,
             error: false
@@ -24,7 +24,7 @@ class SubmitModal extends Component {
                 error: true
             })
         } else {
-            this.props.submit();
+            this.props.submit(this.state.input);
         }
     }
     render() {
