@@ -40,7 +40,7 @@ export default class extends Component {
         });
 
         fetchedData.map((item, index)=>{
-            axios.get(this.URL_EXT_B + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL_B + '&' + 'p_id' + '=' + item.puzzle_id).then(this.handlePuzzleData).catch(err => {
+            axios.get(this.URL_EXT_B + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL_B).then(this.handlePuzzleData).catch(err => {
                 console.log("Error getting created puzzles: ", err);
             });
         })
