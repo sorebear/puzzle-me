@@ -4,7 +4,7 @@ import InfoModal from './info_modal/info_modal';
 
 import Header from '../header';
 import Footer from '../footer';
-import Home from './home';
+import Home from './home_menu';
 import CreateMenu from './create_menu';
 import PlayMenu from './play_menu';
 import SpeckleSpackleApp from './speckle_spackle/speckle_spackle_app';
@@ -75,7 +75,7 @@ class App extends Component {
             currentGameMode : currentGameMode,
             clickHandlers : currentClickHandlers
         });
-        if (this.state.autoInfo) {
+        if (this.state.autoInfo && (currentPath !== "play_menu" && currentPath !== "create_menu" && currentPath !== "profile")) {
             setTimeout(() => {
                 this.setState({ showModal: "showModal" })
             }, 500)
@@ -89,8 +89,8 @@ class App extends Component {
                 <InfoModal toggleAutoInfo={this.toggleAutoInfo} autoInfo={autoInfo} showModal={showModal} closeModal={() => {this.close()}} currentPath={currentPath} />
                 <Header currentTitle={currentTitle} callModal={() => {this.callModal()}}/>
                     <div className="mainViewingWindow" style={{height: currentHeight-100, width: currentWidth, position: "relative"}}>
-                        <Route exact path="/" render={(props) => <Home {...props} updateCurrentPath={this.updateCurrentPath} />} />
-                        <Route path="/home" render={(props) => <Home {...props} updateCurrentPath={this.updateCurrentPath} />} />
+                        <Route exact path="/" render={(props) => <Home {...props} toggleAutoInfo={this.toggleAutoInfo} autoInfo={autoInfo} updateCurrentPath={this.updateCurrentPath} />} />
+                        <Route path="/home" render={(props) => <Home {...props} toggleAutoInfo={this.toggleAutoInfo} autoInfo={autoInfo} updateCurrentPath={this.updateCurrentPath} />} />
             
                         <Route exact path="/play" component={PlayMenu} />
                         <Route path="/play/word_guess/:game_id" render={(props) => <WordGuessPlay {...props} updateCurrentPath={this.updateCurrentPath} />} />

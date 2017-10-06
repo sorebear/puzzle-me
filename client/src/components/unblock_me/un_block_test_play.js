@@ -3,6 +3,8 @@ import Draggable, { DraggableCore } from 'react-draggable';
 import './un_block_style.css';
 import Axios from 'axios';
 
+Axios.defaults.withCredentials = true;
+
 export default class extends Component {
     constructor(props){
         super(props);
@@ -140,6 +142,9 @@ export default class extends Component {
                 type : "unblock_me",
                 size : `6x6`,
                 puzzle_object : this.state.createdStack,
+                headers: {
+                    'Access-Control-Allow-Origin': 'http://localhost:4000'
+                }
             }).then(()=>{console.log("submitted")}).catch(err => {
                 console.log("Error Loading Puzzle: ", err);
             });

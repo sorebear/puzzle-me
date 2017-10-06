@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import PageTitle from './page_title';
 import './profile_style.css';
-import axios from 'axios';
+import Axios from 'axios';
 import CreatePuzzles from './created_puzzles';
 import CompletedPuzzles from './completed_puzzles';
+
+Axios.defaults.withCredentials = true;
 
 export default class extends Component{
     constructor(props) {
@@ -33,7 +35,7 @@ export default class extends Component{
     }
 
     getData() {
-        axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL + '&' + 'user_id' + '=' + '4').then(this.updateData).catch(err => {
+        Axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL + '&' + 'user_id' + '=' + '4').then(this.updateData).catch(err => {
             console.log("Error Loading Rankings: ", err);
         });
     }
