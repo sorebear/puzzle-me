@@ -4,7 +4,7 @@ import './un_block_style.css';
 import Axios from 'axios';
 
 Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
-
+Axios.defaults.withCredentials = true;
 export default class extends Component {
     constructor(props){
         super(props);

@@ -7,7 +7,7 @@ import unblock_me from './imgs/unblock_me.png';
 import Axios from 'axios';
 
 Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
-
+Axios.defaults.withCredentials = true;
 class PlayMenu extends Component {
     constructor(props) {
         super(props);
