@@ -12,7 +12,7 @@ export default class extends Component {
             data: null,
         }
 
-        this.URL_EXT = '/getCreatedPuzzles';
+        this.URL_EXT = 'http://localhost:4000/getCreatedPuzzles';
         this.QUERY_KEY = 'retrieve';
         this.QUERY_VAL = 'getCreatedPuzzles';
         this.handleData = this.handleData.bind(this);
@@ -23,12 +23,13 @@ export default class extends Component {
     }
 
     getData() {
-        axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.handleData).catch(err => {
+        axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL + '&' + 'user_id' + '=' + this.state.user_id).then(this.handleData).catch(err => {
             console.log("Error getting created puzzles: ", err);
         });
     }
 
     handleData(response) {
+        console.log("RESPINSE", response)
         const fetchedData = response
         console.log(fetchedData);
         this.setState({
@@ -43,30 +44,33 @@ export default class extends Component {
             return <h1>Loading...</h1>
         } else {
             const list = data.map((item, index) => {
+                console.log(item)
                 return (
-                    <tr key={index} onClick={() => {
-                        this.callModal(item)
-                    }}>
+                    <tr key={index}>
                         <td>{item.puzzle_name}</td>
                         <td className="text-center">{item.type}</td>
                         <td className="text-center">{item.size}</td>
                     </tr>
                 )
-            })
+            });
+
+            const center_theaders = {
+                textAlign: 'center'
+            };
 
             return (
                 <div>
                     <PageTitle backgroundImg="cityscape" color="white" text="CREATIONS"/>
                     <table className="table table-inverse table-striped table-hover">
                         <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Size</th>
-                        </tr>
+                            <tr>
+                                <th style={center_theaders}>Name</th>
+                                <th style={center_theaders}>Type</th>
+                                <th style={center_theaders}>Size</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {list}
+                            {list}
                         </tbody>
                     </table>
                 </div>

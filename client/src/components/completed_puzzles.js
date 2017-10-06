@@ -40,7 +40,7 @@ export default class extends Component {
         });
 
         fetchedData.map((item, index)=>{
-            axios.get(this.URL_EXT_B + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL_B).then(this.handlePuzzleData).catch(err => {
+            axios.get(this.URL_EXT_B + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL_B + '&' + 'p_id' + '=' + item.puzzle_id).then(this.handlePuzzleData).catch(err => {
                 console.log("Error getting created puzzles: ", err);
             });
         })
@@ -74,16 +74,19 @@ export default class extends Component {
                 )
             })
 
+            const center_theaders = {
+                textAlign: 'center'
+            };
             return (
                 <div>
                     <PageTitle backgroundImg="cityscape" color="white" text="SOLVED"/>
                     <table className="table table-inverse table-striped table-hover">
                         <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Size</th>
-                            <th>Time</th>
+                            <th style={center_theaders}>Name</th>
+                            <th style={center_theaders}>Type</th>
+                            <th style={center_theaders}>Size</th>
+                            <th style={center_theaders}>Time</th>
                         </tr>
                         </thead>
                         <tbody>

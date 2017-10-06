@@ -33,7 +33,7 @@ export default class extends Component{
     }
 
     getData() {
-        axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
+        axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL + '&' + 'user_id' + '=' + '4').then(this.updateData).catch(err => {
             console.log("Error Loading Rankings: ", err);
         });
     }
@@ -51,6 +51,7 @@ export default class extends Component{
     parseData(data){
         var user = null;
         data.map((item, index)=>{
+            if(item.username === 'wheres_waldo') {
                 this.setState({
                     username: item.username,
                     solver_rank: item.composite_solver_ranking,
@@ -58,6 +59,8 @@ export default class extends Component{
                     exp_gained: item.composite_gladiator_ranking,
                     user_id: item.u_id,
                 })
+
+            }
         })
 
     }
@@ -101,11 +104,17 @@ export default class extends Component{
             )
         } else if(this.state.page === 'created'){
             return(
-                <CreatedPuzzles user_id={this.state.user_id}/>
+                <div className="text-center">
+                    <CreatedPuzzles user_id={this.state.user_id}/>
+                    <button onClick={()=>{this.setState({page: 'profile'})}} className="btn btn-warning mb-5">BACK</button>
+                </div>
             )
         } else if(this.state.page === 'completed'){
             return(
-                <CompletedPuzzles user_id={this.state.user_id}/>
+                <div className="text-center">
+                    <CompletedPuzzles user_id={this.state.user_id}/>
+                    <button onClick={()=>{this.setState({page: 'profile'})}} className="btn btn-warning mb-5">BACK</button>
+                </div>
             )
         }
     }
