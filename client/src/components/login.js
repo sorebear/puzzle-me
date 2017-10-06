@@ -43,7 +43,7 @@ class Login extends Component{
                 response.username = user_name;
                 console.log(response);
                 axios.post('/login', {
-                    response: reponse,
+                    response: response,
                     headers: {
                         'Access-Control-Allow-Origin': 'http://localhost:4000'
                     }
