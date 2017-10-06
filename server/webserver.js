@@ -78,9 +78,11 @@ webserver.get('/puzzles', function(req, res){
     }
 });
 function getPuzzlesByUser(user_id, requesting_own_data, callback){
+    var subquery = '';
+    var queryFields = '';
     if(!requesting_own_data){
-        var subquery = " AND completely_built = 'Yes'";
-        var queryFields = "completely_built, ";
+        subquery = " AND completely_built = 'Yes'";
+        queryFields = "completely_built, ";
     }
     var query = `SELECT puzzle_name, url_ext, type, size, ${queryFields}
         avg_time_to_complete, likes, dislikes, UNIX_TIMESTAMP(date_created) as date_created, total_plays
