@@ -35,7 +35,7 @@ export default class extends Component{
     }
 
     getData() {
-        Axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL + '&' + 'user_id' + '=' + '4').then(this.updateData).catch(err => {
+        Axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL ).then(this.updateData).catch(err => {
             console.log("Error Loading Rankings: ", err);
         });
     }
