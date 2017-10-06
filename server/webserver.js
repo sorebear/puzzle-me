@@ -99,13 +99,12 @@ function getPuzzlesByUser(user_id, requesting_own_data, callback){
 }
 webserver.post('/getPuzzlesByUser', function(req, res){
     if(req.body.user_id){
-        var user_id = req.body.user_id;
+        var user_id = req.body.userID;
         var get_own_data = true;
     } else {
         user_id = req.session.userid
         get_own_data = false;
     }
-    console.log('checking for ',req.body.user_id,req.session);
     if(user_id!==false){
         getUserIDFromFacebookID(user_id, simple_user_id =>{
             console.log('LINE 109 user id:',user_id,simple_user_id);
@@ -118,8 +117,10 @@ webserver.post('/getPuzzlesByUser', function(req, res){
                 
             });      
         });
+    } else {
+        requireUserLogin(res);
+        return;
     }
-   
 });
 
 function getGamePlayInfo(res, url_ext){
@@ -151,7 +152,9 @@ function getUserIDFromFacebookID(fb_id, callback){
         }
     });       
 }
-
+function requireUserLogin(res){
+    respondWithError(res, ['requires user login']);
+}
 function getPuzzleInfoFromPuzzleURL(url_ext, callback){
     var query = `SELECT * FROM puzzles WHERE url_ext='${url_ext}'`
     console.log("QUERY is: ", query);
@@ -219,8 +222,10 @@ function getUserRankings(res){
 }
 function checkUserLoggedIn(user_id, res){
     if(user_id===undefined){
-        res.end(JSON.stringify({success: false, errors: ['user not logged in']}));
+        respondWithError(res,['user not logged in']);
+        return false;
     }
+    return true;
 }
 
 function calculatePuzzleRatings(res,callback){
@@ -386,15 +391,12 @@ webserver.post('/login', function(req, res){
 });
 
 webserver.post('/savepuzzle', function(req, res){
-    // console.log("req.query.retrieve is: ", req.query.retrieve);
-    // console.log("data: "+JSON.stringify(req.body));
-    console.log("TEST");
     let data = req.body;
-    console.log("******* SESSION: ",req.session);
-    //res.end(JSON.stringify(req.session)); return;
-    //console.log('user session',req.session);
+    
+    if(!checkUserLoggedIn(req.session.userid, res)){
+        return;
+    }
     getUserIDFromFacebookID(req.session.userid, user_id => {
-        checkUserLoggedIn(user_id, res);
         const HARDCODED_COMPLETE = 'yes';
         const code = generatePuzzleID();
     	let query = `INSERT INTO puzzles SET 
@@ -420,6 +422,9 @@ webserver.post('/savepuzzle', function(req, res){
     })
 });
 webserver.post('/puzzleComplete', function(req, res){
+    if(checkUserLoggedIn(req.session.userid, res)){
+        return;
+    }
     let data = req.body;
     console.log('puzzle data:', data);
     const HARDCODED_ID = 4;
@@ -428,7 +433,7 @@ webserver.post('/puzzleComplete', function(req, res){
     getPuzzleInfoFromPuzzleURL(data.queryID, puzzleData =>{
         console.log(puzzleData);
         getUserIDFromFacebookID(req.session.userid, user_id => {
-            checkUserLoggedIn(user_id, res);
+            if(!checkUserLoggedIn(user_id, res)){}
             getPuzzleCompletionsByUser(user_id, puzzleData.p_id, (completionData)=>{
                 if(completionData.length>0){
                     var first_puzzle = 0;
