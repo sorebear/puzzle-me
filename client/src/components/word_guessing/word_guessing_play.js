@@ -7,6 +7,8 @@ import Axios from 'axios';
 //Import the Modal which will be displayed when the user wins the game
 import WinModal from './win_modal';
 
+Axios.defaults.withCredentials = true;
+
 class WordGuessPlay extends Component {
     constructor(props) {
         super(props);
@@ -149,7 +151,10 @@ class WordGuessPlay extends Component {
         Axios.post(this.POST_URL_EXT, {
             //Calculate the completion time by the number of user guesses x 10
             completionTime : (this.state.guessHistory.length - this.numOfStartingWords) * 10,
-            queryID : this.queryID
+            queryID : this.queryID,
+            headers: {
+                'Access-Control-Allow-Origin': 'http://localhost:4000'
+            }
         }).then(this.successfulSubmit).catch(this.failedSubmit);
     }
 

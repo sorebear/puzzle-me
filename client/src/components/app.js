@@ -4,7 +4,7 @@ import InfoModal from './info_modal/info_modal';
 
 import Header from '../header';
 import Footer from '../footer';
-import Home from './home';
+import Home from './home_menu';
 import CreateMenu from './create_menu';
 import PlayMenu from './play_menu';
 import SpeckleSpackleApp from './speckle_spackle/speckle_spackle_app';
@@ -16,6 +16,7 @@ import WordGuessPlay from './word_guessing/word_guessing_play';
 import Rankings from './rankings';
 import Login from './login';
 
+import Profile from './profile';
 
 class App extends Component {
     constructor(props) {
@@ -38,9 +39,9 @@ class App extends Component {
         window.addEventListener("resize", this.updateDimensions);
     }
     updateDimensions() {
-        console.log("Window is being resized");
-        console.log("Window height: ", window.innerHeight);
-        console.log("Window width: ", window.innerWidth);
+        // console.log("Window is being resized");
+        // console.log("Window height: ", window.innerHeight);
+        // console.log("Window width: ", window.innerWidth);
         this.setState({
             currentHeight: window.innerHeight,
             currentWidth : window.innerWidth
@@ -74,7 +75,7 @@ class App extends Component {
             currentGameMode : currentGameMode,
             clickHandlers : currentClickHandlers
         });
-        if (this.state.autoInfo) {
+        if (this.state.autoInfo && (currentPath !== "play_menu" && currentPath !== "create_menu" && currentPath !== "profile")) {
             setTimeout(() => {
                 this.setState({ showModal: "showModal" })
             }, 500)
@@ -88,8 +89,8 @@ class App extends Component {
                 <InfoModal toggleAutoInfo={this.toggleAutoInfo} autoInfo={autoInfo} showModal={showModal} closeModal={() => {this.close()}} currentPath={currentPath} />
                 <Header currentTitle={currentTitle} callModal={() => {this.callModal()}}/>
                     <div className="mainViewingWindow" style={{height: currentHeight-100, width: currentWidth, position: "relative"}}>
-                        <Route exact path="/" render={(props) => <Home {...props} updateCurrentPath={this.updateCurrentPath} />} />
-                        <Route path="/home" render={(props) => <Home {...props} updateCurrentPath={this.updateCurrentPath} />} />
+                        <Route exact path="/" render={(props) => <Home {...props} toggleAutoInfo={this.toggleAutoInfo} autoInfo={autoInfo} updateCurrentPath={this.updateCurrentPath} />} />
+                        <Route path="/home" render={(props) => <Home {...props} toggleAutoInfo={this.toggleAutoInfo} autoInfo={autoInfo} updateCurrentPath={this.updateCurrentPath} />} />
             
                         <Route exact path="/play" component={PlayMenu} />
                         <Route path="/play/word_guess/:game_id" render={(props) => <WordGuessPlay {...props} updateCurrentPath={this.updateCurrentPath} />} />
@@ -104,7 +105,7 @@ class App extends Component {
                         <Route exact path="/rankings" component={Rankings} />
             
                         <Route path="/login" component={Login} />
-                        <Route path="/profile" component={Login} />
+                        <Route path="/profile" component={Profile} />
                     </div>
                 <Footer mode={currentGameMode} clickHandlers={clickHandlers} updateCurrentPath={this.updateCurrentPath}/>
             </div>

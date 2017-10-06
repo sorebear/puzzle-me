@@ -187,6 +187,36 @@ function getPuzzleCompletionsByUser(user_id, puzzle_id, callback){
     });
 }
 
+webserver.get('/getProfile', function(req, res){
+    console.log("req.query.retrieve is: ", req.query.retrieve);
+    if(req.query.retrieve){
+        switch(req.query.retrieve) {
+            case 'getProfile':
+                getUserProfile(res, req.query.user_id);
+                break;
+            default:
+                console.log("unknown query value for puzzles key");
+        }
+    } else {
+        console.log("Query key puzzles is not present");
+    }
+});
+function getUserProfile(res, id){
+    var query = `SELECT * FROM users where u_id=${id}`;
+    console.log('query = ',query);
+    pool.query(query, (err, rows, fields) => {
+        if(err) {
+            respondWithError(res, err);
+        }
+        else {
+            res.json({"Success": true, "data": rows});
+        }
+    });
+}
+
+
+
+
 webserver.get('/getRankings', function(req, res){
     console.log("req.query.retrieve is: ", req.query.retrieve);
     if(req.query.retrieve){
@@ -217,11 +247,96 @@ function getUserRankings(res){
         }
     });
 }
+
 function checkUserLoggedIn(user_id, res){
     if(user_id===undefined){
         res.end(JSON.stringify({success: false, errors: ['user not logged in']}));
     }
 }
+
+webserver.get('/getCreatedPuzzles', function(req, res){
+    console.log("req.query.retrieve is: ", req.query.retrieve);
+    if(req.query.retrieve){
+        switch(req.query.retrieve) {
+            case 'getCreatedPuzzles':
+                getCreatedPuzzles(res, req.query.user_id);
+                break;
+            default:
+                console.log("unknown query value for puzzles key");
+        }
+    } else {
+        console.log("Query key puzzles is not present");
+    }
+})
+
+function getCreatedPuzzles(res, id){
+    var query = `SELECT * FROM puzzles where creator_id=${id}`;
+    console.log('query = ',query);
+    pool.query(query, (err, rows, fields) => {
+        if(err) {
+            respondWithError(res, err);
+        }
+        else {
+            res.json({"Success": true, "data": rows});
+        }
+    });
+}
+
+webserver.get('/getSolvedPuzzles', function(req, res){
+    console.log("req.query.retrieve is: ", req.query.retrieve);
+    if(req.query.retrieve){
+        switch(req.query.retrieve) {
+            case 'getSolvedPuzzles':
+                getSolvedPuzzles(res, req.query.user_id);
+                break;
+            default:
+                console.log("unknown query value for puzzles key");
+        }
+    } else {
+        console.log("Query key puzzles is not present");
+    }
+});
+function getSolvedPuzzles(res, id){
+    var query = `SELECT * FROM puzzleSolutionTimes where user_id=${id}`;
+    console.log('query = ',query);
+    pool.query(query, (err, rows, fields) => {
+        if(err) {
+            respondWithError(res, err);
+        }
+        else {
+            res.json({"Success": true, "data": rows});
+        }
+    });
+}
+
+webserver.get('/getPuzzleFromId', function(req, res){
+    console.log("req.query.retrieve is: ", req.query.retrieve);
+    if(req.query.retrieve){
+        switch(req.query.retrieve) {
+            case 'getPuzzleFromId':
+                getPuzzleFromId(res, req.query.p_id);
+                break;
+            default:
+                console.log("unknown query value for puzzles key");
+        }
+    } else {
+        console.log("Query key puzzles is not present");
+    }
+});
+function getPuzzleFromId(res, id){
+    var query = `SELECT * FROM puzzles where p_id=${id}`;
+    console.log('query = ',query);
+    pool.query(query, (err, rows, fields) => {
+        if(err) {
+            respondWithError(res, err);
+        }
+        else {
+            res.json({"Success": true, "data": rows});
+        }
+    });
+}
+
+
 
 function calculatePuzzleRatings(res,callback){
     let query = "SELECT puzzle_id, AVG(completionTime) AS average_time FROM puzzleSolutionTimes WHERE firstCompletion=1 AND status='enabled' GROUP BY puzzle_id";
