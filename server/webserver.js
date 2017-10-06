@@ -178,8 +178,9 @@ function respondWithError(res, err){
 
 function getUserIDFromFacebookID(fb_id, callback){
     var query = `SELECT u_id FROM users WHERE facebook_u_id=?`
-    console.log("QUERY is: ", query);
-    pool.query(query,[fb_id], (err, rows, fields) => {
+    
+    let result = pool.query(query,[fb_id], (err, rows, fields) => {
+        console.log("QUERY is: ", result.sql);
         if(err) {
             callback(false, err);
         } else {
