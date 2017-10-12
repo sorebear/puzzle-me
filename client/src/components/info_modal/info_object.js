@@ -9,12 +9,6 @@ import ss_changeColors from './ss-changeColors.gif';
 import ss_changeGridSize from './ss-changeGridSize.gif';
 import ss_removeClues from './ss-removeClues.gif';
 import ss_testplay from './ss-testplay.gif';
-import um_howToWin from './um-howToWin.gif';
-import um_moveBlocks from './um-moveBlocks.gif';
-import um_horAndVert from './um-horAndVert.gif';
-import um_createPiece from './um-createPiece.gif';
-import um_dragPiece from './um-dragPiece.gif';
-import um_submitPuzzle from './um-submitPuzzle.gif';
 import wg_clueMeanings from './wg-clueMeanings.gif';
 import wg_lengthMustMatch from './wg-lengthMustMatch.gif';
 import wg_startingClues from './wg-startingClues.png';
@@ -103,27 +97,6 @@ const InfoObject = {
             }
         ]
     },
-    unblock_me_play : {
-        name: 'Play Unblock Me',
-        tutorial : [
-            {
-                animation : um_howToWin,
-                text: `Your goal is to move the white block to the right edge of the map`
-            },
-            {
-                animation : um_moveBlocks,
-                text: `You may have blocks in your way that you'll need to move.`
-            },
-            {
-                animation : um_horAndVert,
-                text: `Some blocks will only move horizontally, while others will only move vertically.`
-            },
-            {
-                animation : null,
-                text: `That's it. You should be all set to go. Happy Puzzling!`
-            }
-        ]
-    },
     word_guess_play : {
         name : 'Play Word Guess',
         tutorial : [
@@ -196,27 +169,6 @@ const InfoObject = {
             {
                 animation: null,
                 text: `That's it! You are all set to make your first Word Guess Puzzle!`
-            }
-        ]
-    },
-    unblock_me_create : {
-        name: 'Creating Unblock Me',
-        tutorial : [
-            {
-                animation : um_createPiece,
-                text: `Create pieces by selecting orientation and size and clicking create!`
-            },
-            {
-                animation : um_dragPiece,
-                text: `Once a piece is created, you can drag it around the grid to the position you want`
-            },
-            {
-                animation : um_submitPuzzle,
-                text: `You need to solve your puzzle before it can be submitted. This is to ensure it is solvable.`
-            },
-            {
-                animation: null,
-                text: `That's it! You are all set to make your first Unblock Me Puzzle!`
             }
         ]
     }

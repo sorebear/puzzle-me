@@ -116,7 +116,7 @@ class WordGuessingCreate extends Component {
             }
         })
         return (
-            <div className="container mt-4">
+            <div className="container pt-4">
                 <h3 className="text-center p-2">Pick a 4-6-Letter Word</h3>
                 <form onSubmit={(event) => this.handleClueSubmit(event)}>
                     <input 

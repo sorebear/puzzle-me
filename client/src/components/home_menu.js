@@ -6,8 +6,6 @@ import InfoModal from './info_modal/info_modal';
 
 import speckle_spackle from './imgs/speckle_spackle.png';
 import word_guess from './imgs/word_guess.png';
-import unblock_me from './imgs/unblock_me.png';
-import HomeModal from './home_modal';
 
 
 class HomePage extends Component {
@@ -51,10 +49,6 @@ class HomePage extends Component {
                             <div>Speckle Spackle</div>
                         </div>
                         <div className="col-6 text-center">
-                            <img onClick={() => {this.callModal('unblock_me_play')}} className="m-2" src={unblock_me} style={{maxHeight: "18vh", maxWidth: "40vw"}} />
-                            <div>Unblock Me</div>
-                        </div>
-                        <div className="col-6 offset-3 text-center">
                             <img onClick={() => {this.callModal('word_guess_play')}} className="m-2" src={word_guess} style={{maxHeight: "18vh", maxWidth: "40vw"}} />
                             <div>Word Guess</div>
                         </div>

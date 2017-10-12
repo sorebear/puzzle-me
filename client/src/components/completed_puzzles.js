@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PageTitle from './page_title';
-import './profile_style.css';
 import Axios from 'axios';
 
 Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'

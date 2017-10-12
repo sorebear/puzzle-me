@@ -19,14 +19,6 @@ class SpeckleSpacklePlay extends Component {
 			timer: 0,
 			gameInfo: null
 		};
-		this.mainDisplayStyle = {
-			display: "flex",
-			justifyContent: "middle",
-			alignItems: "middle",
-			height: "100vh",
-			width: "70vw",
-			overflow: "hidden"
-		};
 
 		this.URL_EXT = "/puzzles";
 		this.QUERY_KEY = "url_ext";

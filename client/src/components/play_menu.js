@@ -3,7 +3,6 @@ import PlayMenuModal from '../play_menu_modal';
 import PageTitle from './page_title';
 import speckle_spackle from './imgs/speckle_spackle.png';
 import word_guess from './imgs/word_guess.png';
-import unblock_me from './imgs/unblock_me.png';
 import Axios from 'axios';
 
 Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
@@ -18,7 +17,6 @@ class PlayMenu extends Component {
         }
         this.gameTypes = {
             "word_guess" : word_guess,
-            "unblock_me" : unblock_me,
             "speckle_spackle" : speckle_spackle
         }
         this.URL_EXT = '/puzzles';

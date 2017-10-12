@@ -108,7 +108,7 @@ class WordGuessingTestPlay extends Component {
             }
         })
         return (
-            <div className="container mt-4">
+            <div className="container pt-4">
                 <h3 className="text-center p-2">Guess This {this.hiddenWord.length}-Letter Word</h3>
                 <form onSubmit={this.handleSubmit}>
                     <input onChange={this.onChangeHandler} maxLength={this.hiddenWord.length} value={this.state.guess} className="form-control"/>
