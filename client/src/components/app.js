@@ -114,7 +114,7 @@ class App extends Component {
 				/>
 				<div className="mainViewingWindow" style={
 					{
-						height: currentHeight - 100,
+						height: currentHeight - 90,
 						width: currentWidth,
 					}
 				}>
