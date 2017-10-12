@@ -1,0 +1,140 @@
+body {
+    background-color: lightgrey;
+}
+
+.mainViewingWindow > div {
+    height: inherit;
+    width: inherit;
+}
+
+.icon-style {
+    font-size: 20px;
+    color: grey;
+}
+
+.footer, .header {
+    background-color: #222;
+}
+
+.header {
+    top: 0;
+    height: 55px;
+    width: 100%;    
+}
+
+.footer {
+    bottom: 0;
+    position: fixed;
+    height: 45px;
+    width: 200%;
+    transition: 1s;
+}
+
+.card {
+    padding: 2%;
+}
+
+.puzzle_name {
+    position: fixed;
+    top: 12px;
+    color: white;
+    width: 100vw;
+    text-align: center;
+}
+
+.showModal > div:first-child {
+    display: block;
+    background-color: black;
+    opacity: .5;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+}
+
+.showModal > div:last-child {
+    position: fixed;
+    width: fit-content;
+    max-width: 90vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: .75s;
+    z-index: 101;
+}
+
+.noModal > div:last-child {
+    transform: translate(-50%, -250%);
+}
+
+.noModal > div:first-child {
+    position: fixed;
+    bottom: -150%;
+    top: 250%;
+}
+
+.noModal {
+    position: absolute
+}
+
+@media screen and (orientation:landscape) {
+    .showModal > div:last-child {
+        max-width: 500px;
+    } 
+}
+
+h2, h4, button, a, .title {
+    font-family: 'Metamorphous', sans-serif;
+}
+
+h2 {
+    color: white;
+}
+
+.page-title {
+    height: 25vh;
+    font-family: 'Metamorphous', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.page-title * {
+    text-shadow: 1px 1px black;
+    position: relative;
+    opacity: 1;
+}
+
+.page-title::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom, #222, black);
+    opacity: .5;
+}
+
+.play-test {
+    width: 100%;
+    position: fixed;
+    bottom: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.play-test * {
+    margin: 2px;
+}
+
+a {
+    text-decoration: none;
+}
