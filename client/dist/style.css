@@ -1,10 +1,12 @@
 body {
-    background-color: lightgrey;
+    background-color: rgb(217, 83, 79);
 }
 
-.mainViewingWindow > div {
-    height: inherit;
-    width: inherit;
+.mainViewingWindow {
+    max-width: 768px;
+    position: relative;
+    margin: auto;
+    background-color: lightgrey;
 }
 
 .icon-style {
@@ -19,7 +21,9 @@ body {
 .header {
     top: 0;
     height: 55px;
-    width: 100%;    
+    width: 100%;
+    max-width: 768px;
+    margin: auto;    
 }
 
 .footer {
@@ -28,6 +32,7 @@ body {
     height: 45px;
     width: 200%;
     transition: 1s;
+    
 }
 
 .card {

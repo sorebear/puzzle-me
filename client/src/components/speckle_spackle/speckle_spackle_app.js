@@ -229,14 +229,14 @@ class SpeckleSpackleApp extends Component {
         const { testStyle, createStyle, gameInfo, dataRequested, submitted } = this.state;
         if (createStyle['display'] === "none") {
             return (
-                <div>
+                <div style={{height: "100%"}}>
                     <CreateCheckModal info={this.state.modalInfo} play={() => this.changeVisibility()} showModal={this.state.showModal} closeModal={() => {this.close()}} />
                     <SpeckleSpackleCreate gameInfo={{...gameInfo}} gameInfoCallback={this.gameInfoCallback} dataRequested={dataRequested} />    
                 </div>
             )
         } else {
             return (
-                <div>
+                <div style={{height: "100%"}}>
                     <SubmitModal showModal={this.state.showSubmitModal} updatePuzzleName={this.updatePuzzleName} isSubmitted={submitted} submit={this.submitPuzzle} closeModal={() => {this.close()}} />
                     <SpeckleSpackleTestPlay gameInfo={JSON.parse(JSON.stringify(gameInfo))}/>    
                 </div>

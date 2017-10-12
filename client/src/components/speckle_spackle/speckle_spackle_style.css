@@ -1,6 +1,6 @@
 
 .pageContainer {
-    height: 100vh;
+    height: 100%;
     width: 100%;
     position: relative;
     display: flex;
@@ -10,7 +10,6 @@
     display: flex;
     flex-flow: column;
     justify-content: space-around;
-    height: 85vh;
     width: 15vw;
     overflow: hidden;
 }
@@ -20,7 +19,7 @@
     flex-flow: column;
     justify-content: center;
     align-items: center;
-    height: 85vh;
+    height: 100%;
     width: 70vw;
     overflow: hidden;
 }

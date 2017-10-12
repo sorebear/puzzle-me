@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PageTitle from './page_title';
-import './profile_style.css';
 import Axios from 'axios';
 import CompletedPuzzles from './completed_puzzles';
 import CreatedPuzzles from './created_puzzles';

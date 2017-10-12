@@ -28,14 +28,6 @@ class SpeckleSpackleTestPlay extends Component {
                 gameGrid : props.gameInfo.gameGrid
             }
         }
-        this.mainDisplayStyle = {
-            display: "flex",
-            justifyContent: "middle",
-            alignItems: "middle",
-            height: '100vh',
-            width: '70vw',
-            overflow: 'hidden'
-        }
 
         this.gridIndexCallback = this.gridIndexCallback.bind(this);
         this.updateTimer = this.updateTimer.bind(this);
