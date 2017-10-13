@@ -450,25 +450,13 @@ class SpeckleSpacklePlay extends Component {
 					}}
 				/>
 				<div className="gutter align-items-center justify-content-center text-center">
-					<i
-						className="fa fa-clock-o swatch m-1"
-						style={{ color: "white" }}
-					/>
-					<h3
-						style={{
-							fontSize: "2rem",
-							position: "absolute",
-							opacity: ".8"
-						}}
-					>
+					<i className="fa fa-clock-o swatch m-1" style={{ color: "white" }}/>
+					<h3 className="m-0" style={{fontSize: "2rem", position: "absolute", opacity: ".8"}}>
 						{timer}
 					</h3>
 				</div>
 				<div className="mainDisplay">
-					<GameGridPlay
-						gameInfo={{ ...gameInfo }}
-						callback={this.gridIndexCallback}
-					/>
+					<GameGridPlay gameInfo={{ ...gameInfo }} callback={this.gridIndexCallback}/>
 				</div>
 				<div className="gutter align-items-center" />
 			</div>

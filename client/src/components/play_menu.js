@@ -62,33 +62,22 @@ class PlayMenu extends Component {
         } else {
             const list = data.map((item, index) => {
                 return (
-                    <tr key={index} onClick={() => {this.callModal(item)}}>
-                        <td className="align-middle">{index + 1}</td>
-                        <td className="align-middle">{item.puzzle_name.length > 10 ? `${item.puzzle_name.substr(0,7)}...` : item.puzzle_name}</td>
-                        <td><img src={this.gameTypes[item.type]} style={{height: "48px"}} /></td>
-                        <td className="align-middle">{item.size}</td>
-                        <td className="align-middle">{item.date_created.substr(0, 10)}</td>
-                    </tr>
+                    <li onClick={() => this.callModal(item)} className="collection-item avatar" key={index}>
+                        <img src={this.gameTypes[item.type]} alt="" className="circle"/>
+                        <span className="title">{item.puzzle_name}</span>
+                        <p>
+                            {item.size} <br/>
+                            {item.date_created.substr(0, 10)}
+                        </p>
+                        <p className="secondary-content">{index + 1}</p>
+                    </li>
                 )
             })
             return (
                 <div>
                     <PageTitle backgroundImg="watchtower" color="white" text="PLAY" subText="choose a game below"/>
                     <PlayMenuModal info={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => {this.close()}} />
-                    <table className="table table-inverse table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Size</th>
-                                <th>Created</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {list}
-                        </tbody>
-                    </table>
+                    <ul className="collection my-0">{list}</ul>
                     <div style={{height: "45px", position: "absolute", bottom:"0"}}></div>
                 </div>
             )

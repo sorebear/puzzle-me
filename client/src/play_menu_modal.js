@@ -5,7 +5,7 @@ function PlayMenuModal(props) {
     if (props.info === null) {
         return <div></div>
     } else {
-        const { creator, date_created, puzzle_name, likes, dislikes, size, type, url_ext } = props.info
+        const { creator, date_created, puzzle_name, size, type, url_ext } = props.info
         return (
         <div className={props.showModal}>
             <div onClick={props.closeModal}>
@@ -22,7 +22,7 @@ function PlayMenuModal(props) {
                     <Link to={`play/${type}/${url_ext}`}>
                         <button className="m-1 btn btn-outline-info">Play</button>
                     </Link>
-                    <button type="button" onClick={props.closeModal} className="m-1 btn btn-outline-danger">Cancel</button>
+                    <button type="button" onClick={props.closeModal} className="m-1 btn btn-outline-danger">Close</button>
                 </div>
             </div>
         </div>

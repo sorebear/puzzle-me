@@ -10,13 +10,8 @@ export default props => {
 					style={{ zIndex: 2 }}
 				>
 					<NavLink to="/home">
-						<div
-							onClick={() => props.updateCurrentPath("login")}
-							style={{ color: "white" }}
-						>
-							<span style={{ color: "rgb(217,83,79)" }}>
-								puzzle
-							</span>me
+						<div onClick={() => props.updateCurrentPath("login")} style={{ color: "white" }}>
+							<span style={{ color: "rgb(217,83,79)" }}>puzzle</span>me
 						</div>
 					</NavLink>
 				</li>
@@ -30,10 +25,7 @@ export default props => {
 			</div>
 			<div className="col-3 text-right">
 				<li className="nav-item" style={{ zIndex: 2 }}>
-					<i
-						className="icon-style fa fa-info align-items-center"
-						onClick={props.callModal}
-					/>
+					<i className="icon-style fa fa-question-circle align-items-center" onClick={props.callModal}/>
 				</li>
 			</div>
 		</ul>

@@ -12,7 +12,8 @@ const generatePuzzleID = require("./helperFunctions.js");
 
 const baselinePointsPerPuzzle = 100;
 
-const PORT = process.env.PORT || 4000;
+// const PORT = process.env.PORT || 4000;
+const PORT = 4000;
 
 //webserver.use(cookieParser('testsecret'));
 webserver.set("trust proxy", 1);
@@ -327,6 +328,7 @@ webserver.get("/getPuzzleFromId", function(req, res) {
 		console.log("Query key puzzles is not present");
 	}
 });
+
 function getPuzzleFromId(res, id) {
 	var query = `SELECT * FROM puzzles where p_id=${id}`;
 	console.log("query = ", query);

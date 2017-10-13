@@ -7,6 +7,11 @@ body {
     position: relative;
     margin: auto;
     background-color: lightgrey;
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 .icon-style {
@@ -27,12 +32,18 @@ body {
 }
 
 .footer {
-    bottom: 0;
-    position: fixed;
     height: 45px;
-    width: 200%;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    max-width: 768px;
     transition: 1s;
-    
+}
+
+.form-control:focus {
+    background-color: rgba(255, 255, 255, .3);
 }
 
 .card {
@@ -81,7 +92,7 @@ body {
 }
 
 .noModal {
-    position: absolute
+    position: fixed;
 }
 
 @media screen and (orientation:landscape) {

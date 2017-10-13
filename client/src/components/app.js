@@ -25,7 +25,7 @@ class App extends Component {
 			currentTitle: "",
 			currentHeight: window.innerHeight,
 			currentWidth: window.innerWidth,
-			currentGameMode: "menu",
+			currentGameMode: "home",
 			clickHandlers: [null, null, null],
 			autoInfo: false
 		};
@@ -121,7 +121,12 @@ class App extends Component {
 					{/* <Route exact path="/" render={(props) => <Home {...props} toggleAutoInfo={this.toggleAutoInfo} autoInfo={autoInfo} updateCurrentPath={this.updateCurrentPath} />} /> */}
 					<Route path="/home" render={
 						props => (
-							<Home {...props} toggleAutoInfo={this.toggleAutoInfo} autoInfo={autoInfo} updateCurrentPath={this.updateCurrentPath}/>
+							<Home {...props} 
+								toggleAutoInfo={this.toggleAutoInfo} 
+								autoInfo={autoInfo} 
+								updateCurrentPath={this.updateCurrentPath}
+								bodyHeight={currentHeight - 90 - (currentHeight/4)}
+							/>
 						)
 					}/>
 

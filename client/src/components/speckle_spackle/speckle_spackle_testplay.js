@@ -301,7 +301,7 @@ class SpeckleSpackleTestPlay extends Component {
                 <PlayCheckModal info={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => {this.close()}} />
                 <div className="gutter align-items-center justify-content-center text-center">
                     <i className="fa fa-clock-o swatch" style={{color: "white"}}></i>
-                    <h3 style={{fontSize: "2rem", position:"absolute", opacity:".8"}}>{timer}</h3>
+                    <h3 className="m-0" style={{fontSize: "2rem", position:"absolute", opacity:".8"}}>{timer}</h3>
                 </div>
                 <div className="mainDisplay">
                     <GameGridPlay gameInfo={{...gameInfo}} callback={this.gridIndexCallback} />

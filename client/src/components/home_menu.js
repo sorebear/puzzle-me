@@ -42,7 +42,21 @@ class HomePage extends Component {
             <div>
                 <InfoModal toggleAutoInfo={this.props.toggleAutoInfo} autoInfo={this.props.autoInfo} showModal={showModal} closeModal={() => {this.close()}} currentPath={modalInfo} />
                 <PageTitle backgroundImg="sunset" color="white" text="PUZZLE ME" subText=""/>
-                <div style={{margin : "auto"}} className="row">
+                <div className="container row justify-content-center mb-0" style={{height: this.props.bodyHeight}}>
+                    <div className="col-6 text-center align-self-center">
+                        <i className="material-icons large red-text">play_arrow</i>
+                        <p>Start Playing</p>
+                    </div>
+                    <div className="col-6 text-center align-self-center">
+                        <i className="material-icons large red-text">brush</i>
+                        <p>Start Creating</p>
+                    </div>
+                    <div className="col-6 text-center align-self-start">
+                        <i className="material-icons large red-text">help_outline</i>
+                        <p>Learn How To Play</p>
+                    </div>
+                </div>
+                {/* <div style={{margin : "auto"}} className="row">
                     <h4 className="my-2 text-center w-100">Learn To Play...</h4>
                         <div className="col-6 text-center">
                             <img onClick={() => {this.callModal('speckle_spackle_play')}} className="m-2" src={speckle_spackle} style={{maxHeight: "18vh", maxWidth: "40vw"}} />
@@ -52,7 +66,7 @@ class HomePage extends Component {
                             <img onClick={() => {this.callModal('word_guess_play')}} className="m-2" src={word_guess} style={{maxHeight: "18vh", maxWidth: "40vw"}} />
                             <div>Word Guess</div>
                         </div>
-                </div>
+                </div> */}
             </div>
         )
     }
