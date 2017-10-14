@@ -30,14 +30,14 @@ webserver.use(
 	})
 );
 var allowCrossDomain = function(req, res, next) {
+	res.header(
+		"Access-Control-Allow-Headers",
+		"Content-Type, Authorization, Content-Length, X-Requested-With"
+	);
 	res.header("Access-Control-Allow-Origin", "http://localhost:3000");
 	res.header(
 		"Access-Control-Allow-Methods",
 		"GET,PUT,POST,DELETE,PATCH,OPTIONS"
-	);
-	res.header(
-		"Access-Control-Allow-Headers",
-		"Content-Type, Authorization, Content-Length, X-Requested-With"
 	);
 	res.header("Access-Control-Allow-Credentials", true);
 	next();
@@ -83,6 +83,19 @@ webserver.get("/puzzles", function(req, res) {
 		console.log("Query key puzzles is not present");
 	}
 });
+
+function getMostRecent10Puzzles(res) {
+	var query =
+		"SELECT p.puzzle_name, u.username AS creator, p.type, p.size, p.url_ext, p.likes, p.dislikes, p.date_created, p.puzzle_object, p.avg_time_to_complete " +
+		"FROM `puzzles` AS `p` " +
+		"JOIN `users` AS `u`" +
+		"ON p.creator_id = u.u_id";
+	pool.query(query, (err, rows, fields) => {
+		if (err) console.log(err);
+		else res.end(JSON.stringify({ success: true, data: rows }));
+	});
+}
+
 function getPuzzlesByUser(user_id, requesting_own_data, callback) {
 	var subquery = "";
 	var queryFields = "";
@@ -169,22 +182,12 @@ function getPuzzleInfoFromPuzzleURL(url_ext, callback) {
 		if (err) {
 			callback(false, err);
 		} else {
-			callback(rows[0].u_id);
+			callback(rows[0]);
 		}
 	});
 }
 
-function getMostRecent10Puzzles(res) {
-	var query =
-		"SELECT p.puzzle_name, u.username AS creator, p.type, p.size, p.url_ext, p.likes, p.dislikes, p.date_created, p.puzzle_object, p.avg_time_to_complete " +
-		"FROM `puzzles` AS `p` " +
-		"JOIN `users` AS `u`" +
-		"ON p.creator_id = u.u_id";
-	pool.query(query, (err, rows, fields) => {
-		if (err) console.log(err);
-		else res.end(JSON.stringify({ success: true, data: rows }));
-	});
-}
+
 
 function getPuzzleCompletionsByUser(user_id, puzzle_id, callback) {
 	var query = `SELECT * FROM puzzleSolutionTimes WHERE user_id='${user_id}' AND puzzle_id='${puzzle_id}'`;
@@ -276,8 +279,9 @@ webserver.get("/getCreatedPuzzles", function(req, res) {
 	}
 });
 
-function getCreatedPuzzles(res, id) {
-	var query = `SELECT * FROM puzzles where creator_id=${id}`;
+function getCreatedPuzzles(res, user_id) {
+	checkUserLoggedIn(user_id, res);
+	var query = `SELECT * FROM puzzles where creator_id=${user_id}`;
 	console.log("query = ", query);
 	pool.query(query, (err, rows, fields) => {
 		if (err) {
@@ -302,8 +306,9 @@ webserver.get("/getSolvedPuzzles", function(req, res) {
 		console.log("Query key puzzles is not present");
 	}
 });
-function getSolvedPuzzles(res, id) {
-	var query = `SELECT * FROM puzzleSolutionTimes where user_id=${id}`;
+function getSolvedPuzzles(res, user_id) {
+	checkUserLoggedIn(user_id, res);
+	var query = `SELECT * FROM puzzleSolutionTimes where user_id=${user_id}`;
 	console.log("query = ", query);
 	pool.query(query, (err, rows, fields) => {
 		if (err) {
@@ -366,11 +371,11 @@ function calculatePuzzleRatings(res, callback) {
 
 function calculateAvgTimeForPuzzleTypeAndSize(callback) {
 	let query = `SELECT p.p_id AS puzzle_id, AVG(pST.completionTime) as averagePuzzleTime, p.type, p.size FROM 
-   puzzleSolutionTimes AS pST
- JOIN puzzles AS p 
-   ON p.p_id = pST.puzzle_id
-   WHERE status='enabled' AND firstCompletion=1
-   GROUP BY p.type, p.size`;
+   	puzzleSolutionTimes AS pST
+	JOIN puzzles AS p 
+   	ON p.p_id = pST.puzzle_id
+   	WHERE status='enabled' AND firstCompletion=1
+   	GROUP BY p.type, p.size`;
 	pool.query(query, (err, rows, fields) => {
 		var data = {};
 		rows.forEach(row => {
@@ -380,68 +385,68 @@ function calculateAvgTimeForPuzzleTypeAndSize(callback) {
 	});
 }
 
-function calculateSolverRatingsForUser(user_id, res, callback) {
-	let query = `SELECT p.p_id AS puzzle_id, pST.completionTime as puzzleTime, p.type, p.size FROM 
-   puzzleSolutionTimes AS pST
- JOIN puzzles AS p 
-   ON p.p_id = pST.puzzle_id
-   WHERE status='enabled' AND firstCompletion=1 AND user_id = ${user_id}`;
+// function calculateSolverRatingsForUser(user_id, res, callback) {
+// 	let query = `SELECT p.p_id AS puzzle_id, pST.completionTime as puzzleTime, p.type, p.size FROM 
+//    	puzzleSolutionTimes AS pST
+//  	JOIN puzzles AS p 
+//    	ON p.p_id = pST.puzzle_id
+//    	WHERE status='enabled' AND firstCompletion=1 AND user_id = ${user_id}`;
 
-	pool.query(query, (err, rows, fields) => {
-		var userData = {};
-		for (let entry of rows) {
-			userData[entry.puzzle_id] = entry;
-		}
-		//TODO: really need to make this only check the puzzles that the user has completed, or
-		//do a total calculation periodically and then draw from that.
-		calculateAvgTimeForPuzzleTypeAndSize(response => {
-			if (response.err) {
-				respondWithError(res, response.err);
-			} else {
-				let totalPoints = 0;
-				for (let id in userData) {
-					if (response.data[id] !== undefined) {
-						userData[id].globalAverageTime =
-							response.data[id].averagePuzzleTime;
-						console.log("user time: " + userData[id].puzzleTime);
-						console.log(
-							"global time: " + userData[id].globalAverageTime
-						);
-						let mult =
-							1 +
-							(1 -
-								userData[id].puzzleTime /
-									userData[id].globalAverageTime);
-						let points = baselinePointsPerPuzzle * mult;
-						console.log("points: " + points);
-						userData[id].points = points;
-						totalPoints += points;
-					}
-					let query = `UPDATE users SET composite_solver_ranking = ${totalPoints} WHERE u_id = ${user_id}`;
-					console.log(query);
-					pool.query(query, (err, rows, fields) => {
-						if (!err) {
-							res.end(
-								JSON.stringify({
-									success: true,
-									solver_score: totalPoints >> 0
-								})
-							);
-						} else {
-							respondWithError(res, response.err);
-						}
-					});
-				}
-			}
-		});
-	});
+// 	pool.query(query, (err, rows, fields) => {
+// 		var userData = {};
+// 		for (let entry of rows) {
+// 			userData[entry.puzzle_id] = entry;
+// 		}
+// 		//TODO: really need to make this only check the puzzles that the user has completed, or
+// 		//do a total calculation periodically and then draw from that.
+// 		calculateAvgTimeForPuzzleTypeAndSize(response => {
+// 			if (response.err) {
+// 				respondWithError(res, response.err);
+// 			} else {
+// 				let totalPoints = 0;
+// 				for (let id in userData) {
+// 					if (response.data[id] !== undefined) {
+// 						userData[id].globalAverageTime =
+// 							response.data[id].averagePuzzleTime;
+// 						console.log("user time: " + userData[id].puzzleTime);
+// 						console.log(
+// 							"global time: " + userData[id].globalAverageTime
+// 						);
+// 						let mult =
+// 							1 +
+// 							(1 -
+// 								userData[id].puzzleTime /
+// 									userData[id].globalAverageTime);
+// 						let points = baselinePointsPerPuzzle * mult;
+// 						console.log("points: " + points);
+// 						userData[id].points = points;
+// 						totalPoints += points;
+// 					}
+// 					let query = `UPDATE users SET composite_solver_ranking = ${totalPoints} WHERE u_id = ${user_id}`;
+// 					console.log(query);
+// 					pool.query(query, (err, rows, fields) => {
+// 						if (!err) {
+// 							res.end(
+// 								JSON.stringify({
+// 									success: true,
+// 									solver_score: totalPoints >> 0
+// 								})
+// 							);
+// 						} else {
+// 							respondWithError(res, response.err);
+// 						}
+// 					});
+// 				}
+// 			}
+// 		});
+// 	});
 
 	/*SELECT AVG(pST.completionTime) as averagePuzzleTime, p.type, p.size FROM 
    puzzleSolutionTimes AS pST
  JOIN puzzles AS p 
    ON p.p_id = pST.puzzle_id
    GROUP BY p.type, p.size*/
-}
+
 
 // webserver.post('/login', function(req, res){
 //     //console.log("We received facebook data: ", req.body);
@@ -467,17 +472,19 @@ function calculateSolverRatingsForUser(user_id, res, callback) {
 //
 // });
 
-webserver.get("/calculateRatings", function(req, res) {
-	calculatePuzzleRatings(res, data => {
-		console.log(data);
-		res.end(JSON.stringify(data));
-	});
-});
-webserver.post("/calculateSolverRatings", function(req, res) {
-	calculateSolverRatingsForUser(req.body.userID, res, data => {
-		res.end(JSON.stringify(data));
-	});
-});
+// webserver.get("/calculateRatings", function(req, res) {
+// 	calculatePuzzleRatings(res, data => {
+// 		console.log(data);
+// 		res.end(JSON.stringify(data));
+// 	});
+// });
+
+// webserver.post("/calculateSolverRatings", function(req, res) {
+// 	calculateSolverRatingsForUser(req.body.userID, res, data => {
+// 		res.end(JSON.stringify(data));
+// 	});
+// });
+
 webserver.post("/login", function(req, res) {
 	//console.log("We received facebook data: ", req.body);
 	//set the session cookie to have the facebook user id.
@@ -487,8 +494,6 @@ webserver.post("/login", function(req, res) {
 	var query = `SELECT * FROM users WHERE facebook_u_id=?`;
 	console.log("query: " + query);
 	var result = pool.query(query, [facebook_uid], (err, rows, fields) => {
-		console.log("QUERY" + result.sql);
-		console.log("Here are the rows: ", rows);
 		if (err) {
 			respondWithError(res, err);
 		} else {
@@ -551,44 +556,33 @@ webserver.post("/savepuzzle", function(req, res) {
 		});
 	});
 });
+
 webserver.post("/puzzleComplete", function(req, res) {
 	let data = req.body;
 	console.log("puzzle data:", data);
 	const HARDCODED_ID = 4;
 	let user_id = HARDCODED_ID;
-	// console.log(req.body);
+	console.log("request body", req.body);
 	getPuzzleInfoFromPuzzleURL(data.queryID, puzzleData => {
-		console.log(puzzleData);
+		console.log("HERE IS PUZZLE DATA: ", puzzleData);
 		getUserIDFromFacebookID(req.session.userid, user_id => {
 			checkUserLoggedIn(user_id, res);
 			getPuzzleCompletionsByUser(
 				user_id,
-				puzzleData.p_id,
+				puzzleData.queryID,
 				completionData => {
 					if (completionData.length > 0) {
 						var first_puzzle = 0;
 					} else {
 						first_puzzle = 1;
 					}
-					if (
-						puzzleData.avg_time_to_complete !== 0 &&
-						data.completionTime >
-							puzzleData.avg_time_to_complete * 2
-					) {
-						var status = "outOfRange";
-					} else {
-						status = "enabled";
-					}
-					//need to put a check here to validate times that are beyond the expected norm
 					let query = `INSERT INTO puzzleSolutionTimes SET 
                     user_id = '${user_id}',
                     puzzle_id = '${puzzleData.p_id}',
                     completionTime = '${data.completionTime}',
                     completionRegistered = NOW(),
-                    status = '${status}',
-                    firstCompletion = ${first_puzzle}
-                `;
-
+                    status = 'enabled',
+					firstCompletion = ${first_puzzle}`;
 					pool.query(query, (err, rows, fields) => {
 						if (err) {
 							console.log(err);

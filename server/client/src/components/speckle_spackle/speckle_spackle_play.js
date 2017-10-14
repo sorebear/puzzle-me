@@ -77,6 +77,7 @@ class SpeckleSpacklePlay extends Component {
 	}
 
 	componentWillUnmount() {
+		console.log("Time Int", this.timeInt)
 		clearInterval(this.timeInt);
 	}
 

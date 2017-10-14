@@ -6,7 +6,7 @@ body {
     max-width: 768px;
     position: relative;
     margin: auto;
-    background-color: lightgrey;
+    background-color: ghostwhite;
     overflow-y: scroll;
 }
 
@@ -16,7 +16,7 @@ body {
 
 .icon-style {
     font-size: 20px;
-    color: grey;
+    color: ghostwhite;
 }
 
 .footer, .header {

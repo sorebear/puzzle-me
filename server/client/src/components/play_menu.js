@@ -60,16 +60,16 @@ class PlayMenu extends Component {
         if (data === null) {
             return <h1>Loading...</h1>
         } else {
-            const list = data.map((item, index) => {
+            const list = data.slice(0).reverse().map((item, index) => {
                 return (
                     <li onClick={() => this.callModal(item)} className="collection-item avatar" key={index}>
                         <img src={this.gameTypes[item.type]} alt="" className="circle"/>
                         <span className="title">{item.puzzle_name}</span>
-                        <p>
+                        <p className="grey-text">
                             {item.size} <br/>
                             {item.date_created.substr(0, 10)}
                         </p>
-                        <p className="secondary-content">{index + 1}</p>
+                        <p className="secondary-content red-text">{index + 1}</p>
                     </li>
                 )
             })

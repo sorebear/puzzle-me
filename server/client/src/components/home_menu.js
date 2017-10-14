@@ -42,17 +42,17 @@ class HomePage extends Component {
             <div>
                 <InfoModal toggleAutoInfo={this.props.toggleAutoInfo} autoInfo={this.props.autoInfo} showModal={showModal} closeModal={() => {this.close()}} currentPath={modalInfo} />
                 <PageTitle backgroundImg="sunset" color="white" text="PUZZLE ME" subText=""/>
-                <div className="container row justify-content-center mb-0" style={{height: this.props.bodyHeight}}>
+                <div className="row justify-content-center mb-0" style={{height: this.props.bodyHeight}}>
                     <div className="col-6 text-center align-self-center">
-                        <i className="material-icons large red-text">play_arrow</i>
+                        <i className="material-icons large red-text ">play_arrow</i>
                         <p>Start Playing</p>
                     </div>
                     <div className="col-6 text-center align-self-center">
-                        <i className="material-icons large red-text">brush</i>
+                        <i className="material-icons large red-text ">brush</i>
                         <p>Start Creating</p>
                     </div>
                     <div className="col-6 text-center align-self-start">
-                        <i className="material-icons large red-text">help_outline</i>
+                        <i className="material-icons large red-text ">help_outline</i>
                         <p>Learn How To Play</p>
                     </div>
                 </div>

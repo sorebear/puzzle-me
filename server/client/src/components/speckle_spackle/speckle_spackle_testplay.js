@@ -151,6 +151,7 @@ class SpeckleSpackleTestPlay extends Component {
             showModal : "showModal",
             modalInfo : [this.state.timer]
         })
+        clearInterval(this.timeInt);
     }
 
     removeErrors() {

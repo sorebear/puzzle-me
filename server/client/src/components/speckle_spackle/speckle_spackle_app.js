@@ -6,8 +6,8 @@ import SubmitModal from '../common_components/submit_modal';
 import Axios from 'axios';
 import './speckle_spackle_style.css';
 
-// Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
-Axios.defaults.withCredentials = true;
+// // Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
+// Axios.defaults.withCredentials = true;
 
 class SpeckleSpackleApp extends Component {
     constructor(props) {
@@ -51,7 +51,7 @@ class SpeckleSpackleApp extends Component {
     }
 
     submitPuzzle(req, res) {
-        Axios.post(SERVER_BASE_ADDRESS + this.URL_EXT, {
+        Axios.post(this.URL_EXT, {
             puzzle_name : this.state.puzzle_name,
             type : "speckle_spackle",
             size : `${this.state.gameInfo.gridSize}x${this.state.gameInfo.gridSize}`,

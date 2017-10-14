@@ -5,8 +5,6 @@ import CreateCheckModal from './create_check_modal';
 import SubmitModal from '../common_components/submit_modal';
 import Axios from 'axios';
 
-// Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
-// Axios.defaults.withCredentials = true;
 class WordGuessingApp extends Component {
     constructor (props) {
         super(props);
@@ -39,14 +37,15 @@ class WordGuessingApp extends Component {
         this.successfulSubmit = this.successfulSubmit.bind(this);
         this.submitConfirmation = this.submitConfirmation.bind(this);
         this.updatePuzzleName = this.updatePuzzleName.bind(this);
+        this.gameInfoCallback = this.gameInfoCallback.bind(this);
     }
 
     componentWillMount() {
-        this.props.updateCurrentPath("word_guess_create", '', 'create', [this.testPlay, this.changeVisibility, this.submitPuzzle]);
+        this.props.updateCurrentPath("word_guess_create", '', 'create', [this.testPlay, this.changeVisibility, this.submitConfirmation]);
     }
 
     submitPuzzle(req, res) {
-        Axios.post(SERVER_BASE_ADDRESS + this.URL_EXT, {
+        Axios.post(this.URL_EXT, {
             puzzle_name : this.state.puzzle_name,
             type : "word_guess",
             size : `${this.state.gameInfo.hiddenWord.length}-Letter`,
@@ -91,14 +90,14 @@ class WordGuessingApp extends Component {
 
     changeVisibility() {
         if (this.state.testStyle.display === "block") {
-            this.props.updateCurrentPath("word_guess_create", '', 'testplay', [this.testPlay, this.changeVisibility, this.submitPuzzle]);
+            this.props.updateCurrentPath("word_guess_create", '', 'testplay', [this.testPlay, this.changeVisibility, this.submitConfirmation]);
             this.setState({
                 showModal : "noModal",
                 createStyle : { display : "block" },
                 testStyle : { display : "none" }
             })
         } else {
-            this.props.updateCurrentPath("word_guess_create", '', 'create', [this.testPlay, this.changeVisibility, this.submitPuzzle]);
+            this.props.updateCurrentPath("word_guess_create", '', 'create', [this.testPlay, this.changeVisibility, this.submitConfirmation]);
             this.setState({
                 showModal : "noModal",
                 createStyle : { display : "none"},
@@ -107,7 +106,7 @@ class WordGuessingApp extends Component {
         }
     }
 
-    gameInfoCallback = (gameInfoFromChild) => {
+    gameInfoCallback(gameInfoFromChild) {
         const wordLength = this.testWordLength(gameInfoFromChild.hiddenWord);
         const clueLength = this.testClueLength(gameInfoFromChild.startingWords ,gameInfoFromChild.hiddenWord);
         this.setState({

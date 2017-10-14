@@ -7,8 +7,9 @@ import Axios from 'axios';
 //Import the Modal which will be displayed when the user wins the game
 import WinModal from './win_modal';
 
-Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000';
-Axios.defaults.withCredentials = true;
+// Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000';
+// Axios.defaults.withCredentials = true;
+
 class WordGuessPlay extends Component {
     constructor(props) {
         super(props);

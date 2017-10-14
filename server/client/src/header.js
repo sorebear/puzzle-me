@@ -10,8 +10,8 @@ export default props => {
 					style={{ zIndex: 2 }}
 				>
 					<NavLink to="/home">
-						<div onClick={() => props.updateCurrentPath("login")} style={{ color: "white" }}>
-							<span style={{ color: "rgb(217,83,79)" }}>puzzle</span>me
+						<div onClick={() => props.updateCurrentPath("home")} style={{ color: "ghostwhite" }}>
+							<span className="red-text">puzzle</span>me
 						</div>
 					</NavLink>
 				</li>

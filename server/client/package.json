@@ -22,11 +22,9 @@
     "/getProfile": {
       "target": "http://localhost:4000"
     },
-
     "/getSolvedPuzzles": {
       "target": "http://localhost:4000"
     },
-
     "/getCreatedPuzzles": {
       "target": "http://localhost:4000"
     },
@@ -39,7 +37,7 @@
     "start": "node dev_server.js",
     "bundle": "node_modules/.bin/webpack --config webpack.deploy.config.js --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npm run dev --prefix ../server"
+    "dev": "npm run dev --prefix .."
   },
   "author": "Scott Bowler",
   "license": "ISC",
