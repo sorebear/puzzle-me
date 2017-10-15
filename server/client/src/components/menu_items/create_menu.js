@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PageTitle from './page_title';
-import speckle_spackle from './imgs/speckle_spackle.png';
-import word_guess from './imgs/word_guess.png';
+import speckle_spackle from '../imgs/speckle_spackle.png';
+import word_guess from '../imgs/word_guess.png';
 
 export default () => {
     return (

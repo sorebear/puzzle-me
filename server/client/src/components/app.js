@@ -1,20 +1,20 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 import InfoModal from "./info_modal/info_modal";
+import Axios from 'axios';
 
-import Header from "../header";
-import Footer from "../footer";
-import Home from "./home_menu";
-import CreateMenu from "./create_menu";
-import PlayMenu from "./play_menu";
+import Header from "./menu_items/header";
+import Footer from "./menu_items/footer";
+import Home from "./menu_items/home_menu";
+import CreateMenu from "./menu_items/create_menu";
+import PlayMenu from "./menu_items/play_menu";
 import SpeckleSpackleApp from "./speckle_spackle/speckle_spackle_app";
 import SpeckleSpacklePlay from "./speckle_spackle/speckle_spackle_play";
 import WordGuessApp from "./word_guessing/word_guessing_app";
 import WordGuessPlay from "./word_guessing/word_guessing_play";
-import Rankings from "./rankings";
-import Login from "./login";
-
-import Profile from "./profile";
+import Rankings from "./menu_items/rankings";
+import Login from "./menu_items/login_menu";
+import Profile from "./menu_items/profile";
 
 class App extends Component {
 	constructor(props) {
@@ -27,15 +27,59 @@ class App extends Component {
 			currentWidth: window.innerWidth,
 			currentGameMode: "home",
 			clickHandlers: [null, null, null],
-			autoInfo: false
+			autoInfo: false,
+			loggedIn: false
 		};
+		this.URL_EXT_CHECK = '/checkLoginStatus';
+		this.URL_EXT_HOME = "/home";
+		this.URL_EXT_LOGIN = "/login";
 		this.updateCurrentPath = this.updateCurrentPath.bind(this);
 		this.updateDimensions = this.updateDimensions.bind(this);
 		this.toggleAutoInfo = this.toggleAutoInfo.bind(this);
+		this.facebookLogin = this.facebookLogin.bind(this);
+		this.checkLoginStatus = this.checkLoginStatus.bind(this);
 	}
+
 	componentWillMount() {
+		this.checkLoginStatus();
 		window.addEventListener("resize", this.updateDimensions);
 	}
+
+	facebookLogin(event) {
+		event.preventDefault();
+		const user_name = this.state.username;
+		FB.login(
+			function(response) {
+				if (response.status === "connected") {
+					response.username = user_name;
+					Axios.post("/login", {
+						response: response
+					}).then(console.log("Successfully Logged In!")).catch(err => {
+						console.log("Error", err);
+					});
+				} else {
+					console.log("Failed to log in via Facebook");
+				}
+			},
+			{ scope: "user_friends,public_profile,email" }
+		);
+	}
+
+	checkLoginStatus() {
+		console.log("CHECKING LOGGING IN STATUS!")
+		Axios.get(this.URL_EXT_CHECK).then((res) => {
+			console.log("CHECK LOGIN RESPONSE: ", res.data.success);
+			if (res.data.success) {
+				console.log("YOU'RE LOGGED IN!")
+			} else {
+				console.log("YOU'RE NOT LOGGED IN")
+				this.props.history.push("/");
+			}
+		}).catch((err) => {
+			console.log("ERROR CHECKING LOGIN: ", err);
+		})
+	}
+
 	updateDimensions() {
 		this.setState({
 			currentHeight: window.innerHeight,
@@ -56,6 +100,8 @@ class App extends Component {
 	}
 
 	componentWillReceiveProps() {
+		console.log("APP IS RECEIVING PROPS");
+		this.checkLoginStatus();
 		this.setState({ showModal: "noModal" });
 	}
 
@@ -75,14 +121,13 @@ class App extends Component {
 			currentGameMode: currentGameMode,
 			clickHandlers: currentClickHandlers
 		});
-		if (
-			this.state.autoInfo &&
-			(currentPath !== "play_menu" &&
-				currentPath !== "create_menu" &&
-				currentPath !== "profile")
-		) {
-			setTimeout(() => {
-				this.setState({ showModal: "showModal" });
+		if (this.state.autoInfo && (
+			currentPath !== "play_menu" &&
+			currentPath !== "create_menu" &&
+			currentPath !== "profile"
+		)) 	
+			{
+			setTimeout(() => { this.setState({ showModal: "showModal" });
 			}, 500);
 		}
 	}
@@ -118,7 +163,7 @@ class App extends Component {
 						width: currentWidth,
 					}
 				}>
-					{/* <Route exact path="/" render={(props) => <Home {...props} toggleAutoInfo={this.toggleAutoInfo} autoInfo={autoInfo} updateCurrentPath={this.updateCurrentPath} />} /> */}
+					<Route exact path="/" render={() => <Login facebookLogin={this.facebookLogin}/>}/>
 					<Route path="/home" render={
 						props => (
 							<Home {...props} 
@@ -141,7 +186,6 @@ class App extends Component {
 							<SpeckleSpacklePlay {...props} updateCurrentPath={this.updateCurrentPath}/>
 						)}
 					/>
-
 					<Route exact path="/create" component={CreateMenu} />
 					<Route path="/create/word_guess" render={
 						() => (
@@ -153,9 +197,7 @@ class App extends Component {
 							<SpeckleSpackleApp updateCurrentPath={this.updateCurrentPath}/>
 						)}
 					/>
-
 					<Route exact path="/rankings" component={Rankings} />
-					<Route exact path="/" component={Login} />
 					<Route path="/profile" component={Profile} />
 				</div>
 				<Footer mode={currentGameMode} clickHandlers={clickHandlers} updateCurrentPath={this.updateCurrentPath}/>
@@ -164,4 +206,4 @@ class App extends Component {
 	}
 }
 
-export default App;
+export default withRouter(App);

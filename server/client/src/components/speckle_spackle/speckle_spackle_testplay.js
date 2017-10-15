@@ -5,12 +5,6 @@ import './speckle_spackle_style.css';
 
 class SpeckleSpackleTestPlay extends Component {
     constructor(props) {
-        console.log("Props at Load", JSON.stringify({
-            puzzle_name : "Puzz Puzz",
-            size : `${props.gameInfo.gridSize}x${props.gameInfo.gridSize}`,
-            type : 'speckle_spackle',
-            puzzle_object : props.gameInfo
-        }));
         super(props);
         this.timeInt = null;
         this.state = {
@@ -114,7 +108,6 @@ class SpeckleSpackleTestPlay extends Component {
             let missing = false;
             let clue = false;
             const arrayOfArrays = rowLog.concat(columnLog, leftLog, rightLog, topLog, bottomLog);
-            console.log(arrayOfArrays)
             for (let i = 0; i < arrayOfArrays.length; i++) {
                 switch (arrayOfArrays[i].errorType) {
                     case 'clue':
@@ -122,7 +115,6 @@ class SpeckleSpackleTestPlay extends Component {
                         break;
                     case 'duplicate':
                         duplicate = 'You have duplicate colors in rows or columns';
-                        console.log(document.getElementsByClassName(arrayOfArrays[i].location));
                         const duplicateColors = document.getElementsByClassName(arrayOfArrays[i].location);
                         for (let k = 1; k < duplicateColors.length-1; k++) {
                             duplicateColors[k].style.borderColor = "red"
@@ -184,7 +176,6 @@ class SpeckleSpackleTestPlay extends Component {
                 if (gameInfo.gameGrid[i]["colorNum"] !== gameInfo.gameGrid[k]["colorNum"]) {
                     leftLog.push({errorType:'clue', location: `row${row}`})
                     gameInfo.gameGrid[i].error = true;
-                    // gameInfo.gameGrid[k].error = true;
                 } 
             }
         }
@@ -203,7 +194,6 @@ class SpeckleSpackleTestPlay extends Component {
                 if (gameInfo.gameGrid[i]["colorNum"] !== gameInfo.gameGrid[k]["colorNum"]) {
                     rightLog.push({errorType:'clue', location: `row${row}`});
                     gameInfo.gameGrid[i].error = true;
-                    // gameInfo.gameGrid[k].error = true;
                 } 
             }
         }
@@ -222,7 +212,6 @@ class SpeckleSpackleTestPlay extends Component {
                 if (gameInfo.gameGrid[i]["colorNum"] !== gameInfo.gameGrid[k]["colorNum"]) {
                     topLog.push({errorType:'clue', location: `column${i}`})
                     gameInfo.gameGrid[i].error = true;
-                    // gameInfo.gameGrid[k].error = true;
                 } 
             }
         }
@@ -308,9 +297,6 @@ class SpeckleSpackleTestPlay extends Component {
                     <GameGridPlay gameInfo={{...gameInfo}} callback={this.gridIndexCallback} />
                 </div>
                 <div className="gutter">
-                    <div>
-                        {/* <button onClick={this.evaluateAnswer} className="btn btn-outline-primary justify-content-center align-items-center">Check</button> */}
-                    </div>
                 </div>
             </div>
         )

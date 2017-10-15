@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import WordGuessingCreate from './word_guessing_create';
 import WordGuessingTestPlay from './word_guessing_testplay';
 import CreateCheckModal from './create_check_modal';
-import SubmitModal from '../common_components/submit_modal';
+import SubmitModal from '../menu_items/submit_modal';
 import Axios from 'axios';
 
 class WordGuessingApp extends Component {

@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
+import Axios from 'axios';
+
 import SpeckleSpackleCreate from './speckle_spackle_create';
 import SpeckleSpackleTestPlay from './speckle_spackle_testplay';
 import CreateCheckModal from './create_check_modal';
-import SubmitModal from '../common_components/submit_modal';
-import Axios from 'axios';
+import SubmitModal from '../menu_items/submit_modal';
 import './speckle_spackle_style.css';
 
 // // Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'

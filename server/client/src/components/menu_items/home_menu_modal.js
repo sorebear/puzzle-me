@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import infoObject from './info_object';
+import infoObject from '../info_modal/info_object';
 
 class InfoModal extends Component {
     constructor(props) {

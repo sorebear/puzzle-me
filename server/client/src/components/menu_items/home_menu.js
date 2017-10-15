@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
 import PageTitle from './page_title';
-import infoObject from './info_modal/info_object';
-import InfoModal from './info_modal/info_modal';
+import infoObject from '../info_modal/info_object';
+import InfoModal from '../info_modal/info_modal';
 
-import speckle_spackle from './imgs/speckle_spackle.png';
-import word_guess from './imgs/word_guess.png';
+import speckle_spackle from '../imgs/speckle_spackle.png';
+import word_guess from '../imgs/word_guess.png';
 
 
 class HomePage extends Component {
@@ -36,7 +36,6 @@ class HomePage extends Component {
     }
 
     render() {
-        console.log("Home Menu Props: ", this.props);
         const { showModal, modalInfo } = this.state;
         return (
             <div>
