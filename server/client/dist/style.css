@@ -111,17 +111,12 @@ body {
     } 
 }
 
-h2, h4, button, a, .title {
-    font-family: 'Metamorphous', sans-serif;
-}
-
 h2 {
     color: white;
 }
 
 .page-title {
     height: 25vh;
-    font-family: 'Metamorphous', sans-serif;
     display: flex;
     flex-direction: column;
     justify-content: center;

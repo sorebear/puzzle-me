@@ -3,8 +3,8 @@ import Axios from 'axios';
 
 import PlayMenuModal from './play_menu_modal';
 import PageTitle from './page_title';
-import speckle_spackle from '../imgs/speckle_spackle.png';
-import word_guess from '../imgs/word_guess.png';
+import speckle_spackle from '../imgs/speckle_spackle.svg';
+import word_guess from '../imgs/word_guess.svg';
 
 Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000'
 Axios.defaults.withCredentials = true;

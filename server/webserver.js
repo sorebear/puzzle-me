@@ -23,7 +23,7 @@ webserver.use(
 		domain: "localhost:3000",
 		httpOnly: false,
 		secure: false,
-		maxAge: null,
+		maxAge: 14 * 24 * 60 * 60 * 1000,
 		secret: "puzme",
 		resave: true,
 		saveUninitialized: true
@@ -57,6 +57,7 @@ webserver.use(bodyParser.json());
 webserver.use(express.static(path.resolve(__dirname, "..", "client", "dist")));
 
 const pool = mysql.createPool(credentials);
+
 pool.getConnection(function(err, conn) {
 	if (err) console.log("Error connecting to MySQL database");
 });
@@ -116,6 +117,7 @@ function getPuzzlesByUser(user_id, requesting_own_data, callback) {
 		}
 	});
 }
+
 webserver.post("/getPuzzlesByUser", function(req, res) {
 	if (req.body.user_id) {
 		var user_id = req.body.user_id;
@@ -187,8 +189,6 @@ function getPuzzleInfoFromPuzzleURL(url_ext, callback) {
 	});
 }
 
-
-
 function getPuzzleCompletionsByUser(user_id, puzzle_id, callback) {
 	var query = `SELECT * FROM puzzleSolutionTimes WHERE user_id='${user_id}' AND puzzle_id='${puzzle_id}'`;
 	pool.query(query, (err, rows, fields) => {
@@ -201,30 +201,26 @@ function getPuzzleCompletionsByUser(user_id, puzzle_id, callback) {
 }
 
 webserver.get("/getProfile", function(req, res) {
-	console.log("req.query.retrieve is: ", req.query.retrieve);
-	if (req.query.retrieve) {
-		switch (req.query.retrieve) {
-			case "getProfile":
-				getUserProfile(res, req.query.user_id);
-				break;
-			default:
-				console.log("unknown query value for puzzles key");
-		}
+	console.log("INCOMING GET PROFILE REQUEST: ", req.query.user_id);
+	if (req.query.user_id !== "my_profile") {
+		let query = `SELECT * FROM users where u_id=${req.query.user_id}`;
+		console.log("query = ", query);
+		pool.query(query, (err, rows, fields) => {
+			if (err) { console.log(err) }
+			else { res.json({ Success: true, data: rows });}
+		});
 	} else {
-		console.log("Query key puzzles is not present");
+		getUserIDFromFacebookID(req.session.userid, user_id => {
+			let query = `SELECT * FROM users where u_id=${user_id}`;
+			console.log("query = ", query);
+			pool.query(query, (err, rows, fields) => {
+				if (err) { console.log(err) }
+				else { res.json({ Success: true, data: rows });}
+			});
+		});
 	}
 });
-function getUserProfile(res, id) {
-	var query = `SELECT * FROM users where u_id=${id}`;
-	console.log("query = ", query);
-	pool.query(query, (err, rows, fields) => {
-		if (err) {
-			respondWithError(res, err);
-		} else {
-			res.json({ Success: true, data: rows });
-		}
-	});
-}
+
 
 webserver.get("/getRankings", function(req, res) {
 	console.log("req.query.retrieve is: ", req.query.retrieve);
@@ -256,46 +252,38 @@ function getUserRankings(res) {
 	});
 }
 
+webserver.get("/checkLoginStatus", function(req, res) {
+	console.log("USER ID IS: ", req.session.userid);
+	if (req.session.userid === undefined) {
+		res.end(
+			JSON.stringify({ success: false, errors: ["user not logged in"] })
+		);
+	} else {
+		res.end(
+			JSON.stringify({ success: true, data: "User Logged In"})
+		)
+	}
+});
+
 function checkUserLoggedIn(user_id, res) {
 	if (user_id === undefined) {
 		res.end(
 			JSON.stringify({ success: false, errors: ["user not logged in"] })
 		);
+	} else {
+		res.end(
+			JSON.stringify({ success: true, data: "User Logged In"})
+		)
 	}
 }
 
-webserver.get("/getCreatedPuzzles", function(req, res) {
-	console.log("req.query.retrieve is: ", req.query.retrieve);
+webserver.get("/getUserPuzzles", function(req, res) {
+	console.log("GET USER PUZZLES QUERY: ", req.query);
 	if (req.query.retrieve) {
 		switch (req.query.retrieve) {
 			case "getCreatedPuzzles":
 				getCreatedPuzzles(res, req.query.user_id);
 				break;
-			default:
-				console.log("unknown query value for puzzles key");
-		}
-	} else {
-		console.log("Query key puzzles is not present");
-	}
-});
-
-function getCreatedPuzzles(res, user_id) {
-	checkUserLoggedIn(user_id, res);
-	var query = `SELECT * FROM puzzles where creator_id=${user_id}`;
-	console.log("query = ", query);
-	pool.query(query, (err, rows, fields) => {
-		if (err) {
-			respondWithError(res, err);
-		} else {
-			res.json({ Success: true, data: rows });
-		}
-	});
-}
-
-webserver.get("/getSolvedPuzzles", function(req, res) {
-	console.log("req.query.retrieve is: ", req.query.retrieve);
-	if (req.query.retrieve) {
-		switch (req.query.retrieve) {
 			case "getSolvedPuzzles":
 				getSolvedPuzzles(res, req.query.user_id);
 				break;
@@ -306,10 +294,24 @@ webserver.get("/getSolvedPuzzles", function(req, res) {
 		console.log("Query key puzzles is not present");
 	}
 });
+
+function getCreatedPuzzles(res, user_id) {
+	console.log("INTO GET CREATED PUZZLES");
+	var query = `SELECT * FROM puzzles where creator_id=${user_id}`;
+	console.log("GET CREATED PUZZLES QUERY: ", query);
+	pool.query(query, (err, rows, fields) => {
+		if (err) {
+			respondWithError(res, err);
+		} else {
+			res.json({ Success: true, data: rows });
+		}
+	});
+}
+
 function getSolvedPuzzles(res, user_id) {
-	checkUserLoggedIn(user_id, res);
+	console.log("INTO GET SOLVED PUZZLES");
 	var query = `SELECT * FROM puzzleSolutionTimes where user_id=${user_id}`;
-	console.log("query = ", query);
+	console.log("GET SOLVED PUZZLES QUERY: ", query)
 	pool.query(query, (err, rows, fields) => {
 		if (err) {
 			respondWithError(res, err);
@@ -486,7 +488,6 @@ function calculateAvgTimeForPuzzleTypeAndSize(callback) {
 // });
 
 webserver.post("/login", function(req, res) {
-	//console.log("We received facebook data: ", req.body);
 	//set the session cookie to have the facebook user id.
 	var facebook_uid = req.body.response.authResponse.userID;
 	req.session.userid = facebook_uid;
@@ -523,13 +524,9 @@ webserver.post("/login", function(req, res) {
 });
 
 webserver.post("/savepuzzle", function(req, res) {
-	// console.log("req.query.retrieve is: ", req.query.retrieve);
-	// console.log("data: "+JSON.stringify(req.body));
 	console.log("TEST");
 	let data = req.body;
 	console.log("******* SESSION: ", req.session);
-	//res.end(JSON.stringify(req.session)); return;
-	//console.log('user session',req.session);
 	getUserIDFromFacebookID(req.session.userid, user_id => {
 		checkUserLoggedIn(user_id, res);
 		const HARDCODED_COMPLETE = "yes";
@@ -549,7 +546,6 @@ webserver.post("/savepuzzle", function(req, res) {
     		date_created = NOW(),
     		total_plays = 0
         `;
-		//console.log("query",query);
 		pool.query(query, (err, rows, fields) => {
 			if (err) console.log(err);
 			else res.end(JSON.stringify({ success: true, queryID: code }));

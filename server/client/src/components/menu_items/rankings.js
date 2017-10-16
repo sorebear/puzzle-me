@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
+import { Link } from 'react-router-dom';
 
-import PlayMenuModal from './play_menu_modal';
+import RankingsModal from './rankings_modal';
 import PageTitle from './page_title';
+import { avatar_array } from './avatar_array';
 
 Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000';
 Axios.defaults.withCredentials = true;
@@ -19,6 +21,7 @@ class Rankings extends Component {
         this.QUERY_KEY = 'retrieve';
         this.QUERY_VAL = 'user';
         this.updateData = this.updateData.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
 
     callModal(info) {
@@ -28,7 +31,7 @@ class Rankings extends Component {
         })  
     }
 
-    close() {
+    closeModal() {
         this.setState({
             showModal: "noModal"
         })
@@ -75,34 +78,29 @@ class Rankings extends Component {
     }
 
     render() {
-        const { data, sortField } = this.state
+        const { data, showModal, modalInfo } = this.state
         if (data === null) {
             return <h1>Loading...</h1>
         } else {
             const list = data.map((item, index) => {
+                const date = item.account_created;
                 return (
-                    <tr key={index} onClick={() => {this.callModal(item)}}>
-                        <td>{item.username}</td>
-                        <td className="text-center">{item.composite_solver_ranking}</td>
-                        <td className="text-center">{item.composite_creator_ranking}</td>
-                    </tr>
+                    <li className="collection-item avatar" onClick={() => this.callModal(item)} key={index}>
+                        <img src={avatar_array[item.profile_pic]} alt="" className="circle"/>
+                        <span className="title">{item.username}</span>
+                        <p className="grey-text">
+                            XP: {item.exp_gained} <br/>
+                            User Since: {`${date.substr(5, 2)}/${date.substr(8,2)}/${date.substr(0,4)}`}
+                        </p>
+                        <p className="secondary-content red-text">{index + 1}</p>
+                    </li>
                 )
             })
             return (
                 <div>
+                    <RankingsModal info={modalInfo} showModal={showModal} closeModal={this.closeModal}/>
                     <PageTitle backgroundImg="cityscape" color="white" text="RANKINGS"/>
-                    <table className="table table-inverse table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th className="text-center">User</th>
-                                <th className="text-center" onClick={() => {this.sortData("composite_solver_ranking")}} style={{backgroundColor: (sortField === 'composite_solver_ranking' ? 'grey' : '') }}>Solver Rank</th>
-                                <th className="text-center" onClick={() => {this.sortData("composite_creator_ranking")}} style={{backgroundColor: (sortField === 'composite_creator_ranking' ? 'grey' : '') }}>Creator Rank</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {list}
-                        </tbody>
-                    </table>
+                    <ul className="collection my-0">{list}</ul>
                 </div>
             )
         }

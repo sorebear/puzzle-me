@@ -177,17 +177,6 @@ class App extends Component {
 							/>
 						}
 					/>
-					{/* <Route path="/home" render={
-						props => (
-							<Home {...props} 
-								toggleAutoInfo={this.toggleAutoInfo} 
-								autoInfo={autoInfo} 
-								updateCurrentPath={this.updateCurrentPath}
-								bodyHeight={currentHeight - 90 - (currentHeight/4)}
-							/>
-						)
-					}/> */}
-
 					<Route exact path="/play" component={PlayMenu} />
 					<Route path="/play/word_guess/:game_id" render={
 						props => (
@@ -211,7 +200,7 @@ class App extends Component {
 						)}
 					/>
 					<Route exact path="/rankings" component={Rankings} />
-					<Route path="/profile" component={Profile} />
+					<Route path="/profile/:user_id" component={Profile} />
 				</div>
 				<Footer 
 					mode={currentGameMode} 

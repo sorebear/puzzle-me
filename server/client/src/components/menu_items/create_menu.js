@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PageTitle from './page_title';
-import speckle_spackle from '../imgs/speckle_spackle.png';
-import word_guess from '../imgs/word_guess.png';
+import speckle_spackle from '../imgs/speckle_spackle.svg';
+import word_guess from '../imgs/word_guess.svg';
 
 export default () => {
     return (
@@ -13,13 +13,13 @@ export default () => {
                     <div className="col-6 text-center">
                         <Link style={{textDecoration: "none"}} className="btn-block" to="/create/speckle_spackle">
                             <img src={speckle_spackle} style={{width : "inherit"}}/>
-                            <p className="red-text">Speckle Spackle</p>
+                            <p className="red-text my-2">Speckle Spackle</p>
                         </Link>
                     </div>
                     <div className="col-6 text-center">
                         <Link style={{textDecoration: "none"}} className="btn-block" to="/create/word_guess">
                             <img src={word_guess} style={{width : "inherit"}}/>
-                            <p className="red-text">Word Guess</p>
+                            <p className="red-text my-2">Word Guess</p>
                         </Link>
                     </div>
                 </div>

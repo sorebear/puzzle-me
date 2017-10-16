@@ -61,7 +61,7 @@ class Footer extends Component {
 						</NavLink>
 					</li>
 					<li className="nav-item">
-						<NavLink to={loginStatus ? "/profile" : "/"} className="nav-link">
+						<NavLink to={loginStatus ? "/profile/my_profile" : "/"} className="nav-link">
 							<i
 								className="icon-style fa fa-user"
 								onClick={() => this.props.updateCurrentPath(loginStatus ? "profile" : "login")}
