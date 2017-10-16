@@ -39,16 +39,13 @@ class Rankings extends Component {
     }
 
     getData() {
-        console.log("I'm getting Data!")
         Axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
             console.log("Error Loading Rankings Again: ", err);
         });
     }
 
     updateData(response){
-        console.log(response);
         const receivedData = response.data.data;
-        console.log(receivedData);
         this.setState({
             data: receivedData
         });

@@ -24,46 +24,47 @@ class Footer extends Component {
 	}
 	render() {
 		const { menu } = this.state;
+		const { loginStatus } = this.props;
 		return (
 			<div>
 				<ul className="nav justify-content-around align-items-center footer">
 					<li className="nav-item">
-						<NavLink to="/home" className="nav-link">
+						<NavLink to="/" className="nav-link">
 							<i
 								className="icon-style fa fa-home"
-								onClick={() => this.props.updateCurrentPath("home")}
+								onClick={() => this.props.updateCurrentPath(loginStatus ? "home" : "login")}
 							/>
 						</NavLink>
 					</li>
 					<li className="nav-item">
-						<NavLink to="/play" className="nav-link">
+						<NavLink to={loginStatus ? "/play" : "/"} className="nav-link">
 							<i
 								className="icon-style fa fa-play"
-								onClick={() => this.props.updateCurrentPath("play_menu")}
+								onClick={() => this.props.updateCurrentPath(loginStatus ? "play_menu" : "login")}
 							/>
 						</NavLink>
 					</li>
 					<li className="nav-item">
-						<NavLink to="/create" className="nav-link">
+						<NavLink to={loginStatus ? "/create" : "/"} className="nav-link">
 							<i
 								className="icon-style fa fa-pencil"
-								onClick={() => this.props.updateCurrentPath("create_menu")}
+								onClick={() => this.props.updateCurrentPath(loginStatus ? "create_menu" : "login")}
 							/>
 						</NavLink>
 					</li>
 					<li className="nav-item">
-						<NavLink to="/rankings" className="nav-link">
+						<NavLink to={loginStatus ? "/rankings" : "/"} className="nav-link">
 							<i
 								className="icon-style fa fa-signal"
-								onClick={() =>this.props.updateCurrentPath("rankings")}
+								onClick={() =>this.props.updateCurrentPath(loginStatus ? "rankings" : "login")}
 							/>
 						</NavLink>
 					</li>
 					<li className="nav-item">
-						<NavLink to="/profile" className="nav-link">
+						<NavLink to={loginStatus ? "/profile" : "/"} className="nav-link">
 							<i
 								className="icon-style fa fa-user"
-								onClick={() => this.props.updateCurrentPath("profile")}
+								onClick={() => this.props.updateCurrentPath(loginStatus ? "profile" : "login")}
 							/>
 						</NavLink>
 					</li>

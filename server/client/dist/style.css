@@ -1,13 +1,14 @@
 body {
-    background-color: rgb(217, 83, 79);
+    background-image: url(./trees.png)
 }
 
 .mainViewingWindow {
-    max-width: 768px;
+    max-width: 75vh;
     position: relative;
     margin: auto;
     background-color: ghostwhite;
     overflow-y: scroll;
+    box-shadow: 0px 0px 5px black;
 }
 
 ::-webkit-scrollbar {
@@ -19,15 +20,24 @@ body {
     color: ghostwhite;
 }
 
+.icon-style:hover {
+    color: whitesmoke;
+}
+
+.icon-style:active {
+    color: grey;
+}
+
 .footer, .header {
     background-color: #222;
+    box-shadow: 0px 0px 5px black;
 }
 
 .header {
     top: 0;
     height: 45px;
     width: 100%;
-    max-width: 768px;
+    max-width: 75vh;
     margin: auto;    
 }
 
@@ -38,7 +48,7 @@ body {
     bottom: 0;
     left: 50%;
     transform: translate(-50%);
-    max-width: 768px;
+    max-width: 75vh;
     transition: 1s;
 }
 
@@ -153,4 +163,17 @@ h2 {
 
 a {
     text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+li.collection-item:hover {
+    background-color: whitesmoke;
+}
+
+li.collection-item:active {
+    background-color: lightgrey;
 }

@@ -21,7 +21,7 @@ class App extends Component {
 		super(props);
 		this.state = {
 			showModal: "noModal",
-			currentPath: "home",
+			currentPath: "login",
 			currentTitle: "",
 			currentHeight: window.innerHeight,
 			currentWidth: window.innerWidth,
@@ -45,8 +45,7 @@ class App extends Component {
 		window.addEventListener("resize", this.updateDimensions);
 	}
 
-	facebookLogin(event) {
-		event.preventDefault();
+	facebookLogin() {
 		const user_name = this.state.username;
 		FB.login(
 			function(response) {
@@ -54,7 +53,7 @@ class App extends Component {
 					response.username = user_name;
 					Axios.post("/login", {
 						response: response
-					}).then(console.log("Successfully Logged In!")).catch(err => {
+					}).then().catch(err => {
 						console.log("Error", err);
 					});
 				} else {
@@ -63,14 +62,17 @@ class App extends Component {
 			},
 			{ scope: "user_friends,public_profile,email" }
 		);
+		setTimeout(this.checkLoginStatus, 5000);
 	}
 
 	checkLoginStatus() {
-		console.log("CHECKING LOGGING IN STATUS!")
 		Axios.get(this.URL_EXT_CHECK).then((res) => {
 			console.log("CHECK LOGIN RESPONSE: ", res.data.success);
 			if (res.data.success) {
-				console.log("YOU'RE LOGGED IN!")
+				console.log("YOU'RE LOGGED IN!");
+				this.setState({
+					loggedIn: true
+				})
 			} else {
 				console.log("YOU'RE NOT LOGGED IN")
 				this.props.history.push("/");
@@ -100,8 +102,6 @@ class App extends Component {
 	}
 
 	componentWillReceiveProps() {
-		console.log("APP IS RECEIVING PROPS");
-		this.checkLoginStatus();
 		this.setState({ showModal: "noModal" });
 	}
 
@@ -115,6 +115,7 @@ class App extends Component {
 		currentGameMode = "home",
 		currentClickHandlers = [null, null, null]
 	) {
+		this.checkLoginStatus();
 		this.setState({
 			currentPath: currentPath,
 			currentTitle: currentTitle,
@@ -141,7 +142,8 @@ class App extends Component {
 			currentTitle,
 			clickHandlers,
 			showModal,
-			autoInfo
+			autoInfo,
+			loggedIn
 		} = this.state;
 		return (
 			<div>
@@ -163,8 +165,19 @@ class App extends Component {
 						width: currentWidth,
 					}
 				}>
-					<Route exact path="/" render={() => <Login facebookLogin={this.facebookLogin}/>}/>
-					<Route path="/home" render={
+					<Route exact path="/" 
+						render={!loggedIn ? 
+							() => <Login facebookLogin={this.facebookLogin}/> : 
+							(props) => 
+							<Home {...props} 
+								toggleAutoInfo={this.toggleAutoInfo} 
+								autoInfo={autoInfo} 
+								updateCurrentPath={this.updateCurrentPath}
+								bodyHeight={currentHeight - 90 - (currentHeight/4)}
+							/>
+						}
+					/>
+					{/* <Route path="/home" render={
 						props => (
 							<Home {...props} 
 								toggleAutoInfo={this.toggleAutoInfo} 
@@ -173,7 +186,7 @@ class App extends Component {
 								bodyHeight={currentHeight - 90 - (currentHeight/4)}
 							/>
 						)
-					}/>
+					}/> */}
 
 					<Route exact path="/play" component={PlayMenu} />
 					<Route path="/play/word_guess/:game_id" render={
@@ -200,7 +213,12 @@ class App extends Component {
 					<Route exact path="/rankings" component={Rankings} />
 					<Route path="/profile" component={Profile} />
 				</div>
-				<Footer mode={currentGameMode} clickHandlers={clickHandlers} updateCurrentPath={this.updateCurrentPath}/>
+				<Footer 
+					mode={currentGameMode} 
+					clickHandlers={clickHandlers} 
+					updateCurrentPath={this.updateCurrentPath}
+					loginStatus={loggedIn}
+				/>
 			</div>
 		);
 	}

@@ -37,6 +37,7 @@ export default class extends Component{
     getData() {
         //Axios Call To Get Information About User
         Axios.get(this.URL_EXT_PROFILE).then((res) => {
+            console.log("FIRST CALL RESPONSE: ", res);
             const userInfo = res.data.data[0];
             this.setState({
                 username: userInfo.username,
@@ -80,7 +81,7 @@ export default class extends Component{
         const { createdPuzzles, solvedPuzzles, username, exp_gained } = this.state;
         let createdList = <li className="text-center py-3">No Created Puzzles</li>;
         let solvedList = <li className="text-center py-3">No Solved Puzzles</li>;
-        if (createdPuzzles) {
+        if (Array.isArray(createdPuzzles)) {
             createdList = createdPuzzles.map((item, index) => {
                 return (
                     <li className="collection-item avatar pr-2" key={index}>
@@ -94,7 +95,7 @@ export default class extends Component{
                 )
             });
         }
-        if (solvedPuzzles) {
+        if (Array.isArray(solvedPuzzles)) {
             solvedList = solvedPuzzles.map((item, index) => {
                 return (
                     <li className="collection-item avatar pr-2" style={{paddingRight:"67px"}} key={index}>
@@ -112,8 +113,8 @@ export default class extends Component{
             <div>
                 <PageTitle backgroundImg="forestvalley" color="white" text="PROFILE"/>
                 <div className="row mt-4 mb-0">
-                    <div className="col-4">
-                        <img className="circle align-text-top" style={{width:"100%"}} src={user}/>
+                    <div className="col-4 d-flex align-items-center">
+                        <img className="circle" style={{width:"100%"}} src={user}/>
                     </div>
                     <div className="col-8 d-flex flex-column justify-content-center">
                         <blockquote>

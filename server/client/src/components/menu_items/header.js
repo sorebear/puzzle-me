@@ -9,7 +9,7 @@ export default props => {
 					className="nav-item align-self-center"
 					style={{ zIndex: 2 }}
 				>
-					<NavLink to="/home">
+					<NavLink to="/">
 						<div onClick={() => props.updateCurrentPath("home")} style={{ color: "ghostwhite" }}>
 							<span className="red-text">puzzle</span>me
 						</div>
