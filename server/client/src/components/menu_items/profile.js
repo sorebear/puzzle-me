@@ -143,7 +143,13 @@ export default class extends Component{
                     </div>
                     <div className="col-8 d-flex flex-column justify-content-center">
                         <blockquote>
-                            <h3 className="m-0" onClick={this.callProfileModal}>{username}</h3>
+                            <h3 
+                                className="m-0" 
+                                onClick={this.callProfileModal}
+                                style={{overflowWrap: "break-word"}}
+                            >
+                                {username}
+                            </h3>
                             <p className="m-0">EXP POINTS: {exp_gained}</p>
                         </blockquote>
                     </div>
