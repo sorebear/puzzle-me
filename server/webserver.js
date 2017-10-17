@@ -390,7 +390,6 @@ webserver.post("/savepuzzle", function(req, res) {
 
 webserver.post("/puzzleComplete", function(req, res) {
 	let data = req.body;
-	console.log("puzzle data:", data);
 	const HARDCODED_ID = 4;
 	let user_id = HARDCODED_ID;
 	console.log("request body", req.body);
@@ -400,8 +399,9 @@ webserver.post("/puzzleComplete", function(req, res) {
 			checkUserLoggedIn(user_id, res);
 			getPuzzleCompletionsByUser(
 				user_id,
-				puzzleData.queryID,
+				puzzleData.p_id,
 				completionData => {
+					console.log("COMPLETION DATA: ", completionData)
 					if (completionData.length > 0) {
 						var first_puzzle = 0;
 					} else {
@@ -414,11 +414,15 @@ webserver.post("/puzzleComplete", function(req, res) {
                     completionRegistered = NOW(),
                     status = 'enabled',
 					firstCompletion = ${first_puzzle}`;
+					console.log("POST QUERY: ", query);
 					pool.query(query, (err, rows, fields) => {
 						if (err) {
 							console.log(err);
 						} else {
-							res.end(JSON.stringify({ success: true }));
+							res.end(JSON.stringify({ 
+								success: true, 
+								firstCompletion : firstCompletion 
+							}));
 						}
 					});
 				}
@@ -426,6 +430,18 @@ webserver.post("/puzzleComplete", function(req, res) {
 		});
 	});
 });
+
+function getPuzzleCompletionsByUser(user_id, puzzle_id, callback) {
+	var query = `SELECT * FROM puzzleSolutionTimes WHERE user_id='${user_id}' AND puzzle_id='${puzzle_id}'`;
+	console.log("GET PUZZLE QUERY: ", query)
+	pool.query(query, (err, rows, fields) => {
+		if (err) {
+			respondWithError(res, err);
+		} else {
+			callback(rows);
+		}
+	});
+}
 
 /*//////////////////////////////////////////////////////////
 //INITIALIZING FUNCTIONS////////////////////////////////////
@@ -475,18 +491,6 @@ webserver.listen(PORT, function() {
 	// 		}
 	// 	});
 	// }
-
-	// function getPuzzleCompletionsByUser(user_id, puzzle_id, callback) {
-	// 	var query = `SELECT * FROM puzzleSolutionTimes WHERE user_id='${user_id}' AND puzzle_id='${puzzle_id}'`;
-	// 	pool.query(query, (err, rows, fields) => {
-	// 		if (err) {
-	// 			respondWithError(res, err);
-	// 		} else {
-	// 			callback(rows);
-	// 		}
-	// 	});
-	// }
-
 
 	// function getPuzzlesByUser(user_id, requesting_own_data, callback) {
 	// 	var subquery = "";

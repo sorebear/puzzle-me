@@ -214,9 +214,6 @@ class SpeckleSpacklePlay extends Component {
 		this.setState({
 			showModal: "showModal",
 			modalInfo: [this.state.timer],
-			headers: {
-				"Access-Control-Allow-Origin": "http://localhost:4000"
-			}
 		});
 		clearInterval(this.timeInt);
 	}
@@ -224,13 +221,9 @@ class SpeckleSpacklePlay extends Component {
 	//On failed submit, open the WinModal to notify the user they won and notify them there was an issue submitting their score
 	failedSubmit() {
 		this.setState({
-			error_handler:
-				"Unfortunately, there was an issue submitting your score.",
+			error_handler: "Unfortunately, there was an issue submitting your score.",
 			modalInfo: [this.state.timer],
 			showModal: "showModal",
-			headers: {
-				"Access-Control-Allow-Origin": "http://localhost:4000"
-			}
 		});
 		clearInterval(this.timeInt);
 	}

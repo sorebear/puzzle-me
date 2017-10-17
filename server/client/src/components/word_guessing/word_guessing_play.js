@@ -157,7 +157,8 @@ class WordGuessPlay extends Component {
     }
 
     //On successful submit, open the WinModal to notify the user of their win, of their score, and of successful submittal
-    successfulSubmit() {
+    successfulSubmit(res) {
+        console.log("Submit Response: ", res);
         this.setState({
             showWinModal : "showModal"
         })
