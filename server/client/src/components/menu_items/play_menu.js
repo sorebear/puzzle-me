@@ -23,7 +23,7 @@ class PlayMenu extends Component {
         }
         this.URL_EXT = '/puzzles';
         this.QUERY_KEY = 'retrieve';
-        this.QUERY_VAL = 'recent10';
+        this.QUERY_VAL = 'all';
         this.updateData = this.updateData.bind(this);
     }
 
@@ -33,7 +33,7 @@ class PlayMenu extends Component {
 
     getData() {
         Axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
-            console.log("Error getting 10 most recent puzzles: ", err);
+            console.log("Error getting puzzles: ", err);
         });
     }
 
@@ -78,7 +78,7 @@ class PlayMenu extends Component {
             return (
                 <div>
                     <PageTitle backgroundImg="watchtower" color="white" text="PLAY" subText="choose a game below"/>
-                    <PlayMenuModal info={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => {this.close()}} />
+                    <PlayMenuModal info={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => this.close()} />
                     <ul className="collection my-0">{list}</ul>
                     <div style={{height: "45px", position: "absolute", bottom:"0"}}></div>
                 </div>

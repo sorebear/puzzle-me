@@ -19,10 +19,10 @@ function PlayMenuModal(props) {
                         Creator: {creator}<br/>
                         Created: {date_created.substr(0,10)}<br/>
                     </p>
-                    <Link to={`play/${type}/${url_ext}`}>
-                        <button className="m-1 btn btn-outline-info">Play</button>
+                    <Link to={`../play/${type}/${url_ext}`}>
+                        <button className="m-1 btn">Play</button>
                     </Link>
-                    <button type="button" onClick={props.closeModal} className="m-1 btn btn-outline-danger">Close</button>
+                    <button type="button" onClick={props.closeModal} className="m-1 btn">Close</button>
                 </div>
             </div>
         </div>

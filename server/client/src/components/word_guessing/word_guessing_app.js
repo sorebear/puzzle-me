@@ -63,7 +63,6 @@ class WordGuessingApp extends Component {
     }
 
     updatePuzzleName(responseFromModal) {
-        console.log("Receiving New Name:", responseFromModal)
         this.setState({
             puzzle_name : responseFromModal
         })
