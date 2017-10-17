@@ -1,0 +1,174 @@
+body {
+    background-image: url(./trees.png)
+}
+
+.mainViewingWindow {
+    max-width: 75vh;
+    position: relative;
+    margin: auto;
+    background-color: ghostwhite;
+    overflow-y: scroll;
+    box-shadow: 0px 0px 5px black;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.icon-style {
+    font-size: 20px;
+    color: ghostwhite;
+}
+
+.icon-style:hover {
+    color: whitesmoke;
+}
+
+.icon-style:active {
+    color: grey;
+}
+
+.footer, .header {
+    background-color: #222;
+    box-shadow: 0px 0px 5px black;
+}
+
+.header {
+    top: 0;
+    height: 45px;
+    width: 100%;
+    max-width: 75vh;
+    margin: auto;    
+}
+
+.footer {
+    height: 45px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    max-width: 75vh;
+    transition: 1s;
+}
+
+.form-control:focus {
+    background-color: rgba(255, 255, 255, .3);
+}
+
+.card {
+    padding: 2%;
+}
+
+.puzzle_name {
+    position: fixed;
+    top: 12px;
+    color: white;
+    width: 100vw;
+    text-align: center;
+}
+
+.showModal > div:first-child {
+    display: block;
+    background-color: black;
+    opacity: .5;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+}
+
+.showModal > div:last-child {
+    position: fixed;
+    width: fit-content;
+    max-width: 90vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: .75s;
+    z-index: 101;
+}
+
+.noModal > div:last-child {
+    transform: translate(-50%, -250%);
+}
+
+.noModal > div:first-child {
+    position: fixed;
+    bottom: -150%;
+    top: 250%;
+}
+
+.noModal {
+    position: fixed;
+}
+
+@media screen and (orientation:landscape) {
+    .showModal > div:last-child {
+        max-width: 500px;
+    } 
+}
+
+h2 {
+    color: white;
+}
+
+.page-title {
+    height: 25vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.page-title * {
+    text-shadow: 1px 1px black;
+    position: relative;
+    opacity: 1;
+}
+
+.page-title::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom, #222, black);
+    opacity: .5;
+}
+
+.play-test {
+    width: 100%;
+    position: fixed;
+    bottom: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.play-test * {
+    margin: 2px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+li.collection-item:hover {
+    background-color: whitesmoke;
+}
+
+li.collection-item:active {
+    background-color: lightgrey;
+}
