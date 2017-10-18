@@ -26,9 +26,11 @@ class WordGuessPlay extends Component {
 
         //Information needed to make an Axios Call to the Server
         this.GET_URL_EXT = '/puzzles';
-        this.QUERY_KEY = 'url_ext';
-        this.QUERY_VAL = props.match.params.game_id; //retrieves the URL_EXT by pulling off the end of the current path
         this.POST_URL_EXT = '/puzzleComplete';
+        this.UPDATE_URL_EXT = './updateEXP'
+        this.URL_QUERY_KEY = 'url_ext';
+        this.URL_QUERY_VAL = props.match.params.game_id; //retrieves the URL_EXT by pulling off the end of the current path
+        
 
         //Bound Methods - to preserve the meaning of "THIS" to refer to the class WordGuessPlay
         this.updateData = this.updateData.bind(this);
@@ -45,7 +47,7 @@ class WordGuessPlay extends Component {
 
     //Make an Axios call to retrieve all the information for the puzzle whose URL_EXT matches the QUERY_VAL
     getData() {
-        Axios.get(this.GET_URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(this.failedRetrieval);
+        Axios.get(this.GET_URL_EXT + '?' + this.URL_QUERY_KEY + '=' + this.URL_QUERY_VAL).then(this.updateData).catch(this.failedRetrieval);
     }
 
     //If the Axios call is successful, update this Classes variables and state with the retrieved information
@@ -158,10 +160,25 @@ class WordGuessPlay extends Component {
 
     //On successful submit, open the WinModal to notify the user of their win, of their score, and of successful submittal
     successfulSubmit(res) {
-        console.log("Submit Response: ", res);
-        this.setState({
-            showWinModal : "showModal"
-        })
+        console.log("SUBMIT RESPONSE: ", res.data);
+        Axios.post(this.UPDATE_URL_EXT, {
+            user : res.data.solver,
+            new_exp_points : res.data.new_exp_points
+        });
+        Axios.post(this.UPDATE_URL_EXT, {
+            user : res.data.creator,
+            new_exp_points : 10
+        });
+        if (res.data.firstCompletion) {
+            this.setState({
+                showWinModal : "showModal"
+            })
+        } else {
+            this.setState({
+                showWinModal : "showModal",
+                error_handler : "However, you have already played this puzzle, so your new score will not be recorded"
+            })
+        }
     }
 
     //On failed submit, open the WinModal to notify the user they won and notify them there was an issue submitting their score

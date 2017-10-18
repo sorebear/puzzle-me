@@ -106,13 +106,19 @@ export default class extends Component{
         let solvedList = <li className="text-center py-3 white grey-text">No Solved Puzzles</li>;
         if (createdPuzzles.length > 0) {
             createdList = createdPuzzles.map((item, index) => {
+                console.log("CREATED ITEM DETAILS: ", item)
                 return (
                     <li onClick={() => this.callPlayModal(item)} className="collection-item avatar pr-2" key={index}>
                         <img style={{left: "10px"}} src={this.gameTypes[item.type]} alt="" className="circle"/>
                         <span className="title">{item.puzzle_name}</span>
                         <p className="grey-text">
-                            {item.size} <br/>
-                            {item.date_created.substr(0, 10)}
+                            Avg: { item.avg_time_to_complete === 0 ? '--' :
+                                item.type === "word_guess" ? 
+                                Math.round(item.avg_time_to_complete/10) + " guesses" : 
+                                Math.round(item.avg_time_to_complete) + " seconds"
+                            } 
+                            <br/>
+                            {item.date_created.substr(5,5) + "-" + item.date_created.substr(0,4)}
                         </p>
                     </li>
                 )
@@ -120,13 +126,21 @@ export default class extends Component{
         }
         if (solvedPuzzles.length > 0) {
             solvedList = solvedPuzzles.map((item, index) => {
+                console.log("SOLVED ITEM DETAILS: ", item)
                 return (
                     <li onClick={() => this.callPlayModal(item)} className="collection-item avatar pr-2" style={{paddingRight:"67px"}} key={index}>
                         <img style={{left: "10px"}} src={this.gameTypes[item.type]} alt="" className="circle"/>
                         <span className="title">{item.puzzle_name}</span>
                         <p className="grey-text">
-                            {item.size} <br/>
-                            {item.date_created.substr(0, 10)}
+                            {
+                                item.type === "word_guess" ? item.completionTime/10 + " guesses" : 
+                                item.completionTime + " seconds"
+                            }
+                            <br/>
+                            {
+                                item.completionRegistered.substr(5,5) + "-" + 
+                                item.completionRegistered.substr(0,4)
+                            }
                         </p>
                     </li>
                 )

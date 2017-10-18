@@ -16,6 +16,10 @@ import Rankings from "./menu_items/rankings";
 import Login from "./menu_items/login_menu";
 import Profile from "./menu_items/profile";
 
+const globalInitFunction = function(res) {
+	App.init(res);
+};
+
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -25,10 +29,11 @@ class App extends Component {
 			currentTitle: "",
 			currentHeight: window.innerHeight,
 			currentWidth: window.innerWidth,
-			currentGameMode: "home",
+			currentGameMode: "login",
 			clickHandlers: [null, null, null],
 			autoInfo: false,
-			loggedIn: false
+			loggedIn: false,
+			newUser: false,
 		};
 		this.URL_EXT_CHECK = '/checkLoginStatus';
 		this.URL_EXT_HOME = "/home";
@@ -45,29 +50,34 @@ class App extends Component {
 		window.addEventListener("resize", this.updateDimensions);
 	}
 
+	init(res) {
+		this.checkLoginStatus();
+		if (res.data.action === "created") {
+			this.setState({ newUser : true })
+		}
+	}
+
 	facebookLogin() {
 		const user_name = this.state.username;
 		FB.login(
-			function(response) {
+			(response) => {
 				if (response.status === "connected") {
 					response.username = user_name;
 					Axios.post("/login", {
 						response: response
-					}).then().catch(err => {
+					}).then(res => this.init(res)).catch(err => {
 						console.log("Error", err);
 					});
 				} else {
-					console.log("Failed to log in via Facebook");
+					console.log("Failed to log in with Facebook");
 				}
 			},
 			{ scope: "user_friends,public_profile,email" }
 		);
-		setTimeout(this.checkLoginStatus, 5000);
 	}
 
 	checkLoginStatus() {
 		Axios.get(this.URL_EXT_CHECK).then((res) => {
-			console.log("CHECK LOGIN RESPONSE: ", res.data.success);
 			if (res.data.success) {
 				console.log("YOU'RE LOGGED IN!");
 				this.setState({
@@ -76,6 +86,10 @@ class App extends Component {
 			} else {
 				console.log("YOU'RE NOT LOGGED IN")
 				this.props.history.push("/");
+				this.setState({
+					currentPath: "login",
+					currentGameMode: "login"
+				})
 			}
 		}).catch((err) => {
 			console.log("ERROR CHECKING LOGIN: ", err);
@@ -128,7 +142,7 @@ class App extends Component {
 			currentPath !== "profile"
 		)) 	
 			{
-			setTimeout(() => { this.setState({ showModal: "showModal" });
+				setTimeout(() => { this.setState({ showModal: "showModal" });
 			}, 500);
 		}
 	}
@@ -143,8 +157,10 @@ class App extends Component {
 			clickHandlers,
 			showModal,
 			autoInfo,
-			loggedIn
+			loggedIn,
+			userInfo
 		} = this.state;
+		console.log("CURRENT PATH: ", currentPath);
 		return (
 			<div>
 				<InfoModal
@@ -173,7 +189,7 @@ class App extends Component {
 								toggleAutoInfo={this.toggleAutoInfo} 
 								autoInfo={autoInfo} 
 								updateCurrentPath={this.updateCurrentPath}
-								bodyHeight={currentHeight - 90 - (currentHeight/4)}
+								userInfo={userInfo}
 							/>
 						}
 					/>

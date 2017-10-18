@@ -119,6 +119,26 @@ function getPuzzleInfoFromPuzzleURL(url_ext, callback) {
 }
 
 /*//////////////////////////////////////////////////////////
+//RETRIEVE RANDOM INFO FUNCTIONS////////////////////////////
+//////////////////////////////////////////////////////////*/
+
+webserver.get("/getOneRandom", function(req, res) {
+	console.log("INCOMING GET ONE RANDOM REQUEST: ", req.query.database, req.query.column);
+	if (req.query.database && req.query.column) {
+		let query = "SELECT " + req.query.column + " FROM " + 
+		req.query.database + " ORDER BY RAND() LIMIT 1"
+		pool.query(query, (err, rows, fields) => {
+			if (err) { console.log("ERROR: ", err)}
+			else {
+				res.json({success: true, data: rows})
+			}
+		})
+	} else {
+		console.log("Proper query keys are not present");
+	}
+}); 
+
+/*//////////////////////////////////////////////////////////
 //USER PROFILE FUNCTIONS////////////////////////////////////
 //////////////////////////////////////////////////////////*/
 
@@ -331,19 +351,12 @@ webserver.post("/login", function(req, res) {
 		} else {
 			if (rows.length === 0) {
 				query = `INSERT INTO users SET facebook_u_id=?, username=?, account_created = NOW()`;
-				pool.query(
-					query,
-					[facebook_uid, req.body.response.username],
+				pool.query(query,[facebook_uid, req.body.response.username],
 					function(error, results) {
 						if (error) {
 							respondWithError(res, err);
 						} else {
-							res.end(
-								JSON.stringify({
-									success: true,
-									action: "created"
-								})
-							);
+							res.end(JSON.stringify({ success: true, action: "created", profilePic: 0 }));
 						}
 					}
 				);
@@ -390,22 +403,19 @@ webserver.post("/savepuzzle", function(req, res) {
 
 webserver.post("/puzzleComplete", function(req, res) {
 	let data = req.body;
-	const HARDCODED_ID = 4;
-	let user_id = HARDCODED_ID;
+	let user_id = 0;
 	console.log("request body", req.body);
 	getPuzzleInfoFromPuzzleURL(data.queryID, puzzleData => {
-		console.log("HERE IS PUZZLE DATA: ", puzzleData);
 		getUserIDFromFacebookID(req.session.userid, user_id => {
-			checkUserLoggedIn(user_id, res);
 			getPuzzleCompletionsByUser(
 				user_id,
 				puzzleData.p_id,
 				completionData => {
-					console.log("COMPLETION DATA: ", completionData)
-					if (completionData.length > 0) {
+					if (completionData.length > 0 || puzzleData.creator_id === user_id) {
 						var first_puzzle = 0;
 					} else {
 						first_puzzle = 1;
+						calcNewPuzzleAvgTime(data.completionTime, puzzleData);
 					}
 					let query = `INSERT INTO puzzleSolutionTimes SET 
                     user_id = '${user_id}',
@@ -415,19 +425,72 @@ webserver.post("/puzzleComplete", function(req, res) {
                     status = 'enabled',
 					firstCompletion = ${first_puzzle}`;
 					console.log("POST QUERY: ", query);
+					let distFromAvg = puzzleData.avg_time_to_complete - data.completionTime
 					pool.query(query, (err, rows, fields) => {
 						if (err) {
 							console.log(err);
 						} else {
 							res.end(JSON.stringify({ 
 								success: true, 
-								firstCompletion : firstCompletion 
+								firstCompletion : first_puzzle,
+								creator : puzzleData.creator_id,
+								solver : user_id,
+								distFromAvg : distFromAvg,
+								new_exp_points : Math.sign(distFromAvg) === 1 ? 50 + distFromAvg : 50
 							}));
 						}
 					});
 				}
 			);
 		});
+	});
+});
+
+function calcNewPuzzleAvgTime(newTime, pData) {
+	const newAvgTime = (pData.avg_time_to_complete * pData.total_plays + newTime) / (pData.total_plays + 1);
+	console.log("YOUR NEW AVERAGE TIME: ", newAvgTime);
+	let query = 
+		`UPDATE puzzles SET avg_time_to_complete = ${newAvgTime}, 
+		total_plays=${pData.total_plays + 1} WHERE p_id=${pData.p_id}`;
+	pool.query(query, (err, rows, fields) => {
+		if (err) {
+			console.log("ERROR CALCULATING NEW TIME: ", err);
+		} else {
+			console.log("AVG TIME UPDATED");
+		}
+	})
+}
+
+webserver.post("/updateEXP", function(req, res) {
+	console.log("INCOMING UPDATE XP REQUEST ", req.body);
+	let query = `UPDATE users SET exp_gained = ${req.body.new_exp_points} WHERE u_id=${req.body.user}`
+	pool.query(query, (err, rows, fields) => {
+		if (err) {
+			console.log("ERROR ADDING NEW EXP POINTS")
+		} else {
+			console.log("EXP POINTS UPDATED");
+			res.json({ success: true, data: rows})
+		}
+	})
+})
+
+webserver.get("/getProfile", function(req, res) {
+	console.log("INCOMING GET PROFILE REQUEST: ", req.query.user_id);
+	let facebookID = null;
+	if (req.query.user_id !== "my_profile") {
+		facebookID = req.query.user_id
+	} else {
+		facebookID = req.session.userid
+	}
+	let profileQuery = 
+		"SELECT username, profile_pic, exp_gained, u_id " + 
+		"FROM users WHERE facebook_u_id=" + facebookID
+	pool.query(profileQuery, (err, rows, fields) => {
+		if (err) { console.log(err) }
+		else { 
+			console.log("RESPOSNE OF FIRST CALL: ", rows);
+			res.json({ Success: true, data : rows }); 
+		}
 	});
 });
 

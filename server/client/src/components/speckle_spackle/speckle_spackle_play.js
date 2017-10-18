@@ -210,11 +210,19 @@ class SpeckleSpacklePlay extends Component {
 	}
 
 	//On successful submit, open the WinModal to notify the user of their win, of their score, and of successful submittal
-	successfulSubmit() {
-		this.setState({
-			showModal: "showModal",
-			modalInfo: [this.state.timer],
-		});
+	successfulSubmit(res) {
+		if (res.data.firstCompletion) {
+			this.setState({
+				showModal: "showModal",
+				modalInfo: [this.state.timer]
+			});
+		} else {
+			this.setState({
+				showModal: "showModal",
+				modalInfo: [this.state.timer],
+				error_handler: "However, you have already played this puzzle, so your new score will not be recorded"
+			});
+		}
 		clearInterval(this.timeInt);
 	}
 
