@@ -6,8 +6,8 @@ import RankingsModal from './rankings_modal';
 import PageTitle from './page_title';
 import { avatar_array } from './avatar_array';
 
-Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000';
-Axios.defaults.withCredentials = true;
+// Axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:4000';
+// Axios.defaults.withCredentials = true;
 class Rankings extends Component {
     constructor(props) {
         super(props);
@@ -49,6 +49,7 @@ class Rankings extends Component {
 
     updateData(response){
         const receivedData = response.data.data;
+        console.log("Here's my Received Ranking Data: ", response);
         this.setState({
             data: receivedData
         });

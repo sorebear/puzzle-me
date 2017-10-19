@@ -40,6 +40,11 @@ export default class extends Component{
         this.getData();
     }
 
+    componentWillReceiveProps(nextProps) {
+        console.log("I'm RECEIVING NEW PROPS: ", nextProps.match.params.user_id);
+        this.getData();
+    }
+
     callPlayModal(info) {
         this.setState({
             modalInfo : info,
@@ -66,7 +71,6 @@ export default class extends Component{
         Axios.get(
             `${this.URL_EXT_PROFILE}?${this.QUERY_KEY_U_ID}=${this.props.match.params.user_id}`
         ).then((res) => {
-            console.log("RESULTS OF NEW INITIAL CALL!: ", res);
             const userInfo = res.data.data[0];
             this.setState({
                 u_id : userInfo.u_id,
@@ -80,7 +84,6 @@ export default class extends Component{
                 this.QUERY_KEY_U_ID + "=" +
                 userInfo.u_id
             ).then((res) => {
-                console.log("RESPONSE FROM SECOND CALL: ", res);
                 this.setState({
                     createdPuzzles : res.data.createdData,
                     solvedPuzzles : res.data.solvedData
@@ -106,7 +109,7 @@ export default class extends Component{
         let solvedList = <li className="text-center py-3 white grey-text">No Solved Puzzles</li>;
         if (createdPuzzles.length > 0) {
             createdList = createdPuzzles.map((item, index) => {
-                console.log("CREATED ITEM DETAILS: ", item)
+                // console.log("CREATED ITEM DETAILS: ", item)
                 return (
                     <li onClick={() => this.callPlayModal(item)} className="collection-item avatar pr-2" key={index}>
                         <img style={{left: "10px"}} src={this.gameTypes[item.type]} alt="" className="circle"/>
@@ -126,7 +129,7 @@ export default class extends Component{
         }
         if (solvedPuzzles.length > 0) {
             solvedList = solvedPuzzles.map((item, index) => {
-                console.log("SOLVED ITEM DETAILS: ", item)
+                // console.log("SOLVED ITEM DETAILS: ", item)
                 return (
                     <li onClick={() => this.callPlayModal(item)} className="collection-item avatar pr-2" style={{paddingRight:"67px"}} key={index}>
                         <img style={{left: "10px"}} src={this.gameTypes[item.type]} alt="" className="circle"/>
@@ -152,7 +155,10 @@ export default class extends Component{
                 <PlayModal info={modalInfo} showModal={showPlayModal} closeModal={() => this.closeModal()} />
                 <PageTitle backgroundImg="forestvalley" color="white" text="PROFILE"/>
                 <div className="row mt-4 mb-0">
-                    <div onClick={this.callProfileModal} className="col-4 d-flex align-items-center">
+                    <div 
+                        onClick={this.props.match.params.user_id === "my_profile" ? this.callProfileModal : null} 
+                        className="col-4 d-flex align-items-center"
+                    >
                         <img className="circle" style={{width:"100%"}} src={avatar_array[profilePicNum]}/>
                     </div>
                     <div className="col-8 d-flex flex-column justify-content-center">

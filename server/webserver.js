@@ -202,9 +202,10 @@ webserver.post("/updateProfile", function(req, res) {
 	if (req.body.updateField) {
 		switch (req.body.updateField) {
 			case "profilePic":
-				updateProfilePic(req, res, data => {
-					console.log(data);
-				});
+				updateProfilePic(req, res);
+				break;
+			case "numOfPuzzlesSolved":
+				updateNumOfPuzzlesSolved(req, res);
 				break;
 			default:
 				console.log("Unknown Data Request")		
@@ -212,14 +213,18 @@ webserver.post("/updateProfile", function(req, res) {
 	}
 });
 
-function updateProfilePic(req, res, callback) {
+function updateNumOfPuzzlesSolved(req, res) {
+	let query = `SELECT COUNT()`
+}
+
+function updateProfilePic(req, res) {
 	let query =`UPDATE users SET profile_pic = ${req.body.updateValue} WHERE u_id = ${req.body.u_id}`;
 	console.log("UPDATE PROFILE PIC QUERY: ", query);
 	pool.query(query, (err, rows, fields) => {
 		if (err) {
 			respondWithError(res, err);
 		} else {
-			callback(rows);
+			res.json({ success: true });
 		}
 	});
 }
@@ -244,7 +249,10 @@ webserver.get("/getRankings", function(req, res) {
 });
 
 function getUserRankings(res) {
-	var query = `SELECT * FROM users`;
+	// var query = `SELECT * FROM users`;
+	let query = 
+		"SELECT username, exp_gained, facebook_u_id, profile_pic, account_created " + 
+		"FROM users";
 	console.log("query = ", query);
 	pool.query(query, (err, rows, fields) => {
 		if (err) {
@@ -372,7 +380,6 @@ webserver.post("/login", function(req, res) {
 //////////////////////////////////////////////////////////*/
 
 webserver.post("/savepuzzle", function(req, res) {
-	console.log("TEST");
 	let data = req.body;
 	console.log("******* SESSION: ", req.session);
 	getUserIDFromFacebookID(req.session.userid, user_id => {
@@ -387,7 +394,6 @@ webserver.post("/savepuzzle", function(req, res) {
     		puzzle_object = '${JSON.stringify(data.puzzle_object)}',
     		completely_built = '${HARDCODED_COMPLETE}',
     		url_ext = '${code}',
-    		competitive_mode_enabled = 'No',
     		avg_time_to_complete = 0,
     		likes = 0,
     		dislikes = 0,
@@ -461,9 +467,9 @@ function calcNewPuzzleAvgTime(newTime, pData) {
 	})
 }
 
-webserver.post("/updateEXP", function(req, res) {
+webserver.post("/updateXP", function(req, res) {
 	console.log("INCOMING UPDATE XP REQUEST ", req.body);
-	let query = `UPDATE users SET exp_gained = ${req.body.new_exp_points} WHERE u_id=${req.body.user}`
+	let query = `UPDATE users SET exp_gained = exp_gained + ${req.body.new_exp_points} WHERE u_id=${req.body.user}`
 	pool.query(query, (err, rows, fields) => {
 		if (err) {
 			console.log("ERROR ADDING NEW EXP POINTS")
@@ -472,26 +478,6 @@ webserver.post("/updateEXP", function(req, res) {
 			res.json({ success: true, data: rows})
 		}
 	})
-})
-
-webserver.get("/getProfile", function(req, res) {
-	console.log("INCOMING GET PROFILE REQUEST: ", req.query.user_id);
-	let facebookID = null;
-	if (req.query.user_id !== "my_profile") {
-		facebookID = req.query.user_id
-	} else {
-		facebookID = req.session.userid
-	}
-	let profileQuery = 
-		"SELECT username, profile_pic, exp_gained, u_id " + 
-		"FROM users WHERE facebook_u_id=" + facebookID
-	pool.query(profileQuery, (err, rows, fields) => {
-		if (err) { console.log(err) }
-		else { 
-			console.log("RESPOSNE OF FIRST CALL: ", rows);
-			res.json({ Success: true, data : rows }); 
-		}
-	});
 });
 
 function getPuzzleCompletionsByUser(user_id, puzzle_id, callback) {

@@ -18,7 +18,8 @@ class WordGuessPlay extends Component {
             guess : "",
             guessHistory : null,
             showWinModal: "noModal",
-            error_handler: null
+            error_handler: null,
+            new_exp_points : null
         }
         this.queryID = null;
         this.hiddenWord = null;
@@ -27,7 +28,7 @@ class WordGuessPlay extends Component {
         //Information needed to make an Axios Call to the Server
         this.GET_URL_EXT = '/puzzles';
         this.POST_URL_EXT = '/puzzleComplete';
-        this.UPDATE_URL_EXT = './updateEXP'
+        this.UPDATE_URL_EXT = '/updateXP'
         this.URL_QUERY_KEY = 'url_ext';
         this.URL_QUERY_VAL = props.match.params.game_id; //retrieves the URL_EXT by pulling off the end of the current path
         
@@ -160,23 +161,31 @@ class WordGuessPlay extends Component {
 
     //On successful submit, open the WinModal to notify the user of their win, of their score, and of successful submittal
     successfulSubmit(res) {
-        console.log("SUBMIT RESPONSE: ", res.data);
-        Axios.post(this.UPDATE_URL_EXT, {
-            user : res.data.solver,
-            new_exp_points : res.data.new_exp_points
-        });
-        Axios.post(this.UPDATE_URL_EXT, {
-            user : res.data.creator,
-            new_exp_points : 10
-        });
-        if (res.data.firstCompletion) {
-            this.setState({
-                showWinModal : "showModal"
-            })
-        } else {
+        if (!res.data.firstCompletion) {
             this.setState({
                 showWinModal : "showModal",
                 error_handler : "However, you have already played this puzzle, so your new score will not be recorded"
+            });
+        } else {
+            Axios.post(this.UPDATE_URL_EXT, {
+                user : res.data.solver,
+                new_exp_points : res.data.new_exp_points
+            }).then(
+                res => console.log("SUCCESS UPDATING SOLVER XP: ", res)
+            ).catch(
+                err => console.log("ERROR UPDATING SOLVER XP: ", err)
+            );
+            Axios.post(this.UPDATE_URL_EXT, {
+                user : res.data.creator,
+                new_exp_points : 10
+            }).then(
+                res => console.log("SUCCESS UPDATING CREATOR XP: ", res)
+            ).catch(
+                err => console.log("ERROR UPDATING CREATOR XP: ", err)
+            );
+            this.setState({
+                showWinModal : "showModal",
+                new_exp_points : res.data.new_exp_points
             })
         }
     }
@@ -197,7 +206,7 @@ class WordGuessPlay extends Component {
     }
 
     render() {
-        const { guessHistory, error_handler } = this.state;
+        const { guessHistory, error_handler, new_exp_points } = this.state;
         //Check if guessHistory has been defined from the result of the Axios request
         if (guessHistory === null) {
             //If there are no errors, display "Loading...", if there are erros, display the errors
@@ -228,7 +237,7 @@ class WordGuessPlay extends Component {
         //Also return the modal, though it will only be displayed when called upon.
         return (
             <div>
-                <WinModal error={error_handler} score={switchPoint} showModal={this.state.showWinModal} closeModal={() => {this.closeModal()}} />
+                <WinModal error={error_handler} points={new_exp_points} score={switchPoint} showModal={this.state.showWinModal} closeModal={() => {this.closeModal()}} />
                 <div className="container pt-4">
                     <h3 className="text-center p-2">Guess This {this.hiddenWord.length}-Letter Word</h3>
                     <form onSubmit={this.handleGuess}>

@@ -79,12 +79,10 @@ class App extends Component {
 	checkLoginStatus() {
 		Axios.get(this.URL_EXT_CHECK).then((res) => {
 			if (res.data.success) {
-				console.log("YOU'RE LOGGED IN!");
 				this.setState({
 					loggedIn: true
 				})
 			} else {
-				console.log("YOU'RE NOT LOGGED IN")
 				this.props.history.push("/");
 				this.setState({
 					currentPath: "login",
@@ -160,7 +158,6 @@ class App extends Component {
 			loggedIn,
 			userInfo
 		} = this.state;
-		console.log("CURRENT PATH: ", currentPath);
 		return (
 			<div>
 				<InfoModal

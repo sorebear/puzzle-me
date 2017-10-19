@@ -34,7 +34,7 @@
     "/checkLoginStatus": {
       "target": "http://localhost:4000"
     },
-    "/updateEXP": {
+    "/updateXP": {
       "target": "http://localhost:4000"
     },
     "/updateProfile": {
