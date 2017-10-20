@@ -24,7 +24,7 @@ class ProfileModal extends Component {
         })
     }
 
-    submitUpdates() {
+    submitUpdates(req, res) {
         Axios.post(this.URL_EXT, {
             u_id : this.props.info.u_id,
             updateField : "profilePic",
@@ -35,8 +35,8 @@ class ProfileModal extends Component {
         this.props.closeModal();
     }
 
-    successfulSubmit() {
-        console.log("Your Profile Has Been Updated");
+    successfulSubmit(res) {
+        console.log("Your Profile Has Been Updated", res);
         this.props.getData()
     }
 
@@ -65,7 +65,7 @@ class ProfileModal extends Component {
                     </div>
                     <div className="d-flex justify-content-around">
                         <button onClick={this.props.closeModal} className="btn">Close</button>
-                        <button onClick={() => this.submitUpdates()} className="btn">Update</button>
+                        <button onClick={this.submitUpdates} className="btn">Update</button>
                     </div>
                     <div className="text center mt-5">
                         <a href="http://www.freepik.com/free-vector/people-wearing-accesories-avatar-collection_1176016.htm">Avatars Designed by Freepik</a>

@@ -17,10 +17,12 @@ class SpeckleSpacklePlay extends Component {
 			showModal: "noModal",
 			error_handler: null,
 			timer: 0,
-			gameInfo: null
+			gameInfo: null,
+			new_exp_points: null
 		};
 
 		this.URL_EXT = "/puzzles";
+		this.UPDATE_URL_EXT = '/updateXP'
 		this.QUERY_KEY = "url_ext";
 		this.QUERY_VAL = props.match.params.game_id;
 		this.POST_URL_EXT = "/puzzleComplete";
@@ -210,27 +212,45 @@ class SpeckleSpacklePlay extends Component {
 	}
 
 	//On successful submit, open the WinModal to notify the user of their win, of their score, and of successful submittal
-	successfulSubmit() {
-		this.setState({
-			showModal: "showModal",
-			modalInfo: [this.state.timer],
-			headers: {
-				"Access-Control-Allow-Origin": "http://localhost:4000"
-			}
-		});
+	successfulSubmit(res) {
+		if (!res.data.firstCompletion) {
+			this.setState({
+				showModal: "showModal",
+				modalInfo: [this.state.timer],
+				error_handler: "However, you have already played this puzzle, so your new score will not be recorded"
+			});
+		} else {
+			Axios.post(this.UPDATE_URL_EXT, {
+                user : res.data.solver,
+                new_exp_points : res.data.new_exp_points
+            }).then(
+                res => console.log("SUCCESS UPDATING SOLVER XP: ", res)
+            ).catch(
+                err => console.log("ERROR UPDATING SOLVER XP: ", err)
+            );
+            Axios.post(this.UPDATE_URL_EXT, {
+                user : res.data.creator,
+                new_exp_points : 10
+            }).then(
+                res => console.log("SUCCESS UPDATING CREATOR XP: ", res)
+            ).catch(
+                err => console.log("ERROR UPDATING CREATOR XP: ", err)
+            );
+			this.setState({
+				showModal: "showModal",
+				new_exp_points : res.data.new_exp_points,
+				modalInfo: [this.state.timer]
+			});
+		}
 		clearInterval(this.timeInt);
 	}
 
 	//On failed submit, open the WinModal to notify the user they won and notify them there was an issue submitting their score
 	failedSubmit() {
 		this.setState({
-			error_handler:
-				"Unfortunately, there was an issue submitting your score.",
+			error_handler: "Unfortunately, there was an issue submitting your score.",
 			modalInfo: [this.state.timer],
 			showModal: "showModal",
-			headers: {
-				"Access-Control-Allow-Origin": "http://localhost:4000"
-			}
 		});
 		clearInterval(this.timeInt);
 	}
@@ -439,10 +459,11 @@ class SpeckleSpacklePlay extends Component {
 		if (this.state.gameInfo === null) {
 			return <h1>Loading...</h1>;
 		}
-		const { gameInfo, timer, error_handler } = this.state;
+		const { gameInfo, timer, error_handler, new_exp_points } = this.state;
 		return (
 			<div className="pageContainer">
 				<PlayCheckModal
+					points={new_exp_points}
 					error={error_handler}
 					info={this.state.modalInfo}
 					showModal={this.state.showModal}

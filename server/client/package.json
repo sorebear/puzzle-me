@@ -25,10 +25,16 @@
     "/getUserPuzzles": {
       "target": "http://localhost:4000"
     },
+    "/getOneRandom": {
+      "target": "http://localhost:4000"
+    },
     "/getPuzzleFromId": {
       "target": "http://localhost:4000"
     },
     "/checkLoginStatus": {
+      "target": "http://localhost:4000"
+    },
+    "/updateXP": {
       "target": "http://localhost:4000"
     },
     "/updateProfile": {

@@ -107,6 +107,11 @@ class Footer extends Component {
 					</button>
 					<i onClick={this.toggleMenu} className={`icon-style fa fa-arrow-circle-o-down`} style={{ color: "white" }}/>
 				</ul>
+
+				<ul className="nav footer"
+					style={{width: "100%", bottom: `${this.props.mode === "login" ? "0" : "-45px"}`}}
+				>
+				</ul>
 			</div>
 		);
 	}

@@ -1,15 +1,14 @@
-# c717_puzzle_challenge
+# Puzzle Me
 
-### Producer
-- TBD
+### Summary
+This application allows users to create puzzles, play puzzles created by others, and track how their experience rankings against other players.
 
-### Project Manager
-- TBD
+### Technologies Utilized:
+- React
+- React Router
+- Node
+- Express
+- MySQL
+- Facebook OAuth
+- JavaScript
 
-### SR Devs
-- Shane
-- Soren
-- Grayson
-
-### Jr Devs
-- TBD
