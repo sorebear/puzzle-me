@@ -12,7 +12,7 @@ function ColorSwatch(props) {
                 ></i>
                 <i 
                     className="fa fa-refresh" 
-                    style={{fontSize: "4vw", position: "absolute", left:"0", bottom:"0"}} 
+                    style={{fontSize: "4vh", position: "absolute", left:"0", bottom:"0"}} 
                     onClick={() => {props.randomColorCallback(props.name)}}
                 ></i>
             </div>
@@ -28,7 +28,7 @@ function ColorSwatch(props) {
                 ></i>
                 <i 
                     className="fa fa-refresh" 
-                    style={{fontSize: "4vw", position: "absolute", left:"0", bottom:"0"}} 
+                    style={{fontSize: "4vh", position: "absolute", left:"0", bottom:"0"}} 
                     onClick={() => {props.randomColorCallback(props.name)}}
                 ></i>
             </div>
