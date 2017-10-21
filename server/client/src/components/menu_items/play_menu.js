@@ -78,7 +78,7 @@ class PlayMenu extends Component {
             return (
                 <div>
                     <PageTitle backgroundImg="watchtower" color="white" text="PLAY" subText="choose a game below"/>
-                    <PlayMenuModal info={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => this.close()} />
+                    <PlayMenuModal info={this.state.modalInfo} type="play" showModal={this.state.showModal} closeModal={() => this.close()} />
                     <ul className="collection my-0">{list}</ul>
                     <div style={{height: "45px", position: "absolute", bottom:"0"}}></div>
                 </div>

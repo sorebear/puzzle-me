@@ -52,13 +52,24 @@ class App extends Component {
 
 	init(res) {
 		this.checkLoginStatus();
+		console.log("Response Data: ", res.data);
 		if (res.data.action === "created") {
 			this.setState({ newUser : true })
 		}
 	}
 
+	generatePuzzleID(length=6){
+		let potentials = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+		let output = '';
+		for(let i=0; i<length; i++){
+		  output += potentials[( (Math.random() * potentials.length) >> 0 )];
+		}
+		return output;
+	}
+
 	facebookLogin() {
-		const user_name = this.state.username;
+		const user_name = 'user' + this.generatePuzzleID();
+		// console.log("Random User Name: ", user_name);
 		FB.login(
 			(response) => {
 				if (response.status === "connected") {
@@ -157,7 +168,8 @@ class App extends Component {
 			showModal,
 			autoInfo,
 			loggedIn,
-			userInfo
+			userInfo,
+			newUser
 		} = this.state;
 		return (
 			<div>
@@ -188,6 +200,7 @@ class App extends Component {
 								autoInfo={autoInfo} 
 								updateCurrentPath={this.updateCurrentPath}
 								userInfo={userInfo}
+								newUser={newUser}
 							/>
 						}
 					/>

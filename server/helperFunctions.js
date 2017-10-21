@@ -5,7 +5,6 @@ function generatePuzzleID(length=10){
       output += potentials[( (Math.random() * potentials.length) >> 0 )];
 	}
 	return output;
-
 }
 
 module.exports = generatePuzzleID;

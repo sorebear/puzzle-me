@@ -5,7 +5,17 @@ function PlayMenuModal(props) {
     if (props.info === null) {
         return <div></div>
     } else {
-        const { creator, date_created, puzzle_name, size, type, url_ext } = props.info
+        const { 
+            creator, 
+            username, 
+            date_created, 
+            puzzle_name, 
+            size, 
+            type, 
+            url_ext,
+            avg_time_to_complete,
+            total_plays
+        } = props.info
         return (
         <div className={props.showModal}>
             <div onClick={props.closeModal}>
@@ -14,15 +24,19 @@ function PlayMenuModal(props) {
                 <div className="card-body">
                     <h4 className="card-title">{puzzle_name}</h4>
                     <p className="card-text">  
-                        Type: {type}<br/>
+                        Type: {type === 'word_guess' ? 'Word Guess' : 'Speckle Spackle'}<br/>
                         Size: {size}<br/>
-                        Creator: {creator}<br/>
+                        Creator: {creator || username}<br/>
                         Created: {date_created.substr(0,10)}<br/>
+                        Average Completion: {type === 'word_guess' ? 
+                            avg_time_to_complete / 10 + " Moves" : 
+                            avg_time_to_complete + " Seconds" }<br/>
+                        Total Plays: {total_plays}
                     </p>
                     <Link to={`../play/${type}/${url_ext}`}>
                         <button className="m-1 btn">Play</button>
                     </Link>
-                    <button type="button" onClick={props.closeModal} className="m-1 btn">Close</button>
+                    <button onClick={props.closeModal} className="m-1 btn">Close</button>
                 </div>
             </div>
         </div>

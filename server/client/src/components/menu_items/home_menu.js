@@ -89,7 +89,9 @@ class HomePage extends Component {
                 <PageTitle backgroundImg="desert2" color="white" text="PUZZLE ME" subText="start puzzling"/>
                 <div className="row justify-content-center mb-0">
                     <div className="col-5 col-sm-6 mt-5">
-                        <img src={avatar_array[profilePicNum]} className="circle"/>
+                        <Link to="/profile/my_profile">
+                            <img src={avatar_array[profilePicNum]} className="circle"/>
+                        </Link>
                     </div>
                     <div className="col-7 col-sm-5 mt-5 justify-content-around align-items-center flex-column d-flex">
                         <button 
@@ -115,9 +117,11 @@ class HomePage extends Component {
                         </button>
                     </div>
                     <div className="col-12">
-                        <h4 className="mt-5 text-center">
-                            Welcome Back {username}!
-                        </h4>
+                        <Link to="/profile/my_profile">
+                            <h4 className="mt-5 text-center">
+                                {this.props.newUser ? `Welcome ${username}!` : `Welcome Back ${username}!`}
+                            </h4>
+                        </Link>
                     </div>
                 </div>
             </div>

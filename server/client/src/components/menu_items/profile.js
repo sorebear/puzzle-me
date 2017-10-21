@@ -107,7 +107,7 @@ export default class extends Component{
         let solvedList = <li className="text-center py-3 white grey-text">No Solved Puzzles</li>;
         if (createdPuzzles.length > 0) {
             createdList = createdPuzzles.map((item, index) => {
-                // console.log("CREATED ITEM DETAILS: ", item)
+                console.log("CREATED ITEM DETAILS: ", item)
                 return (
                     <li onClick={() => this.callPlayModal(item)} className="collection-item avatar pr-2" key={index}>
                         <img 
@@ -163,7 +163,7 @@ export default class extends Component{
         return (
             <div>
                 <ProfileModal getData={this.getData} closeModal={this.closeModal} info={this.state}/>
-                <PlayModal info={modalInfo} showModal={showPlayModal} closeModal={() => this.closeModal()} />
+                <PlayModal info={modalInfo} type="created/solved" showModal={showPlayModal} closeModal={() => this.closeModal()} />
                 <PageTitle backgroundImg="forestvalley" color="white" text="PROFILE"/>
                 <div className="row mt-4 mb-0">
                     <div 
