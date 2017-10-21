@@ -49,7 +49,7 @@ webserver.use(allowCrossDomain);
 
 webserver.use(bodyParser.urlencoded({ extended: false }));
 webserver.use(bodyParser.json());
-webserver.use(express.static(path.resolve(__dirname, "..", "client", "dist")));
+webserver.use(express.static(path.resolve(__dirname, "client", "dist")));
 
 const pool = mysql.createPool(credentials);
 
@@ -501,7 +501,7 @@ function getPuzzleCompletionsByUser(user_id, puzzle_id, callback) {
 webserver.get("*", function(req, res) {
 	// console.log('gettting here');
 	// console.log('req.session is: ', req.session);
-	res.sendFile(path.resolve(__dirname, "..", "client", "dist", "index.html"));
+	res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
 });
 
 webserver.listen(PORT, function() {
