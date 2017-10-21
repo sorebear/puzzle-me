@@ -66,7 +66,7 @@ function respondWithError(res, err) {
 //////////////////////////////////////////////////////////*/
 
 webserver.get("/puzzles", function(req, res) {
-	console.log("req.query.retrieve is: ", req.query.retrieve);
+	// console.log("req.query.retrieve is: ", req.query.retrieve);
 	if (req.query.retrieve) {
 		switch (req.query.retrieve) {
 			case "all":
@@ -76,7 +76,7 @@ webserver.get("/puzzles", function(req, res) {
 				console.log("unknown query value for puzzles key");
 		}
 	} else if (req.query.url_ext) {
-		console.log("Request URL is: ", req.query.url_ext);
+		// console.log("Request URL is: ", req.query.url_ext);
 		getGamePlayInfo(res, req.query.url_ext);
 	} else {
 		console.log("Query key puzzles is not present");
@@ -91,24 +91,22 @@ function getAllPuzzles(res) {
 		"JOIN `users` AS `u`" +
 		"ON p.creator_id = u.u_id";
 	pool.query(query, (err, rows, fields) => {
-		if (err) console.log(err);
+		if (err) console.log("Error in getAllPuzzles: ", err);
 		else res.end(JSON.stringify({ success: true, data: rows }));
 	});
 }
 
 function getGamePlayInfo(res, url_ext) {
-	console.log("Inside of getGamePlayInfo function");
 	var query = `SELECT * FROM puzzles WHERE url_ext='${url_ext}'`;
-	console.log("QUERY is: ", query);
+	// console.log("QUERY is: ", query);
 	pool.query(query, (err, rows, fields) => {
-		if (err) console.log(err);
+		if (err) console.log("Error in getGamePlayInfo: ", err);
 		else res.end(JSON.stringify({ success: true, data: rows }));
 	});
 }
 
 function getPuzzleInfoFromPuzzleURL(url_ext, callback) {
 	var query = `SELECT * FROM puzzles WHERE url_ext='${url_ext}'`;
-	console.log("QUERY is: ", query);
 	pool.query(query, (err, rows, fields) => {
 		if (err) {
 			callback(false, err);
@@ -123,7 +121,6 @@ function getPuzzleInfoFromPuzzleURL(url_ext, callback) {
 //////////////////////////////////////////////////////////*/
 
 webserver.get("/getOneRandom", function(req, res) {
-	console.log("INCOMING GET ONE RANDOM REQUEST: ", req.query.database, req.query.column);
 	if (req.query.database && req.query.column) {
 		let query = "SELECT " + req.query.column + " FROM " + 
 		req.query.database + " ORDER BY RAND() LIMIT 1"
@@ -143,7 +140,7 @@ webserver.get("/getOneRandom", function(req, res) {
 //////////////////////////////////////////////////////////*/
 
 webserver.get("/getProfile", function(req, res) {
-	console.log("INCOMING GET PROFILE REQUEST: ", req.query.user_id);
+	console.log("INCOMING GET PROFILE REQUEST: ", req.query);
 	let facebookID = null;
 	if (req.query.user_id !== "my_profile") {
 		facebookID = req.query.user_id
@@ -154,16 +151,16 @@ webserver.get("/getProfile", function(req, res) {
 		"SELECT username, profile_pic, exp_gained, u_id " + 
 		"FROM users WHERE facebook_u_id=" + facebookID
 	pool.query(profileQuery, (err, rows, fields) => {
-		if (err) { console.log(err) }
+		if (err) { "ERROR GETTING PROFILE", console.log(err) }
 		else { 
-			console.log("RESPOSNE OF FIRST CALL: ", rows);
+			console.log("RESPOSNE OF GET PROFILE QUERY CALL: ", rows);
 			res.json({ Success: true, data : rows }); 
 		}
 	});
 });
 
 webserver.get("/getUserPuzzles", function(req, res) {
-	console.log("GET USER PUZZLES QUERY: ", req.query.user_id);
+	// console.log("GET USER PUZZLES QUERY: ", req.query.user_id);
 	let createdQuery = 
 		"SELECT puzzle_name, type, size, url_ext, avg_time_to_complete, " + 
 		"likes, dislikes, date_created, total_plays " + 
@@ -198,7 +195,7 @@ webserver.get("/getUserPuzzles", function(req, res) {
 })
 
 webserver.post("/updateProfile", function(req, res) {
-	console.log("INCOMING UPDATE PROFILE REQUEST");
+	// console.log("INCOMING UPDATE PROFILE REQUEST");
 	if (req.body.updateField) {
 		switch (req.body.updateField) {
 			case "profileInfo":
@@ -208,7 +205,7 @@ webserver.post("/updateProfile", function(req, res) {
 				updateNumOfPuzzlesSolved(req, res);
 				break;
 			default:
-				console.log("Unknown Data Request")		
+				// console.log("Unknown Data Request")		
 		}
 	}
 });
@@ -218,10 +215,8 @@ function updateNumOfPuzzlesSolved(req, res) {
 }
 
 function updateProfileInfo (req, res) {
-	console.log("REQUEST BODY: ", req.body)
 	let query =`UPDATE users SET profile_pic = ${req.body.newAvatar}, ` + 
 	`username = '${req.body.newUsername}' WHERE u_id = ${req.body.u_id}`;
-	console.log("UPDATE PROFILE PIC QUERY: ", query);
 	pool.query(query, (err, rows, fields) => {
 		if (err) {
 			respondWithError(res, err);
@@ -236,7 +231,6 @@ function updateProfileInfo (req, res) {
 //////////////////////////////////////////////////////////*/
 
 webserver.get("/getRankings", function(req, res) {
-	console.log("req.query.retrieve is: ", req.query.retrieve);
 	if (req.query.retrieve) {
 		switch (req.query.retrieve) {
 			case "user":
@@ -352,21 +346,25 @@ webserver.post("/login", function(req, res) {
 	//set the session cookie to have the facebook user id.
 	var facebook_uid = req.body.response.authResponse.userID;
 	req.session.userid = facebook_uid;
+	console.log("FACEBOOK USER ID: ", req.session.userid)
 	//check if the user is in the database, if not add them to it
 	var query = `SELECT * FROM users WHERE facebook_u_id=?`;
-	console.log("query: " + query);
+	console.log("LOGIN QUERY: " + query);
 	var result = pool.query(query, [facebook_uid], (err, rows, fields) => {
 		if (err) {
+			console.log("ERROR at Line 361: ", err)
 			respondWithError(res, err);
 		} else {
 			if (rows.length === 0) {
 				query = `INSERT INTO users SET facebook_u_id=?, username=?, account_created = NOW()`;
+				console.log("CREATE NEW USER QUERY: ", query);
 				pool.query(query,[facebook_uid, req.body.response.username],
 					function(error, results) {
 						if (error) {
-							respondWithError(res, err);
+							console.log("ERROR at Line 369: ", error);
+							respondWithError(res, error);
 						} else {
-							res.end(JSON.stringify({ success: true, action: "created", profilePic: 1 }));
+							res.end(JSON.stringify({ success: true, action: "created" }));
 						}
 					}
 				);
@@ -383,7 +381,7 @@ webserver.post("/login", function(req, res) {
 
 webserver.post("/savepuzzle", function(req, res) {
 	let data = req.body;
-	console.log("******* SESSION: ", req.session);
+	// console.log("******* SESSION: ", req.session);
 	getUserIDFromFacebookID(req.session.userid, user_id => {
 		checkUserLoggedIn(user_id, res);
 		const HARDCODED_COMPLETE = "yes";
@@ -412,7 +410,7 @@ webserver.post("/savepuzzle", function(req, res) {
 webserver.post("/puzzleComplete", function(req, res) {
 	let data = req.body;
 	let user_id = 0;
-	console.log("request body", req.body);
+	// console.log("request body", req.body);
 	getPuzzleInfoFromPuzzleURL(data.queryID, puzzleData => {
 		getUserIDFromFacebookID(req.session.userid, user_id => {
 			getPuzzleCompletionsByUser(
@@ -432,7 +430,7 @@ webserver.post("/puzzleComplete", function(req, res) {
                     completionRegistered = NOW(),
                     status = 'enabled',
 					firstCompletion = ${first_puzzle}`;
-					console.log("POST QUERY: ", query);
+					// console.log("POST QUERY: ", query);
 					let distFromAvg = puzzleData.avg_time_to_complete - data.completionTime
 					pool.query(query, (err, rows, fields) => {
 						if (err) {

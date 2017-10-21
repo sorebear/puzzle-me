@@ -89,6 +89,7 @@ class App extends Component {
 
 	checkLoginStatus() {
 		Axios.get(this.URL_EXT_CHECK).then((res) => {
+			console.log("AXIOS RESPONSE: ", res);
 			if (res.data.success) {
 				this.setState({
 					loggedIn: true
@@ -102,7 +103,7 @@ class App extends Component {
 				})
 			}
 		}).catch((err) => {
-			console.log("ERROR CHECKING LOGIN");
+			console.log("ERROR CHECKING LOGIN", err);
 		})
 	}
 
