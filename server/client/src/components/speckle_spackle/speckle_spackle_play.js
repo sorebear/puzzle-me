@@ -46,7 +46,7 @@ class SpeckleSpacklePlay extends Component {
 		Axios.get(this.URL_EXT + "?" + this.QUERY_KEY + "=" + this.QUERY_VAL)
 			.then(this.updateData)
 			.catch(err => {
-				console.log("Error Loading Puzzle: ", err);
+				console.log("Error Loading Puzzle");
 			});
 	}
 
@@ -79,7 +79,6 @@ class SpeckleSpacklePlay extends Component {
 	}
 
 	componentWillUnmount() {
-		console.log("Time Int", this.timeInt)
 		clearInterval(this.timeInt);
 	}
 
@@ -152,20 +151,13 @@ class SpeckleSpacklePlay extends Component {
 				topLog,
 				bottomLog
 			);
-			console.log(arrayOfArrays);
 			for (let i = 0; i < arrayOfArrays.length; i++) {
 				switch (arrayOfArrays[i].errorType) {
 					case "clue":
 						clue = "Not all clue conditions are met";
 						break;
 					case "duplicate":
-						duplicate =
-							"You have duplicate colors in rows or columns";
-						console.log(
-							document.getElementsByClassName(
-								arrayOfArrays[i].location
-							)
-						);
+						duplicate = "You have duplicate colors in rows or columns";
 						const duplicateColors = document.getElementsByClassName(
 							arrayOfArrays[i].location
 						);
@@ -224,17 +216,17 @@ class SpeckleSpacklePlay extends Component {
                 user : res.data.solver,
                 new_exp_points : res.data.new_exp_points
             }).then(
-                res => console.log("SUCCESS UPDATING SOLVER XP: ", res)
+                res => console.log("SUCCESS UPDATING SOLVER XP")
             ).catch(
-                err => console.log("ERROR UPDATING SOLVER XP: ", err)
+                err => console.log("ERROR UPDATING SOLVER XP")
             );
             Axios.post(this.UPDATE_URL_EXT, {
                 user : res.data.creator,
                 new_exp_points : 10
             }).then(
-                res => console.log("SUCCESS UPDATING CREATOR XP: ", res)
+                res => console.log("SUCCESS UPDATING CREATOR XP")
             ).catch(
-                err => console.log("ERROR UPDATING CREATOR XP: ", err)
+                err => console.log("ERROR UPDATING CREATOR XP")
             );
 			this.setState({
 				showModal: "showModal",
@@ -472,7 +464,7 @@ class SpeckleSpacklePlay extends Component {
 					}}
 				/>
 				<div className="gutter align-items-center justify-content-center text-center">
-					<i className="fa fa-clock-o swatch m-1" style={{ color: "white" }}/>
+					<i className="fa fa-clock-o swatch m-1" style={{ color: "lightgrey" }}/>
 					<h3 className="m-0" style={{fontSize: "2rem", position: "absolute", opacity: ".8"}}>
 						{timer}
 					</h3>

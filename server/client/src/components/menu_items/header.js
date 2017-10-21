@@ -18,9 +18,14 @@ export default props => {
 			</div>
 			<div className="col-6 text-center">
 				<li className="nav-item">
-					<h5 style={{ color: "white", margin: 0 }}>
+					<h5 className="d-none d-sm-block" style={{ color: "white", margin: 0 }}>
 						{props.currentTitle}
 					</h5>
+				</li>
+				<li className="nav-item">
+					<h6 className="d-block d-sm-none" style={{ color: "white", margin: 0 }}>
+						{props.currentTitle}
+					</h6>
 				</li>
 			</div>
 			<div className="col-3 text-right">

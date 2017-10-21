@@ -1,19 +1,31 @@
 .watchtower {
-    background-image: url(../imgs/watchtower_resized.jpg);
+	background-image: url(../imgs/watchtower_resized.jpg);
 }
 
 .cityscape {
-    background-image: url(../imgs/cityscape_resized.jpg);
+	background-image: url(../imgs/cityscape_resized.jpg);
 }
 
 .forestvalley {
-    background-image: url(../imgs/forestvalley_resized.jpg);
+	background-image: url(../imgs/forestvalley_resized.jpg);
 }
 
 .sunset {
-    background-image: url(../imgs/sunset.jpg);
+	background-image: url(../imgs/sunset.jpg);
 }
 
 .legos {
-    background-image: url(../imgs/legos.jpg);  
+	background-image: url(../imgs/legos.jpg);
+}
+
+.desert {
+	background-image: url(../imgs/desert.jpg);
+}
+
+.cliffs {
+	background-image: url(../imgs/cliffs.jpg);
+}
+
+.desert2 {
+    background-image: url(../imgs/desert2.jpg);
 }

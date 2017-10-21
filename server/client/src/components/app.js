@@ -25,11 +25,11 @@ class App extends Component {
 		super(props);
 		this.state = {
 			showModal: "noModal",
-			currentPath: "login",
+			currentPath: "init",
 			currentTitle: "",
 			currentHeight: window.innerHeight,
 			currentWidth: window.innerWidth,
-			currentGameMode: "login",
+			currentGameMode: "home",
 			clickHandlers: [null, null, null],
 			autoInfo: false,
 			loggedIn: false,
@@ -66,7 +66,7 @@ class App extends Component {
 					Axios.post("/login", {
 						response: response
 					}).then(res => this.init(res)).catch(err => {
-						console.log("Error", err);
+						console.log("Error Logging In");
 					});
 				} else {
 					console.log("Failed to log in with Facebook");
@@ -86,11 +86,12 @@ class App extends Component {
 				this.props.history.push("/");
 				this.setState({
 					currentPath: "login",
-					currentGameMode: "login"
+					currentGameMode: "login",
+					currentTitle: ""
 				})
 			}
 		}).catch((err) => {
-			console.log("ERROR CHECKING LOGIN: ", err);
+			console.log("ERROR CHECKING LOGIN");
 		})
 	}
 

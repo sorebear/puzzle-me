@@ -17,7 +17,7 @@ export default class extends Component{
         this.state = {
             createdPuzzles : [],
             solvedPuzzles : [],
-            username : null,
+            username : "",
             exp_gained : null,
             profilePicNum : null,
             showProfileModal : "noModal",
@@ -40,8 +40,7 @@ export default class extends Component{
         this.getData();
     }
 
-    componentWillReceiveProps(nextProps) {
-        console.log("I'm RECEIVING NEW PROPS: ", nextProps.match.params.user_id);
+    componentWillReceiveProps() {
         this.getData();
     }
 
@@ -67,7 +66,6 @@ export default class extends Component{
 
     getData() {
         //Axios Call To Get Information About User
-        console.log("Getting Data");
         Axios.get(
             `${this.URL_EXT_PROFILE}?${this.QUERY_KEY_U_ID}=${this.props.match.params.user_id}`
         ).then((res) => {
@@ -89,10 +87,10 @@ export default class extends Component{
                     solvedPuzzles : res.data.solvedData
                 });
             }).catch(err => {
-                console.log("Error Loading Created And Solved Puzzles: ", err);
+                console.log("Error Loading Created And Solved Puzzles");
             });
         }).catch(err => {
-            console.log("Error Loading Profile: ", err);
+            console.log("Error Loading Profile");
         });
     }
     render(){
@@ -112,7 +110,11 @@ export default class extends Component{
                 // console.log("CREATED ITEM DETAILS: ", item)
                 return (
                     <li onClick={() => this.callPlayModal(item)} className="collection-item avatar pr-2" key={index}>
-                        <img style={{left: "10px"}} src={this.gameTypes[item.type]} alt="" className="circle"/>
+                        <img 
+                            style={{left: "10px"}} 
+                            src={this.gameTypes[item.type]} alt="" 
+                            className="circle"
+                        />
                         <span className="title">{item.puzzle_name}</span>
                         <p className="grey-text">
                             Avg: { item.avg_time_to_complete === 0 ? '--' :
@@ -121,7 +123,7 @@ export default class extends Component{
                                 Math.round(item.avg_time_to_complete) + " seconds"
                             } 
                             <br/>
-                            {item.date_created.substr(5,5) + "-" + item.date_created.substr(0,4)}
+                            Plays: {item.total_plays}
                         </p>
                     </li>
                 )
@@ -131,8 +133,17 @@ export default class extends Component{
             solvedList = solvedPuzzles.map((item, index) => {
                 // console.log("SOLVED ITEM DETAILS: ", item)
                 return (
-                    <li onClick={() => this.callPlayModal(item)} className="collection-item avatar pr-2" style={{paddingRight:"67px"}} key={index}>
-                        <img style={{left: "10px"}} src={this.gameTypes[item.type]} alt="" className="circle"/>
+                    <li 
+                        onClick={() => this.callPlayModal(item)} 
+                        className="collection-item avatar pr-2" 
+                        style={{paddingRight:"67px"}} 
+                        key={index}
+                    >
+                        <img 
+                            style={{left: "10px"}} 
+                            src={this.gameTypes[item.type]} 
+                            className="circle"
+                        />
                         <span className="title">{item.puzzle_name}</span>
                         <p className="grey-text">
                             {
@@ -142,7 +153,7 @@ export default class extends Component{
                             <br/>
                             {
                                 item.completionRegistered.substr(5,5) + "-" + 
-                                item.completionRegistered.substr(0,4)
+                                item.completionRegistered.substr(2,2)
                             }
                         </p>
                     </li>
@@ -165,7 +176,7 @@ export default class extends Component{
                         <blockquote>
                             <h3 
                                 className="m-0" 
-                                onClick={this.callProfileModal}
+                                onClick={this.props.match.params.user_id === "my_profile" ? this.callProfileModal : null} 
                                 style={{overflowWrap: "break-word"}}
                             >
                                 {username}
@@ -178,7 +189,7 @@ export default class extends Component{
                         <ul className="collection my-0">{createdList}</ul>
                     </div>
                     <div className="col-6 p-0 mt-4">
-                        <strong><h6 className="text-center red-text">SOLVED PUZZLES</h6></strong>
+                        <h6 className="text-center red-text">SOLVED PUZZLES</h6>
                         <ul className="collection my-0">{solvedList}</ul>
                     </div>
                 </div>

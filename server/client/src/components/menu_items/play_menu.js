@@ -33,7 +33,7 @@ class PlayMenu extends Component {
 
     getData() {
         Axios.get(this.URL_EXT + '?' + this.QUERY_KEY + '=' + this.QUERY_VAL).then(this.updateData).catch(err => {
-            console.log("Error getting puzzles: ", err);
+            console.log("Error getting puzzles");
         });
     }
 

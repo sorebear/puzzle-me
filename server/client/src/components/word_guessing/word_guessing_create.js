@@ -15,7 +15,6 @@ class WordGuessingCreate extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.dataRequested) {
-            console.log("Componenet Has Received Props", this.state);
             this.props.gameInfoCallback(this.state);
         }
     }
@@ -95,7 +94,6 @@ class WordGuessingCreate extends Component {
     }
 
     render() {
-        console.log("State at Render: ", this.state)
         const { startingWords, hiddenWord } = this.state;
         const startingWordsList = startingWords.map((item, index) => {
             if (index === 0) { return } 

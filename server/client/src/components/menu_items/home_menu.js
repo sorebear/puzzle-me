@@ -44,7 +44,6 @@ class HomePage extends Component {
 
     getUserData() {
         //Axios Call To Get Information About User
-        console.log("Getting Data");
         Axios.get(
             `${this.URL_EXT_PROFILE}?${this.QUERY_KEY_U_ID}=my_profile`
         ).then((res) => {
@@ -55,7 +54,7 @@ class HomePage extends Component {
                 profilePicNum : userInfo.profile_pic
             });
         }).catch(err => {
-            console.log("Error Loading Profile: ", err);
+            console.log("Error Loading Profile");
         });
     }
 
@@ -78,7 +77,7 @@ class HomePage extends Component {
                 this.props.history.push(`/profile/${randomRes.facebook_u_id}`)
             }
         }).catch(err => {
-            console.log("ERROR LOADING RANDOM: ", err);
+            console.log("ERROR LOADING RANDOM ITEM");
         })
     }
 
@@ -87,7 +86,7 @@ class HomePage extends Component {
         return (
             <div>
                 <HomeMenuModal toggleAutoInfo={this.props.toggleAutoInfo} autoInfo={this.props.autoInfo} showModal={showModal} closeModal={() => {this.close()}} currentPath={modalInfo} />
-                <PageTitle backgroundImg="sunset" color="white" text="PUZZLE ME" subText="start puzzling"/>
+                <PageTitle backgroundImg="desert2" color="white" text="PUZZLE ME" subText="start puzzling"/>
                 <div className="row justify-content-center mb-0">
                     <div className="col-5 col-sm-6 mt-5">
                         <img src={avatar_array[profilePicNum]} className="circle"/>

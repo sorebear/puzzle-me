@@ -27,6 +27,15 @@ const InfoObject = {
             }
         ]
     },
+    init : {
+        name: "",
+        tutorial : [
+            {
+                animation : null,
+                text: ``
+            }
+        ]
+    },
     login : {
         name: 'Login',
         tutorial : [

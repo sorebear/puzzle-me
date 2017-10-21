@@ -1,7 +1,6 @@
 import React from 'react';
 
 function CreateCheckModal(props) {
-    console.log(props);
     if (props.showModal === "noModal") {
         return <div></div>
     } else if (!props.info[0] && !props.info[1] && !props.info[2]) {

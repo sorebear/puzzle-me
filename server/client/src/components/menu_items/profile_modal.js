@@ -6,15 +6,18 @@ class ProfileModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            avatarIndex : props.info.avatarIndex
+            avatarIndex : props.info.profilePicNum,
+            username : props.info.username
         }
         this.submitUpdates = this.submitUpdates.bind(this);
         this.successfulSubmit = this.successfulSubmit.bind(this);
         this.URL_EXT = '/updateProfile';
     }
+
     componentWillReceiveProps(nextProps) {
         this.setState({
-            avatarIndex : nextProps.info.avatarIndex
+            avatarIndex : nextProps.info.profilePicNum,
+            username : nextProps.info.username
         })
     }
 
@@ -24,24 +27,32 @@ class ProfileModal extends Component {
         })
     }
 
-    submitUpdates(req, res) {
+    handleInput(event) {
+        this.setState({
+            username : event.target.value
+        })
+    }
+
+    submitUpdates(event) {
+        event.preventDefault();
         Axios.post(this.URL_EXT, {
             u_id : this.props.info.u_id,
-            updateField : "profilePic",
-            updateValue : this.state.avatarIndex
+            updateField : "profileInfo",
+            newUsername : this.state.username,
+            newAvatar : this.state.avatarIndex
         }).then(this.successfulSubmit).catch(err => {
-            console.log("There was an error updating your profile", err)
+            console.log("There was an error updating your profile");
         });
         this.props.closeModal();
     }
 
-    successfulSubmit(res) {
-        console.log("Your Profile Has Been Updated", res);
+    successfulSubmit() {
+        console.log("Your Profile Has Been Updated");
         this.props.getData()
     }
 
     render() {
-        const { avatarIndex } = this.state;
+        const { avatarIndex, username } = this.state;
         const avatar_list = avatar_array.map((item, index) => {
             return (
                 <div className="col-4" style={{marginBottom: "30px"}} key={index}>
@@ -59,17 +70,28 @@ class ProfileModal extends Component {
             </div>
             <div className="card p-5">
                 <div className="card-body" style={{height:"82vh", overflow:"scroll"}}>
-                    <h4 className="text-center red-text" style={{marginBottom:"30px"}}>Choose An Avatar</h4>
-                    <div className="row">
-                        {avatar_list}
-                    </div>
-                    <div className="d-flex justify-content-around">
-                        <button onClick={this.props.closeModal} className="btn">Close</button>
-                        <button onClick={this.submitUpdates} className="btn">Update</button>
-                    </div>
-                    <div className="text center mt-5">
-                        <a href="http://www.freepik.com/free-vector/people-wearing-accesories-avatar-collection_1176016.htm">Avatars Designed by Freepik</a>
-                    </div>
+                    <form onSubmit={this.submitUpdates}>
+                        <h4 className="text-center red-text">Update Your Username</h4>
+                        <div className="input-field">
+                            <input 
+                                id="username" 
+                                className="validate" 
+                                value={username} 
+                                onChange={(e) => this.handleInput(e)}
+                            />
+                        </div>
+                        <h4 className="text-center red-text" style={{marginBottom:"30px"}}>Update Your Avatar</h4>
+                        <div className="row">
+                            {avatar_list}
+                        </div>
+                        <div className="d-flex justify-content-around">
+                            <button type="button" onClick={this.props.closeModal} className="btn">Close</button>
+                            <button type="submit" className="btn">Update</button>
+                        </div>
+                        <div className="text center mt-5">
+                            <a href="http://www.freepik.com/free-vector/people-wearing-accesories-avatar-collection_1176016.htm">Avatars Designed by Freepik</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

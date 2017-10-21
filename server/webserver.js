@@ -180,12 +180,12 @@ webserver.get("/getUserPuzzles", function(req, res) {
 	pool.query(createdQuery, (err, createdRows, fields) => {
 		if (err) { console.log(err) }
 		else { 
-			console.log("RESPONSE OF FIRST CALL: ", createdRows)
-			console.log("GET SOLVED query = ", solvedQuery);
+			// console.log("RESPONSE OF FIRST CALL: ", createdRows)
+			// console.log("GET SOLVED query = ", solvedQuery);
 			pool.query(solvedQuery, (err, solvedRows, fields) => {
 				if (err) { console.log(err) }
 				else { 
-					console.log("RESPONSE OF SECOND CALL: ", solvedRows)
+					// console.log("RESPONSE OF SECOND CALL: ", solvedRows)
 					res.json({ 
 						Success: true, 
 						createdData : createdRows,
@@ -201,8 +201,8 @@ webserver.post("/updateProfile", function(req, res) {
 	console.log("INCOMING UPDATE PROFILE REQUEST");
 	if (req.body.updateField) {
 		switch (req.body.updateField) {
-			case "profilePic":
-				updateProfilePic(req, res);
+			case "profileInfo":
+				updateProfileInfo(req, res);
 				break;
 			case "numOfPuzzlesSolved":
 				updateNumOfPuzzlesSolved(req, res);
@@ -217,8 +217,10 @@ function updateNumOfPuzzlesSolved(req, res) {
 	let query = `SELECT COUNT()`
 }
 
-function updateProfilePic(req, res) {
-	let query =`UPDATE users SET profile_pic = ${req.body.updateValue} WHERE u_id = ${req.body.u_id}`;
+function updateProfileInfo (req, res) {
+	console.log("REQUEST BODY: ", req.body)
+	let query =`UPDATE users SET profile_pic = ${req.body.newAvatar}, ` + 
+	`username = '${req.body.newUsername}' WHERE u_id = ${req.body.u_id}`;
 	console.log("UPDATE PROFILE PIC QUERY: ", query);
 	pool.query(query, (err, rows, fields) => {
 		if (err) {
@@ -252,7 +254,7 @@ function getUserRankings(res) {
 	// var query = `SELECT * FROM users`;
 	let query = 
 		"SELECT username, exp_gained, facebook_u_id, profile_pic, account_created " + 
-		"FROM users";
+		"FROM users ORDER BY exp_gained DESC";
 	console.log("query = ", query);
 	pool.query(query, (err, rows, fields) => {
 		if (err) {

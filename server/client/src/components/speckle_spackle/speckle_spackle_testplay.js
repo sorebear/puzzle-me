@@ -290,7 +290,7 @@ class SpeckleSpackleTestPlay extends Component {
             <div className="pageContainer">
                 <PlayCheckModal info={this.state.modalInfo} showModal={this.state.showModal} closeModal={() => {this.close()}} />
                 <div className="gutter align-items-center justify-content-center text-center">
-                    <i className="fa fa-clock-o swatch" style={{color: "white"}}></i>
+                    <i className="fa fa-clock-o swatch" style={{color: "lightgrey"}}></i>
                     <h3 className="m-0" style={{fontSize: "2rem", position:"absolute", opacity:".8"}}>{timer}</h3>
                 </div>
                 <div className="mainDisplay">

@@ -51,12 +51,11 @@ class WordGuessingApp extends Component {
             size : `${this.state.gameInfo.hiddenWord.length}-Letter`,
             puzzle_object : this.state.gameInfo,
         }).then(this.successfulSubmit).catch(err => {
-            console.log("Error Submitting Puzzle: ", err);
+            console.log("Error Submitting Puzzle");
         });
     }
 
     successfulSubmit() {
-        console.log("Puzzle Submitted!");
         this.setState({
             submitted: true
         })

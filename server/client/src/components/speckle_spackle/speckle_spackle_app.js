@@ -61,19 +61,17 @@ class SpeckleSpackleApp extends Component {
                 'Access-Control-Allow-Origin': 'http://localhost:4000'
             }
         }).then(this.successfulSubmit).catch(err => {
-            console.log("Error Loading Puzzle: ", err);
+            console.log("Error Loading Puzzle");
         });
     }
 
     successfulSubmit() {
-        console.log("Puzzle Submitted!");
         this.setState({
             submitted: true
         })
     }
 
     updatePuzzleName(responseFromModal) {
-        console.log("Receiving New Name:", responseFromModal)
         this.setState({
             puzzle_name : responseFromModal
         })
@@ -143,7 +141,6 @@ class SpeckleSpackleApp extends Component {
         let missing = false;
         let clue = false;
         const arrayOfArrays = rowLog.concat(columnLog);
-        console.log(arrayOfArrays)
         for (let i = 0; i < arrayOfArrays.length; i++) {
             switch (arrayOfArrays[i].errorType) {
                 case 'clue':
@@ -151,7 +148,6 @@ class SpeckleSpackleApp extends Component {
                     break;
                 case 'duplicate':
                     duplicate = 'You have duplicate colors in rows or columns';
-                    console.log(document.getElementsByClassName(arrayOfArrays[i].location));
                     const duplicateColors = document.getElementsByClassName(arrayOfArrays[i].location);
                     for (let k = 1; k < duplicateColors.length-1; k++) {
                         duplicateColors[k].style.borderColor = "red"
@@ -175,7 +171,6 @@ class SpeckleSpackleApp extends Component {
     isEachColorInEveryRowOnce(newGameInfo) {
         let rowLog = [];
         const { gameGrid, gridSize } = newGameInfo;
-        console.log(gameGrid, gridSize)
         for (let i = 1; i <= gridSize; i++) {
             let colorArray = ["color1", "color2", "color3"];
             for (let k = i * (gridSize + 2) + 1; k <= i * (gridSize + 2) + gridSize; k++) {
