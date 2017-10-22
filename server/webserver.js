@@ -70,7 +70,7 @@ webserver.get("/puzzles", function(req, res) {
 	if (req.query.retrieve) {
 		switch (req.query.retrieve) {
 			case "all":
-				getAllPuzzles(res); 
+				getAllPuzzles(req, res); 
 				break;
 			default:
 				console.log("unknown query value for puzzles key");
@@ -83,17 +83,23 @@ webserver.get("/puzzles", function(req, res) {
 	}
 });
 
-function getAllPuzzles(res) {
-	var query =
-		"SELECT p.puzzle_name, u.username AS creator, p.type, p.size, p.url_ext, p.total_plays, " + 
-		"p.likes, p.dislikes, p.date_created, p.puzzle_object, p.avg_time_to_complete " +
-		"FROM `puzzles` AS `p` " +
-		"JOIN `users` AS `u`" +
-		"ON p.creator_id = u.u_id";
-	pool.query(query, (err, rows, fields) => {
-		if (err) console.log("Error in getAllPuzzles: ", err);
-		else res.end(JSON.stringify({ success: true, data: rows }));
-	});
+function getAllPuzzles(req, res) {
+	getUserIDFromFacebookID(req.session.userid, user_id => {
+		var query =
+			"SELECT p.puzzle_name, u.username AS creator, p.type, p.size, p.url_ext, p.total_plays, " + 
+			"u.facebook_u_id, p.date_created, p.puzzle_object, p.avg_time_to_complete, s.completionTime " +
+			"FROM ((`puzzles` AS `p` " +
+			"JOIN `users` AS `u` " +
+			"ON p.creator_id = u.u_id) " + 
+			"LEFT JOIN `puzzleSolutionTimes` AS `s` " + 
+			"ON p.p_id = s.puzzle_id AND s.firstCompletion = 1 AND s.user_id = " + user_id + ") " +
+			"ORDER BY p.date_created DESC";
+		console.log("GET ALL PUZZLES QUERY: ", query);
+		pool.query(query, (err, rows, fields) => {
+			if (err) console.log("Error in getAllPuzzles: ", err);
+			else res.end(JSON.stringify({ success: true, data: rows, currentUser: req.session.userid }));
+		});
+	})
 }
 
 function getGamePlayInfo(res, url_ext) {

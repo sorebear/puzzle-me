@@ -15,6 +15,7 @@ class PlayMenu extends Component {
         this.state = {
             modalInfo : null,
             showModal : "noModal",
+            facebookId : null,
             data: null
         }
         this.gameTypes = {
@@ -38,9 +39,12 @@ class PlayMenu extends Component {
     }
 
     updateData(response){
+        console.log("Full Play Response: ", response);
         const receivedData = response.data.data;
+        console.log("Received Play Data: ", receivedData);
         this.setState({
-            data: receivedData
+            data : receivedData,
+            facebookId : parseInt(response.data.currentUser)
         });
     }
 
@@ -58,20 +62,27 @@ class PlayMenu extends Component {
     }
 
     render() {
-        const { data } = this.state
+        console.log("State at Play Menu", this.state);
+        const { data, facebookId } = this.state
         if (data === null) {
             return <h1>Loading...</h1>
         } else {
-            const list = data.slice(0).reverse().map((item, index) => {
+            const list = data.map((item, index) => {
                 return (
                     <li onClick={() => this.callModal(item)} className="collection-item avatar" key={index}>
                         <img src={this.gameTypes[item.type]} alt="" className="circle"/>
                         <span className="title">{item.puzzle_name}</span>
                         <p className="grey-text">
                             {item.size} <br/>
-                            {item.date_created.substr(0, 10)}
+                            {`${item.date_created.substr(5, 5)}-${item.date_created.substr(2, 2)}`}
                         </p>
-                        <p className="secondary-content red-text">{index + 1}</p>
+                        <p className="secondary-content red-text">
+                            {item.completionTime ? 
+                                <i className="material-icons play-list">check</i> : ''}
+                            {item.facebook_u_id === facebookId ? 
+                                <i className="material-icons play-list">create</i> : ''}
+                            {index + 1}
+                        </p>
                     </li>
                 )
             })

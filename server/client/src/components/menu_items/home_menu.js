@@ -88,29 +88,29 @@ class HomePage extends Component {
                 <HomeMenuModal toggleAutoInfo={this.props.toggleAutoInfo} autoInfo={this.props.autoInfo} showModal={showModal} closeModal={() => {this.close()}} currentPath={modalInfo} />
                 <PageTitle backgroundImg="desert2" color="white" text="PUZZLE ME" subText="start puzzling"/>
                 <div className="row justify-content-center mb-0">
-                    <div className="col-5 col-sm-6 mt-5">
+                    <div className="col-5 mt-5">
                         <Link to="/profile/my_profile">
                             <img src={avatar_array[profilePicNum]} className="circle"/>
                         </Link>
                     </div>
-                    <div className="col-7 col-sm-5 mt-5 justify-content-around align-items-center flex-column d-flex">
+                    <div className="col-7 col-sm-6 mt-5 justify-content-around align-items-center flex-column d-flex">
                         <button 
                             onClick={() => this.getRandom('puzzles', 'url_ext, type')} 
-                            className={`btn red my-1 ${window.innerWidth > 576 ? "btn-large" : ""}`}
+                            className="btn btn-block red my-1"
                         >
                             Random 
                             <i className="material-icons large right">play_arrow</i>
                         </button>
                         <button 
                             onClick={() => this.getRandomCreate()}
-                            className={`btn red my-1 ${window.innerWidth > 576 ? "btn-large" : ""}`}
+                            className="btn btn-block red my-1"
                         >
                             Random 
                             <i className="material-icons large right">create</i>
                         </button>
                         <button 
                             onClick={() => this.getRandom('users', 'facebook_u_id')} 
-                            className={`btn red my-1 ${window.innerWidth > 576 ? "btn-large" : ""}`}
+                            className="btn btn-block red my-1"
                         >
                             Random 
                             <i className="material-icons large right">person</i>

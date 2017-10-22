@@ -22,14 +22,16 @@ function PlayMenuModal(props) {
             </div>
             <div className="card p-5">
                 <div className="card-body">
-                    <h4 className="card-title">{puzzle_name}</h4>
+                    <h4 className="card-title teal-text">{puzzle_name}</h4>
                     <p className="card-text">  
                         Type: {type === 'word_guess' ? 'Word Guess' : 'Speckle Spackle'}<br/>
                         Size: {size}<br/>
                         Creator: {creator || username}<br/>
                         Created: {date_created.substr(0,10)}<br/>
-                        Average Completion: {type === 'word_guess' ? 
-                            avg_time_to_complete / 10 + " Moves" : 
+                        Avg Completion: {
+                            avg_time_to_complete === 0 ? 'n/a' : 
+                            type === 'word_guess' ? 
+                            Math.round(avg_time_to_complete / 10) + " Moves" : 
                             avg_time_to_complete + " Seconds" }<br/>
                         Total Plays: {total_plays}
                     </p>

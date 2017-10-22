@@ -123,7 +123,7 @@ class WordGuessingCreate extends Component {
                         maxLength={6}
                         value={this.state.hiddenWord} 
                         className="form-control" 
-                        placeholder="...Pick Your Hidden Number"
+                        placeholder="...Pick Your Hidden Word"
                     />
                 </form>
                 <br/>

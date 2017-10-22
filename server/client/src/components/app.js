@@ -15,6 +15,7 @@ import WordGuessPlay from "./word_guessing/word_guessing_play";
 import Rankings from "./menu_items/rankings";
 import Login from "./menu_items/login_menu";
 import Profile from "./menu_items/profile";
+import SideMenu from "./menu_items/side_menu";
 
 const globalInitFunction = function(res) {
 	App.init(res);
@@ -181,6 +182,7 @@ class App extends Component {
 					closeModal={() => { this.close(); }}
 					currentPath={currentPath}
 				/>
+				<SideMenu />
 				<Header
 					updateCurrentPath={this.updateCurrentPath}
 					currentTitle={currentTitle}
