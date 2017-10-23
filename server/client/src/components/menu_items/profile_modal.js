@@ -58,6 +58,7 @@ class ProfileModal extends Component {
                 <div className="col-4" style={{marginBottom: "30px"}} key={index}>
                     <img
                         onClick={() => this.updateAvatarIndex(index)} 
+                        onDoubleClick={this.submitUpdates} 
                         src={avatar_array[index]} 
                         className={index === avatarIndex ? "circle" : ""} 
                     />

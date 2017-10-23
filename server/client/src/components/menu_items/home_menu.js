@@ -88,9 +88,10 @@ class HomePage extends Component {
                 <HomeMenuModal toggleAutoInfo={this.props.toggleAutoInfo} autoInfo={this.props.autoInfo} showModal={showModal} closeModal={() => {this.close()}} currentPath={modalInfo} />
                 <PageTitle backgroundImg="desert2" color="white" text="PUZZLE ME" subText="start puzzling"/>
                 <div className="row justify-content-center mb-0">
-                    <div onClick={() =>this.props.updateCurrentPath("profile")} className="col-5 mt-5">
+                    <div onClick={() =>this.props.updateCurrentPath("profile")} className="text-center col-5 mt-5">
                         <Link to="/profile/my_profile">
-                            <img src={avatar_array[profilePicNum]} className="circle"/>
+                            <img src={avatar_array[profilePicNum]} className="circle mb-1"/>
+                            EXP POINTS: {exp_gained}
                         </Link>
                     </div>
                     <div className="col-7 col-sm-6 mt-5 justify-content-around align-items-center flex-column d-flex">

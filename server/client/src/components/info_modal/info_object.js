@@ -1,4 +1,4 @@
-import homeMenu from './homeMenu.gif'
+import homeMenu from './homeMenu.png'
 import ss_threeColors from './ss-threeColors.gif';
 import ss_eachPerRowCol from './ss-eachPerRowCol.gif';
 import ss_clueMatch from './ss-clueMatch.gif'
@@ -32,7 +32,7 @@ const InfoObject = {
         tutorial : [
             {
                 animation : homeMenu,
-                text: `You can explore PuzzleMe through the footer menu. Or learn to play our games by clicking a puzzle!`
+                text: `You can explore PuzzleMe through the footer menu. Click on your avatar or username to customize your profile or click one of the "Random" buttons to jump right in.`
             }
         ]
     },
@@ -89,16 +89,16 @@ const InfoObject = {
                 text: `Each puzzle contains 3 different colors. White is considered "Blank"`
             },
             {
+                animation : ss_clickToChange,
+                text: `Click on a square to rotate through possible color values`
+            },
+            {
                 animation : ss_eachPerRowCol,
                 text: `Each row and column MUST contain EXACTLY ONE of every color. You cannot have duplicates in a row or column`
             },
             {
                 animation : ss_clueMatchFaster,
                 text: `The circles around the border must match in color with the first colored square they hit, coming from that direction. (Remember white is considered 'blank')`
-            },
-            {
-                animation : ss_clickToChange,
-                text: `Click on a square to rotate through possible color values`
             },
             {
                 animation : null,

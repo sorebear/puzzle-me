@@ -54,7 +54,10 @@ class App extends Component {
 		this.checkLoginStatus();
 		console.log("Response Data: ", res.data);
 		if (res.data.action === "created") {
-			this.setState({ newUser : true })
+			this.setState({ 
+				newUser : true,
+				autoInfo : true
+			})
 		}
 	}
 
@@ -149,8 +152,7 @@ class App extends Component {
 		});
 		if (this.state.autoInfo && (
 			currentPath !== "play_menu" &&
-			currentPath !== "create_menu" &&
-			currentPath !== "profile"
+			currentPath !== "create_menu" 
 		)) 	
 			{
 				setTimeout(() => { this.setState({ showModal: "showModal" });
