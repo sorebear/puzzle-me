@@ -52,7 +52,6 @@ class App extends Component {
 
 	init(res) {
 		this.checkLoginStatus();
-		console.log("Response Data: ", res.data);
 		if (res.data.action === "created") {
 			this.setState({ 
 				newUser : true,
@@ -72,7 +71,6 @@ class App extends Component {
 
 	facebookLogin() {
 		const user_name = 'user' + this.generatePuzzleID();
-		// console.log("Random User Name: ", user_name);
 		FB.login(
 			(response) => {
 				if (response.status === "connected") {
@@ -92,7 +90,6 @@ class App extends Component {
 
 	checkLoginStatus() {
 		Axios.get(this.URL_EXT_CHECK).then((res) => {
-			console.log("AXIOS RESPONSE: ", res);
 			if (res.data.success) {
 				this.setState({
 					loggedIn: true

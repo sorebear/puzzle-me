@@ -86,7 +86,7 @@ class HomePage extends Component {
         return (
             <div>
                 <HomeMenuModal toggleAutoInfo={this.props.toggleAutoInfo} autoInfo={this.props.autoInfo} showModal={showModal} closeModal={() => {this.close()}} currentPath={modalInfo} />
-                <PageTitle backgroundImg="desert2" color="white" text="PUZZLE ME" subText="start puzzling"/>
+                <PageTitle backgroundImg="mountains" color="white" text="PUZZLE ME" subText="start puzzling"/>
                 <div className="row justify-content-center mb-0">
                     <div onClick={() =>this.props.updateCurrentPath("profile")} className="text-center col-5 mt-5">
                         <Link to="/profile/my_profile">

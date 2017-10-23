@@ -107,7 +107,6 @@ export default class extends Component{
         let solvedList = <li className="text-center py-3 white grey-text">No Solved Puzzles</li>;
         if (createdPuzzles.length > 0) {
             createdList = createdPuzzles.map((item, index) => {
-                console.log("CREATED ITEM DETAILS: ", item)
                 return (
                     <li onClick={() => this.callPlayModal(item)} className="collection-item avatar pr-2" key={index}>
                         <img 
@@ -131,7 +130,6 @@ export default class extends Component{
         }
         if (solvedPuzzles.length > 0) {
             solvedList = solvedPuzzles.map((item, index) => {
-                // console.log("SOLVED ITEM DETAILS: ", item)
                 return (
                     <li 
                         onClick={() => this.callPlayModal(item)} 
