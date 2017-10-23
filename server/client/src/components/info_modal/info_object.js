@@ -18,6 +18,15 @@ import wg_pickSecretWord from './wg_pickSecretWord.gif';
 import wg_addStartWords from './wg_addStartWords.gif';
 
 const InfoObject = {
+    init : {
+        name: null,
+        tutorial : [
+            {
+                animation: null,
+                text: null
+            }
+        ]
+    },
     home : {
         name: 'Welcome To PuzzleMe!',
         tutorial : [
@@ -27,21 +36,12 @@ const InfoObject = {
             }
         ]
     },
-    init : {
-        name: "",
-        tutorial : [
-            {
-                animation : null,
-                text: ``
-            }
-        ]
-    },
     login : {
         name: 'Login',
         tutorial : [
             {
                 animation : null,
-                text: `Please sign in with Facebook to enjoy our app!`
+                text: `Please sign in with Facebook to enjoy PuzzleMe`
             }
         ]
     },
@@ -68,7 +68,7 @@ const InfoObject = {
         tutorial : [
             {
                 animation : null,
-                text: `Browse through the current rankings. You can click the table headers to adjust the sorting.`
+                text: `Welcome to the rankings page. See how you stack up with the competition. You can click on a user to view their profile.`
             }
         ]
     },
@@ -77,7 +77,7 @@ const InfoObject = {
         tutorial : [
             {
                 animation : null,
-                text: `Welcome To PuzzleMe`
+                text: `Welcome to the profile page. If you're on your own profile page, you click to update your avatar and/or username.`
             }
         ]
     },
@@ -174,6 +174,10 @@ const InfoObject = {
             {
                 animation : wg_addStartWords,
                 text: `Provide some initial clues to get your solver's started. We recommend giving 2 or 3.`
+            },
+            {
+                animation : wg_clueMeanings,
+                text: `You will get feedback for your clue. The first number is how many letters are correct. The second is how many are ALSO in the correct position.`
             },
             {
                 animation: null,
