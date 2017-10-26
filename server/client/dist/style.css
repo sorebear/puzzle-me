@@ -173,6 +173,7 @@ a, a:hover, a:active, a:focus, a:visited {
 
 .noModal {
     position: fixed;
+    z-index: -1;
 }
 
 @media screen and (orientation:landscape) {

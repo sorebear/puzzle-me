@@ -160,7 +160,7 @@ class App extends Component {
 	}
 
 	leftOrBottomMenu() {
-		const { currentHeight, currentWidth, currentGameMode, clickHandlers, loggedIn } = this.state;
+		const { currentHeight, currentWidth, currentGameMode, clickHandlers, loggedIn, currentPath } = this.state;
 		if (currentWidth > currentHeight) {
 			return (
 				<LeftMenu 
@@ -168,6 +168,7 @@ class App extends Component {
 					width={(currentWidth - currentHeight * .65)/2} 
 					mode={currentGameMode}
 					clickHandlers={clickHandlers}
+					currentPath={currentPath}
 					updateCurrentPath={this.updateCurrentPath}
 					loginStatus={loggedIn}
 					callModal={() => this.callModal()}
@@ -280,7 +281,11 @@ class App extends Component {
 							<SpeckleSpackleApp updateCurrentPath={this.updateCurrentPath}/>
 						)}
 					/>
-					<Route exact path="/rankings" component={Rankings} />
+					<Route exact path="/rankings" render={
+						() => (
+							<Rankings updateCurrentPath={this.updateCurrentPath} />
+						)}
+					/>
 					<Route path="/profile/:user_id" component={Profile} />
 				</div>
 				{this.leftOrBottomMenu()}

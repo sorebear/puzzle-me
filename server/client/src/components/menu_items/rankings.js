@@ -103,7 +103,12 @@ class Rankings extends Component {
             })
             return (
                 <div>
-                    <RankingsModal info={modalInfo} showModal={showModal} closeModal={this.closeModal}/>
+                    <RankingsModal 
+                        info={modalInfo} 
+                        showModal={showModal} 
+                        closeModal={this.closeModal}
+                        updateCurrentPath={this.props.updateCurrentPath}
+                    />
                     <PageTitle backgroundImg="cityscape" color="white" text="RANKINGS"/>
                     <ul className="collection my-0">{list}</ul>
                 </div>

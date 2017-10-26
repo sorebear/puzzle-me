@@ -93,4 +93,8 @@ i {
     .gutter {
         height: 19%;
     }
+
+    .swatch {
+        font-size: 19vh;
+    }
 }

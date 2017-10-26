@@ -19,7 +19,12 @@ function PlayMenuModal(props) {
                         Experience Points: <span className="red-text">{exp_gained}</span>
                     </p>
                     <Link to={`profile/${facebook_u_id}`}>
-                        <button className="m-1 btn">View Profile</button>
+                        <button 
+                            onClick={() => props.updateCurrentPath("profile")} 
+                            className="m-1 btn"
+                        >
+                            View Profile
+                        </button>
                     </Link>
                     <button onClick={props.closeModal} className="m-1 btn">Close</button>
                 </div>

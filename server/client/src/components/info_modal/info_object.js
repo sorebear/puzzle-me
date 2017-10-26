@@ -140,11 +140,11 @@ const InfoObject = {
         tutorial : [
             {
                 animation : ss_addColors,
-                text: `Click a color swatch to select and then place that color. Notice the clues will update automatically.`
+                text: `Click a color swatch and then click on a space to place that color. Notice the circular "clues" will update automatically.`
             },
             {
                 animation : ss_changeColors,
-                text: `You can change a color by clicking on the refresh arrows`
+                text: `You can change one of the three colors by clicking on the refresh arrows`
             },
             {
                 animation : ss_changeGridSize,
@@ -152,7 +152,11 @@ const InfoObject = {
             },
             {
                 animation : ss_removeClues,
-                text: `Click on clues to remove or add them.`
+                text: `Click on the circular "clues" to remove or add them.`
+            },
+            {
+                animation : ss_eachPerRowCol,
+                text: `Remember that each row and column MUST contain EXACTLY ONE of every color (not counting white). You cannot have duplicates in a row or column`
             },
             {
                 animation : ss_testplay,
