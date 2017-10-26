@@ -1,5 +1,10 @@
 body {
-    background-image: url(./trees.png)
+    background-image: url(./vines.png)
+}
+
+a, a:hover, a:active, a:focus, a:visited {
+    text-decoration: none;
+    color: inherit;
 }
 
 .mainViewingWindow {
@@ -53,7 +58,68 @@ body {
     left: 50%;
     transform: translate(-50%);
     max-width: 65vh;
-    transition: 1s;
+    transition: .75s;
+}
+
+.side-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 85%;
+    height: 100%;
+}
+
+.side-menu-container {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    top: 0;
+}
+
+.side-menu-button {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    max-width: 250px;
+    height: 15vh;
+    margin: .5px;
+}
+
+.side-menu-header {
+    width: 100%;
+    max-width: 250px;
+    display: flex;
+    justify-content: center;
+    border-radius: 2px;
+    font-size: 20px;
+    align-items: center;
+    color: white;
+    margin: .5px;
+    background-color: #222;
+    height: 10vh;
+    transition: .5s;
+}
+
+.right-menu-icon {
+    position: relative;
+    width: 100%;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    max-width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.right-menu-icon img {
+    width: 100%;
+}
+
+.right-menu-icon i {
+    position: absolute;
+    font-size: 11vw;
+    color: white;
 }
 
 .form-control:focus {
@@ -128,6 +194,7 @@ h2 {
     margin-bottom: 0;
     background-size: cover;
     background-position: center;
+    text-decoration: none;
     position: relative;
 }
 
@@ -158,15 +225,6 @@ h2 {
 
 .play-test * {
     margin: 2px;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-a:hover {
-    text-decoration: none;
 }
 
 li.collection-item:hover {

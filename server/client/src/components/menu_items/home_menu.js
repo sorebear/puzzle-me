@@ -47,6 +47,7 @@ class HomePage extends Component {
         Axios.get(
             `${this.URL_EXT_PROFILE}?${this.QUERY_KEY_U_ID}=my_profile`
         ).then((res) => {
+            console.log('HERE IS ALL MY DATA: ', res);
             const userInfo = res.data.data[0];
             this.setState({
                 username: userInfo.username,

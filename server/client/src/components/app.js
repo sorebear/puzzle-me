@@ -52,44 +52,6 @@ class App extends Component {
 		window.addEventListener("resize", this.updateDimensions);
 	}
 
-	init(res) {
-		this.checkLoginStatus();
-		if (res.data.action === "created") {
-			this.setState({ 
-				newUser : true,
-				autoInfo : true
-			})
-		}
-	}
-
-	generatePuzzleID(length=6){
-		let potentials = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-		let output = '';
-		for(let i=0; i<length; i++){
-		  output += potentials[( (Math.random() * potentials.length) >> 0 )];
-		}
-		return output;
-	}
-
-	facebookLogin() {
-		const user_name = 'user' + this.generatePuzzleID();
-		FB.login(
-			(response) => {
-				if (response.status === "connected") {
-					response.username = user_name;
-					Axios.post("/login", {
-						response: response
-					}).then(res => this.init(res)).catch(err => {
-						console.log("Error Logging In");
-					});
-				} else {
-					console.log("Failed to log in with Facebook");
-				}
-			},
-			{ scope: "user_friends,public_profile,email" }
-		);
-	}
-
 	checkLoginStatus() {
 		Axios.get(this.URL_EXT_CHECK).then((res) => {
 			if (res.data.success) {
@@ -107,6 +69,44 @@ class App extends Component {
 		}).catch((err) => {
 			console.log("ERROR CHECKING LOGIN", err);
 		})
+	}
+
+	init(res) {
+		this.checkLoginStatus();
+		if (res.data.action === "created") {
+			this.setState({ 
+				newUser : true,
+				autoInfo : true
+			})
+		}
+	}
+
+	generateRandomID(length=6){
+		let potentials = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+		let output = '';
+		for(let i=0; i<length; i++){
+		  output += potentials[( (Math.random() * potentials.length) >> 0 )];
+		}
+		return output;
+	}
+
+	facebookLogin() {
+		const user_name = 'user' + this.generateRandomID();
+		FB.login(
+			(response) => {
+				if (response.status === "connected") {
+					response.username = user_name;
+					Axios.post("/login", {
+						response: response
+					}).then(res => this.init(res)).catch(err => {
+						console.log("Error Logging In");
+					});
+				} else {
+					console.log("Failed to log in with Facebook");
+				}
+			},
+			{ scope: "user_friends,public_profile,email" }
+		);
 	}
 
 	updateDimensions() {
@@ -170,6 +170,7 @@ class App extends Component {
 					clickHandlers={clickHandlers}
 					updateCurrentPath={this.updateCurrentPath}
 					loginStatus={loggedIn}
+					callModal={() => this.callModal()}
 				/>
 			)
 		} else {
@@ -185,10 +186,26 @@ class App extends Component {
 	}
 
 	rightOrHeaderMenu() {
-		const { currentWidth, currentHeight, currentTitle } = this.state;
+		const { 
+			currentWidth, 
+			currentHeight, 
+			currentTitle, 
+			currentPath, 
+			clickHandlers, 
+			currentGameMode 
+		} = this.state;
 		if (currentWidth > currentHeight) {
 			return (
-				<RightMenu height={currentHeight} width={(currentWidth - currentHeight * .65)/2} />
+				<RightMenu 
+					height={currentHeight} 
+					width={(currentWidth - currentHeight * .65)/2} 
+					mode={currentGameMode}
+					updateCurrentPath={this.updateCurrentPath}
+					clickHandlers={clickHandlers}
+					currentTitle={currentTitle}
+					currentPath={currentPath}
+					callModal={() => this.callModal()}
+				/>
 			)
 		} else {
 			return (
