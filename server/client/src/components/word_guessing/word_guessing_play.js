@@ -171,17 +171,17 @@ class WordGuessPlay extends Component {
                 user : res.data.solver,
                 new_exp_points : res.data.new_exp_points
             }).then(
-                res => console.log("SUCCESS UPDATING SOLVER XP")
+                console.log("SUCCESS UPDATING SOLVER XP")
             ).catch(
-                err => console.log("ERROR UPDATING SOLVER XP")
+                console.log("ERROR UPDATING SOLVER XP")
             );
             Axios.post(this.UPDATE_URL_EXT, {
                 user : res.data.creator,
                 new_exp_points : 10
             }).then(
-                res => console.log("SUCCESS UPDATING CREATOR XP")
+                console.log("SUCCESS UPDATING CREATOR XP")
             ).catch(
-                err => console.log("ERROR UPDATING CREATOR XP")
+                console.log("ERROR UPDATING CREATOR XP")
             );
             this.setState({
                 showWinModal : "showModal",

@@ -47,7 +47,6 @@ class ProfileModal extends Component {
     }
 
     successfulSubmit() {
-        console.log("Your Profile Has Been Updated");
         this.props.getData()
     }
 

@@ -39,9 +39,7 @@ class PlayMenu extends Component {
     }
 
     updateData(response){
-        console.log("Full Play Response: ", response);
         const receivedData = response.data.data;
-        console.log("Received Play Data: ", receivedData);
         this.setState({
             data : receivedData,
             facebookId : parseInt(response.data.currentUser)
@@ -62,10 +60,14 @@ class PlayMenu extends Component {
     }
 
     render() {
-        console.log("State at Play Menu", this.state);
         const { data, facebookId } = this.state
         if (data === null) {
-            return <h1>Loading...</h1>
+            return (
+                <div>
+                    <PageTitle backgroundImg="watchtower" color="white" text="PLAY" subText="choose a game below"/>
+                    <h1>Loading...</h1>
+                </div>
+            )
         } else {
             const list = data.map((item, index) => {
                 return (

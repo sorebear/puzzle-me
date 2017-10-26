@@ -47,6 +47,7 @@ class HomePage extends Component {
         Axios.get(
             `${this.URL_EXT_PROFILE}?${this.QUERY_KEY_U_ID}=my_profile`
         ).then((res) => {
+            console.log('HERE IS ALL MY DATA: ', res);
             const userInfo = res.data.data[0];
             this.setState({
                 username: userInfo.username,
@@ -86,7 +87,7 @@ class HomePage extends Component {
         return (
             <div>
                 <HomeMenuModal toggleAutoInfo={this.props.toggleAutoInfo} autoInfo={this.props.autoInfo} showModal={showModal} closeModal={() => {this.close()}} currentPath={modalInfo} />
-                <PageTitle backgroundImg="desert2" color="white" text="PUZZLE ME" subText="start puzzling"/>
+                <PageTitle backgroundImg="mountains" color="white" text="PUZZLE ME" subText="start puzzling"/>
                 <div className="row justify-content-center mb-0">
                     <div onClick={() =>this.props.updateCurrentPath("profile")} className="text-center col-5 mt-5">
                         <Link to="/profile/my_profile">
@@ -97,14 +98,14 @@ class HomePage extends Component {
                     <div className="col-7 col-sm-6 mt-5 justify-content-around align-items-center flex-column d-flex">
                         <button 
                             onClick={() => this.getRandom('puzzles', 'url_ext, type')}
-                            className="btn btn-block red my-1"
+                            className="btn btn-block my-1"
                         >
                             Random 
                             <i className="material-icons large right">play_arrow</i>
                         </button>
                         <button 
                             onClick={() => this.getRandomCreate()}
-                            className="btn btn-block red my-1"
+                            className="btn btn-block my-1"
                         >
                             Random 
                             <i className="material-icons large right">create</i>
@@ -114,7 +115,7 @@ class HomePage extends Component {
                                 this.getRandom('users', 'facebook_u_id')
                                 this.props.updateCurrentPath("profile");
                             }} 
-                            className="btn btn-block red my-1"
+                            className="btn btn-block my-1"
                         >
                             Random 
                             <i className="material-icons large right">person</i>

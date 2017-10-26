@@ -18,14 +18,16 @@
 	background-image: url(../imgs/legos.jpg);
 }
 
-.desert {
-	background-image: url(../imgs/desert.jpg);
+.mountains {
+	background-image: url(../imgs/mountains.jpg);
 }
 
-.cliffs {
-	background-image: url(../imgs/cliffs.jpg);
+.desert {
+	background-image: url(../imgs/desert.jpg);
+	background-position: bottom;
 }
 
 .desert2 {
-    background-image: url(../imgs/desert2.jpg);
+	background-image: url(../imgs/desert2.jpg);
+	background-position: bottom;
 }
