@@ -97,14 +97,14 @@ class HomePage extends Component {
                     <div className="col-7 col-sm-6 mt-5 justify-content-around align-items-center flex-column d-flex">
                         <button 
                             onClick={() => this.getRandom('puzzles', 'url_ext, type')}
-                            className="btn btn-block red my-1"
+                            className="btn btn-block my-1"
                         >
                             Random 
                             <i className="material-icons large right">play_arrow</i>
                         </button>
                         <button 
                             onClick={() => this.getRandomCreate()}
-                            className="btn btn-block red my-1"
+                            className="btn btn-block my-1"
                         >
                             Random 
                             <i className="material-icons large right">create</i>
@@ -114,7 +114,7 @@ class HomePage extends Component {
                                 this.getRandom('users', 'facebook_u_id')
                                 this.props.updateCurrentPath("profile");
                             }} 
-                            className="btn btn-block red my-1"
+                            className="btn btn-block my-1"
                         >
                             Random 
                             <i className="material-icons large right">person</i>

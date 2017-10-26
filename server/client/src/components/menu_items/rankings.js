@@ -80,7 +80,12 @@ class Rankings extends Component {
     render() {
         const { data, showModal, modalInfo } = this.state
         if (data === null) {
-            return <h1>Loading...</h1>
+            return ( 
+                <div>
+                    <PageTitle backgroundImg="cityscape" color="white" text="RANKINGS"/>
+                    <h1>Loading...</h1>
+                </div>
+            ) 
         } else {
             const list = data.map((item, index) => {
                 const date = item.account_created;

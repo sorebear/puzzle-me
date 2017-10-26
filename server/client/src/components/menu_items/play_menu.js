@@ -62,7 +62,12 @@ class PlayMenu extends Component {
     render() {
         const { data, facebookId } = this.state
         if (data === null) {
-            return <h1>Loading...</h1>
+            return (
+                <div>
+                    <PageTitle backgroundImg="watchtower" color="white" text="PLAY" subText="choose a game below"/>
+                    <h1>Loading...</h1>
+                </div>
+            )
         } else {
             const list = data.map((item, index) => {
                 return (
