@@ -5,6 +5,8 @@ import Axios from 'axios';
 
 import Header from "./menu_items/header";
 import Footer from "./menu_items/footer";
+import LeftMenu from "./menu_items/left_menu";
+import RightMenu from "./menu_items/right_menu";
 import Home from "./menu_items/home_menu";
 import CreateMenu from "./menu_items/create_menu";
 import PlayMenu from "./menu_items/play_menu";
@@ -157,14 +159,53 @@ class App extends Component {
 		}
 	}
 
+	leftOrBottomMenu() {
+		const { currentHeight, currentWidth, currentGameMode, clickHandlers, loggedIn } = this.state;
+		if (currentWidth > currentHeight) {
+			return (
+				<LeftMenu 
+					height={currentHeight} 
+					width={(currentWidth - currentHeight * .65)/2} 
+					mode={currentGameMode}
+					clickHandlers={clickHandlers}
+					updateCurrentPath={this.updateCurrentPath}
+					loginStatus={loggedIn}
+				/>
+			)
+		} else {
+			return (
+				<Footer 
+					mode={currentGameMode} 
+					clickHandlers={clickHandlers} 
+					updateCurrentPath={this.updateCurrentPath}
+					loginStatus={loggedIn}
+				/>
+			)
+		}
+	}
+
+	rightOrHeaderMenu() {
+		const { currentWidth, currentHeight, currentTitle } = this.state;
+		if (currentWidth > currentHeight) {
+			return (
+				<RightMenu height={currentHeight} width={(currentWidth - currentHeight * .65)/2} />
+			)
+		} else {
+			return (
+				<Header
+					updateCurrentPath={this.updateCurrentPath}
+					currentTitle={currentTitle}
+					callModal={() => this.callModal() }
+				/>
+			)
+		}
+	}
+
 	render() {
 		const {
 			currentHeight,
 			currentWidth,
 			currentPath,
-			currentGameMode,
-			currentTitle,
-			clickHandlers,
 			showModal,
 			autoInfo,
 			loggedIn,
@@ -180,14 +221,10 @@ class App extends Component {
 					closeModal={() => { this.close(); }}
 					currentPath={currentPath}
 				/>
-				<Header
-					updateCurrentPath={this.updateCurrentPath}
-					currentTitle={currentTitle}
-					callModal={() => { this.callModal(); }}
-				/>
+				{this.rightOrHeaderMenu()}
 				<div className="mainViewingWindow" style={
 					{
-						height: currentHeight - 90,
+						height: currentWidth > currentHeight ? currentHeight : currentHeight - 90,
 						width: currentWidth,
 					}
 				}>
@@ -229,12 +266,7 @@ class App extends Component {
 					<Route exact path="/rankings" component={Rankings} />
 					<Route path="/profile/:user_id" component={Profile} />
 				</div>
-				<Footer 
-					mode={currentGameMode} 
-					clickHandlers={clickHandlers} 
-					updateCurrentPath={this.updateCurrentPath}
-					loginStatus={loggedIn}
-				/>
+				{this.leftOrBottomMenu()}
 			</div>
 		);
 	}
