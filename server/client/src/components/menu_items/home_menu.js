@@ -98,27 +98,42 @@ class HomePage extends Component {
                     <div className="col-7 col-sm-6 mt-5 justify-content-around align-items-center flex-column d-flex">
                         <button 
                             onClick={() => this.getRandom('puzzles', 'url_ext, type')}
-                            className="btn btn-block my-1"
+                            className="btn home-buttons"
                         >
                             Random 
-                            <i className="material-icons large right">play_arrow</i>
+                            <i 
+                                className="material-icons large right"
+                                style={{fontSize: "24px"}}
+                            >
+                                play_arrow
+                            </i>
                         </button>
                         <button 
                             onClick={() => this.getRandomCreate()}
-                            className="btn btn-block my-1"
+                            className="btn home-buttons"
                         >
                             Random 
-                            <i className="material-icons large right">create</i>
+                            <i 
+                                className="material-icons large right"
+                                style={{fontSize: "24px"}}
+                            >
+                                create
+                            </i>
                         </button>
                         <button 
                             onClick={() => {
                                 this.getRandom('users', 'facebook_u_id')
                                 this.props.updateCurrentPath("profile");
                             }} 
-                            className="btn btn-block my-1"
+                            className="btn home-buttons"
                         >
                             Random 
-                            <i className="material-icons large right">person</i>
+                            <i 
+                                className="material-icons large right" 
+                                style={{fontSize: "24px"}}
+                            >
+                                person
+                            </i>
                         </button>
                     </div>
                     <div className="col-12">

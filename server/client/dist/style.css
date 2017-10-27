@@ -81,14 +81,24 @@ a, a:hover, a:active, a:focus, a:visited {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    max-width: 250px;
+    max-width: 350px;
+    max-height: 100px;
     height: 15vh;
+    margin: .5px;
+}
+
+.home-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 33%;
     margin: .5px;
 }
 
 .side-menu-header {
     width: 100%;
-    max-width: 250px;
+    max-width: 350px;
+    max-height: 75px;
     display: flex;
     justify-content: center;
     border-radius: 2px;
@@ -106,7 +116,7 @@ a, a:hover, a:active, a:focus, a:visited {
     width: 100%;
     margin-top: 2vh;
     margin-bottom: 2vh;
-    max-width: 250px;
+    max-width: 275px;
     display: flex;
     align-items: center;
     justify-content: center;

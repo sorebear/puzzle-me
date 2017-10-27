@@ -19,7 +19,7 @@ export default (props) => {
     const { width, height, clickHandlers, currentTitle, currentPath, callModal, mode } = props;
     return (
         <div className="side-menu-container" style={{width: width, height: height, right: 0}}>
-            <div className="side-menu">
+            <div className="side-menu" style={{textAlign: "-webkit-center"}}>
                 <div 
                     className="side-menu-header"
                     style={{transform: `translate(${currentTitle ? 0 : "700px"})`}}
@@ -31,7 +31,7 @@ export default (props) => {
                     <img src={circle} />
                     <i className="material-icons icon-style">{iconObject[currentPath]}</i>
                 </div>
-                <div style={{position: "relative"}}>
+                <div style={{position: "relative", maxWidth: "350px"}}>
                     <button 
                         onClick={clickHandlers[1]} 
                         className="btn side-menu-button"

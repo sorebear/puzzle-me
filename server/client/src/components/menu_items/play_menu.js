@@ -64,7 +64,7 @@ class PlayMenu extends Component {
         if (data === null) {
             return (
                 <div>
-                    <PageTitle backgroundImg="watchtower" color="white" text="PLAY" subText="choose a game below"/>
+                    <PageTitle backgroundImg="desert2" color="white" text="PLAY" subText="choose a game below"/>
                     <h1>Loading...</h1>
                 </div>
             )
@@ -90,7 +90,7 @@ class PlayMenu extends Component {
             })
             return (
                 <div>
-                    <PageTitle backgroundImg="watchtower" color="white" text="PLAY" subText="choose a game below"/>
+                    <PageTitle backgroundImg="desert2" color="white" text="PLAY" subText="choose a game below"/>
                     <PlayMenuModal info={this.state.modalInfo} type="play" showModal={this.state.showModal} closeModal={() => this.close()} />
                     <ul className="collection my-0">{list}</ul>
                     <div style={{height: "45px", position: "absolute", bottom:"0"}}></div>

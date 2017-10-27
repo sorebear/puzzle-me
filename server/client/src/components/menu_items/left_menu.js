@@ -5,7 +5,7 @@ export default (props) => {
     const { width, height, loginStatus, updateCurrentPath, callModal, currentPath } = props;
     return (
         <div className="side-menu-container" style={{width: width, height: height, left: 0}}>
-            <div className="side-menu" style={{textAlign: "-webkit-right"}}>
+            <div className="side-menu" style={{textAlign: "-webkit-center"}}>
                 <div 
                     className="side-menu-header" 
                     onClick={callModal}

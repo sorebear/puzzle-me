@@ -82,7 +82,7 @@ class Rankings extends Component {
         if (data === null) {
             return ( 
                 <div>
-                    <PageTitle backgroundImg="cityscape" color="white" text="RANKINGS"/>
+                    <PageTitle backgroundImg="cliffs" color="white" text="RANKINGS"/>
                     <h1>Loading...</h1>
                 </div>
             ) 
@@ -109,7 +109,7 @@ class Rankings extends Component {
                         closeModal={this.closeModal}
                         updateCurrentPath={this.props.updateCurrentPath}
                     />
-                    <PageTitle backgroundImg="cityscape" color="white" text="RANKINGS"/>
+                    <PageTitle backgroundImg="cliffs" color="white" text="RANKINGS"/>
                     <ul className="collection my-0">{list}</ul>
                 </div>
             )
