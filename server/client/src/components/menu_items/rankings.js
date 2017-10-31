@@ -95,7 +95,9 @@ class Rankings extends Component {
                         <span className="title">{item.username}</span>
                         <p className="grey-text">
                             XP: {item.exp_gained} <br/>
-                            User Since: {`${date.substr(5, 2)}/${date.substr(8,2)}/${date.substr(0,4)}`}
+                            User Since: {
+                                `${date.substr(5,2)}/${date.substr(8,2)}/${date.substr(2,2)}`
+                            }
                         </p>
                         <p className="secondary-content red-text">{index + 1}</p>
                     </li>

@@ -86,22 +86,13 @@ export default class extends Component{
                     createdPuzzles : res.data.createdData,
                     solvedPuzzles : res.data.solvedData
                 });
-            }).catch(err => {
-                console.log("Error Loading Created And Solved Puzzles");
-            });
-        }).catch(err => {
-            console.log("Error Loading Profile");
-        });
+            }).catch(() => console.log("Error Loading Created And Solved Puzzles"));
+        }).catch(() => console.log("Error Loading Profile"));
     }
     render(){
         const { 
-            createdPuzzles, 
-            solvedPuzzles, 
-            username, 
-            exp_gained, 
-            profilePicNum,
-            showPlayModal,
-            modalInfo
+            createdPuzzles, solvedPuzzles, username, exp_gained, 
+            profilePicNum, showPlayModal, modalInfo
         } = this.state;
         let createdList = <li className="text-center py-3 white grey-text">No Created Puzzles</li>;
         let solvedList = <li className="text-center py-3 white grey-text">No Solved Puzzles</li>;
@@ -150,7 +141,8 @@ export default class extends Component{
                             }
                             <br/>
                             {
-                                item.completionRegistered.substr(5,5) + "-" + 
+                                item.completionRegistered.substr(5,2) + "/" + 
+                                item.completionRegistered.substr(8,2) + "/" +
                                 item.completionRegistered.substr(2,2)
                             }
                         </p>

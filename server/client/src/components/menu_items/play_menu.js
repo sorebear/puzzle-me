@@ -76,7 +76,11 @@ class PlayMenu extends Component {
                         <span className="title">{item.puzzle_name}</span>
                         <p className="grey-text">
                             {item.size} <br/>
-                            {`${item.date_created.substr(5, 5)}-${item.date_created.substr(2, 2)}`}
+                            {
+                                `${item.date_created.substr(5, 2)}/` + 
+                                `${item.date_created.substr(8, 2)}/` +
+                                `${item.date_created.substr(2, 2)}`
+                            }
                         </p>
                         <p className="secondary-content red-text">
                             {item.completionTime ? 
