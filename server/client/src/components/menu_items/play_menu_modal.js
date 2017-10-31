@@ -55,7 +55,7 @@ function PlayMenuModal(props) {
                 <p className="card-text">  
                     Type: {type === 'word_guess' ? 'Word Guess' : 'Speckle Spackle'}<br/>
                     Size: {size}<br/>
-                    Creator: You<br/>
+                    Creator: {props.currentUser}<br/>
                     Created: {
                         `${date_created.substr(5,2)}/` +
                         `${date_created.substr(8,2)}/` +

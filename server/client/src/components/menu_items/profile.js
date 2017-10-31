@@ -161,7 +161,7 @@ export default class extends Component{
         return (
             <div>
                 <ProfileModal getData={this.getData} closeModal={this.closeModal} info={this.state}/>
-                <PlayModal info={modalInfo} type="created/solved" showModal={showPlayModal} closeModal={() => this.closeModal()} />
+                <PlayModal info={modalInfo} currentUser={username} showModal={showPlayModal} closeModal={() => this.closeModal()} />
                 <PageTitle backgroundImg="forestvalley" color="white" text="PROFILE"/>
                 <div className="row mt-4 mb-0">
                     <div 
